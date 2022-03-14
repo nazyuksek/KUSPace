@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import React from 'react';
 
-interface textFieldProps {
+export interface textFieldProps {
   text: string;
   style: {};
   textState: any;
@@ -9,13 +9,13 @@ interface textFieldProps {
   setSearch: any;
 }
 
-export default function TextField({
+const TextField = ({
   text,
   style = {},
   textState,
   setText,
   setSearch,
-}: textFieldProps) {
+}: textFieldProps) => {
   function handleEnd() {
     setSearch(textState);
   }
@@ -43,5 +43,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     paddingLeft: 4,
     marginTop: 10,
+    padding: 10,
   },
 });
+
+export default TextField;

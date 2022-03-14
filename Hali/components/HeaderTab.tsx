@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 
-export default function HeaderTab(props) {
+export interface HeaderTabProps {
+  props: any;
+}
+
+const HeaderTab = ({ props }: HeaderTabProps) => {
   return (
     <TouchableOpacity
       style={{
@@ -26,3 +30,5 @@ export default function HeaderTab(props) {
     </TouchableOpacity>
   );
 }
+
+export default HeaderTab;

@@ -2,8 +2,12 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 
+export interface FieldBarProps {
+  item: any;
+}
+
 const { width, height } = Dimensions.get('screen');
-export default function FieldBar({ item }) {
+const FieldBar = ({ item }: FieldBarProps) => {
   return (
     <View style={style.container}>
       <MaterialCommunityIcons
@@ -52,3 +56,5 @@ const style = StyleSheet.create({
     flexDirection: 'row',
   },
 });
+
+export default FieldBar;

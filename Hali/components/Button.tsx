@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import React from 'react';
+import * as React from 'react';
 
 export interface ButtonProps {
   onPress: any;

@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import React from 'react';
+import * as React from 'react';
 
 export interface textFieldProps {
   text: string;

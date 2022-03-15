@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import React from "react";
+import * as React from 'react';
 import TextField from "./TextField";
 import Button from "./Button";
 
 const { width, height } = Dimensions.get("screen");
-export interface LoginProps {}
+export interface LoginProps { }
 const Login = () => {
   const [text, setText] = React.useState("");
   const [search, setSearch] = React.useState("");

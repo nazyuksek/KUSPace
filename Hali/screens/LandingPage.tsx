@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import Button from '../components/Button';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TextField from '../components/TextField';
+import Login from '../components/Login';
 
 
 export interface HeaderTabProps {
@@ -15,8 +16,9 @@ const LandingPage = ({ }: HeaderTabProps) => {
             <View style={styles.itemscontainer}>
                 <Text style={styles.text}>HALI</Text>
                 <Text style={styles.subtext}>A platform that connects football players and football pitch managers!</Text>
-                <Button onPress={() => { }} buttonText="Login as Manager" style={{ marginTop: 100, backgroundColor: 'white' }} ></Button>
-                <Button onPress={() => { }} buttonText="Sign Up" style={{ marginTop: 100, backgroundColor: 'white' }} ></Button>
+                <Login></Login>
+                <Button onPress={() => { }} buttonText="Login as Manager" style={{ marginTop: 150, backgroundColor: 'white' }} ></Button>
+                <Button onPress={() => { }} buttonText="Sign Up" style={{ marginTop: 10, backgroundColor: 'white' }} ></Button>
             </View>
         </SafeAreaView >
 
@@ -44,7 +46,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 16,
         fontWeight: '500',
-        color: 'white'
+        color: 'white',
+        marginBottom: 20
     },
 
 

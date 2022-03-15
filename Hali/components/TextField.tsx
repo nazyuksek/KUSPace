@@ -3,7 +3,7 @@ import React from 'react';
 
 export interface textFieldProps {
   text: string;
-  style: {};
+  style?: {};
   textState: any;
   setText: any;
   setSearch: any;
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     height: '5%',
     alignSelf: 'center',
     borderRadius: 15,
-    backgroundColor: 'green',
     borderWidth: 3,
+    backgroundColor: 'white',
     borderColor: 'white',
     alignContent: 'center',
     paddingLeft: 4,

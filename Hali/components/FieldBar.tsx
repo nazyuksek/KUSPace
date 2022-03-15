@@ -1,19 +1,15 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React from 'react';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Dimensions } from "react-native";
+import React = require("react");
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
-export interface FieldBarProps {
-  item: any;
-}
-
-const { width, height } = Dimensions.get('screen');
-const FieldBar = ({ item }: FieldBarProps) => {
+const { width, height } = Dimensions.get("screen");
+export default function FieldBar({ item }) {
   return (
     <View style={style.container}>
       <MaterialCommunityIcons
         name="soccer-field"
         size={120}
-        color={'forestgreen'}
+        color={"forestgreen"}
       />
       <Text
         style={{
@@ -26,17 +22,17 @@ const FieldBar = ({ item }: FieldBarProps) => {
       <View
         style={{
           marginTop: -50,
-          alignItems: 'center',
+          alignItems: "center",
           flex: 1,
-          flexDirection: 'row',
+          flexDirection: "row",
         }}
       >
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             flex: 1,
-            flexDirection: 'row',
+            flexDirection: "row",
           }}
         >
           <Ionicons name="md-star" size={20} color="gold"></Ionicons>
@@ -51,10 +47,8 @@ const style = StyleSheet.create({
   container: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: 'forestgreen',
+    borderColor: "forestgreen",
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 });
-
-export default FieldBar;

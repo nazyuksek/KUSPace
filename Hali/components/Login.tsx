@@ -9,7 +9,7 @@ const Login = () => {
   const [text, setText] = React.useState("");
   const [search, setSearch] = React.useState("");
   return (
-    <View>
+    <View style={styles.container}>
       <TextField
         text={"username"}
         style={{}}
@@ -26,7 +26,6 @@ const Login = () => {
       ></TextField>
       <View
         style={{
-          backgroundColor: "forestgreen",
           width: width,
           height: height / 2,
           marginTop: 250,
@@ -35,22 +34,17 @@ const Login = () => {
           justifyContent: "center",
         }}
       >
-        <Button
-          buttonText={"Forgot Password"}
-          onPress={() => {}}
-          style={{
-            backgroundColor: "forestgreen",
-            alignItems: "center",
-            justifyContent: "center",
-            alignSelf: "center",
-          }}
-        />
-        <Button buttonText={"Sign in"} onPress={() => {}} style={{}} />
+        <Button buttonText={"Sign in"} onPress={{}} style={{}} />
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    height: 20,
+    width: "100%",
+  },
+});
 
 export default Login;

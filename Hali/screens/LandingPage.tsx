@@ -1,12 +1,22 @@
-import { StyleSheet, Text, View, Pressable, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
 import Button from "../components/Button";
+import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
+import Login from "../components/Login";
+import Navigation from "../navigation";
+import HeaderTab from "../components/HeaderTab";
 
-export interface HeaderTabProps {}
+export interface HeaderTabProps {
+  navigation: any;
+}
 
-const LandingPage = ({}: HeaderTabProps) => {
+const LandingPage = ({ navigation }: HeaderTabProps) => {
+  function handlePress() {
+    navigation.navigate("AdminLogin");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
@@ -14,15 +24,16 @@ const LandingPage = ({}: HeaderTabProps) => {
         <Text style={styles.subtext}>
           A platform that connects football players and football pitch managers!
         </Text>
+        <Login></Login>
         <Button
-          onPress={() => {}}
+          onPress={handlePress}
           buttonText="Login as Manager"
-          style={{ marginTop: 100, backgroundColor: "white" }}
+          style={{ marginTop: 150, backgroundColor: "white" }}
         ></Button>
         <Button
-          onPress={() => {}}
+          onPress={handlePress}
           buttonText="Sign Up"
-          style={{ marginTop: 100, backgroundColor: "white" }}
+          style={{ marginTop: 10, backgroundColor: "white" }}
         ></Button>
       </View>
     </SafeAreaView>
@@ -51,6 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: "white",
+    marginBottom: 20,
   },
 });
 

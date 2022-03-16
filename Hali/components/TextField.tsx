@@ -34,7 +34,7 @@ const TextField = ({
 const styles = StyleSheet.create({
   input: {
     width: '80%',
-    height: '5%',
+    height: 50,
     alignSelf: 'center',
     borderRadius: 15,
     borderWidth: 3,

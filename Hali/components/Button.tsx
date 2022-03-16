@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5%',
+    padding: '3%',
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -31,12 +31,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.30,
     shadowRadius: 4.65,
     elevation: 8,
-
   },
   buttontext: {
     fontSize: 16,
     fontWeight: "700"
-  }
+  },
 });
 
 export default Button;

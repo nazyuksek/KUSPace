@@ -7,18 +7,16 @@ import TextField from '../components/TextField';
 import Login from '../components/Login';
 
 
-export interface LandingPageProps {
+export interface SignUpProps {
 }
 
-const LandingPage = ({ }: LandingPageProps) => {
+const SignUpChoices = ({ }: SignUpProps) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.itemscontainer}>
                 <Text style={styles.text}>HALI</Text>
-                <Text style={styles.subtext}>A platform that connects football players and football pitch managers!</Text>
-                <Login></Login>
-                <Button onPress={() => { }} buttonText="Login as Manager" style={{ marginTop: 150, backgroundColor: 'white' }} ></Button>
-                <Button onPress={() => { }} buttonText="Sign Up" style={{ marginTop: 10, backgroundColor: 'white' }} ></Button>
+                <Button onPress={() => { }} buttonText="Login as Manager" style={{ marginTop: 40, backgroundColor: 'white' }} ></Button>
+                <Button onPress={() => { }} buttonText="Sign Up" style={{ marginTop: 30, backgroundColor: 'white' }} ></Button>
             </View>
         </SafeAreaView >
 
@@ -26,20 +24,21 @@ const LandingPage = ({ }: LandingPageProps) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        flex: 1,
+        backgroundColor: 'rgba(135, 211, 124, 1)',
+        justifyContent: 'center',
+    },
     text: {
         color: 'white',
         fontSize: 48,
         fontWeight: '900'
     },
-    container: {
-        display: 'flex',
-        flex: 1,
-        backgroundColor: 'rgba(135, 211, 124, 1)',
-        justifyContent: 'center'
-    },
     itemscontainer: {
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     subtext: {
         textAlign: 'center',
@@ -53,4 +52,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default LandingPage;
+export default SignUpChoices;

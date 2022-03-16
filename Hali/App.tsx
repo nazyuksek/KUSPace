@@ -9,7 +9,7 @@ import LandingPage from "./screens/LandingPage";
 import { ScreenStack } from "react-native-screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import AdminLoginScreen from "./screens/AdminLoginScreen";
+import SignUpChoices from "./screens/SignUpChoices";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -20,25 +20,15 @@ export default function App() {
     return null;
   } else {
     return (
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            title: "",
-            headerShown: true,
-            headerTransparent: true,
-            headerTintColor: "white",
-          }}
-        >
-          <Stack.Screen
-            name={"LandingPage"}
-            component={LandingPage}
-          ></Stack.Screen>
-          <Stack.Screen
-            name={"AdminLogin"}
-            component={AdminLoginScreen}
-          ></Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
+      // <NavigationContainer>
+      //   <Stack.Navigator>
+      //     <Stack.Screen
+      //       name="LandingPage"
+      //       component={LandingPage}
+      //     />
+      //   </Stack.Navigator>
+      // </NavigationContainer>
+      <SignUpChoices></SignUpChoices>
     );
   }
 }

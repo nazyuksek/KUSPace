@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import * as React from 'react';
+import * as React from "react";
 import TextField from "./TextField";
 import Button from "./Button";
 
 const { width, height } = Dimensions.get("screen");
-export interface LoginProps { }
+export interface LoginProps {}
 const Login = () => {
   const [text, setText] = React.useState("");
   const [search, setSearch] = React.useState("");
@@ -37,7 +37,7 @@ const Login = () => {
       >
         <Button
           buttonText={"Forgot Password"}
-          onPress={{}}
+          onPress={() => {}}
           style={{
             backgroundColor: "forestgreen",
             alignItems: "center",
@@ -45,7 +45,7 @@ const Login = () => {
             alignSelf: "center",
           }}
         />
-        <Button buttonText={"Sign in"} onPress={{}} style={{}} />
+        <Button buttonText={"Sign in"} onPress={() => {}} style={{}} />
       </View>
     </View>
   );

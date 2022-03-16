@@ -9,7 +9,6 @@ import LandingPage from "./screens/LandingPage";
 import { ScreenStack } from "react-native-screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import SignUpChoices from "./screens/SignUpChoices";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -20,15 +19,11 @@ export default function App() {
     return null;
   } else {
     return (
-      // <NavigationContainer>
-      //   <Stack.Navigator>
-      //     <Stack.Screen
-      //       name="LandingPage"
-      //       component={LandingPage}
-      //     />
-      //   </Stack.Navigator>
-      // </NavigationContainer>
-      <SignUpChoices></SignUpChoices>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="LandingPage" component={LandingPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }

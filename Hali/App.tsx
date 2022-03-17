@@ -1,15 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { registerRootComponent } from 'expo';
-
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import LandingPage from './screens/LandingPage';
-import { ScreenStack } from 'react-native-screens';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
-import SignUpChoices from './screens/SignUpChoices';
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { registerRootComponent } from "expo";
+import useCachedResources from "./hooks/useCachedResources";
+import useColorScheme from "./hooks/useColorScheme";
+import Navigation from "./navigation";
+import LandingPage from "./screens/LandingPage";
+import { ScreenStack } from "react-native-screens";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import SignUpChoices from "./screens/SignUpChoices";
+import AdminLoginScreen from "./screens/AdminLoginScreen";
+import AdminSignupScreen from "./screens/AdminSignupScreen";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -27,8 +28,10 @@ export default function App() {
       //     />
       //   </Stack.Navigator>
       // </NavigationContainer>
-      <SignUpChoices></SignUpChoices>
+      // <SignUpChoices></SignUpChoices>
 
+      <AdminLoginScreen></AdminLoginScreen>
+      //   <AdminSignupScreen></AdminSignupScreen>
     );
   }
 }

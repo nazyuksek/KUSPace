@@ -1,20 +1,15 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-haliv5app-dev-111304-authRole",
-      "UnauthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv5app-dev-111304-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv5app-dev-111304-authRole",
+      "AuthRoleName": "amplify-haliv6-dev-153919-authRole",
+      "UnauthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv6-dev-153919-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv6-dev-153919-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-haliv5app-dev-111304-deployment",
-      "UnauthRoleName": "amplify-haliv5app-dev-111304-unauthRole",
-      "StackName": "amplify-haliv5app-dev-111304",
-      "StackId": "arn:aws:cloudformation:us-east-1:493696846904:stack/amplify-haliv5app-dev-111304/964be8d0-a36e-11ec-b0e9-0a449a572467",
-      "AmplifyAppId": "df7kfw71es158"
-    },
-    "categories": {
-      "auth": {
-        "haliv5app17efc2c4": {}
-      }
+      "DeploymentBucketName": "amplify-haliv6-dev-153919-deployment",
+      "UnauthRoleName": "amplify-haliv6-dev-153919-unauthRole",
+      "StackName": "amplify-haliv6-dev-153919",
+      "StackId": "arn:aws:cloudformation:us-east-1:493696846904:stack/amplify-haliv6-dev-153919/9a6e9180-a781-11ec-9123-0e8a3c442c39",
+      "AmplifyAppId": "dajd4x0szvuk7"
     }
   }
 }

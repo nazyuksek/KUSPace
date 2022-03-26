@@ -1,5 +1,6 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import * as React from 'react';
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import * as React from "react";
+import { selectInput } from "aws-amplify";
 
 export interface textFieldProps {
   text: string;
@@ -7,6 +8,7 @@ export interface textFieldProps {
   textState: any;
   setText: any;
   setSearch: any;
+  value: string;
 }
 
 const TextField = ({
@@ -27,20 +29,21 @@ const TextField = ({
       onEndEditing={handleEnd}
       placeholder={text}
       placeholderTextColor="black"
+      value={textState}
     ></TextInput>
   );
-}
+};
 
 const styles = StyleSheet.create({
   input: {
-    width: '80%',
+    width: "60%",
     height: 50,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 15,
     borderWidth: 3,
-    backgroundColor: 'white',
-    borderColor: 'white',
-    alignContent: 'center',
+    backgroundColor: "white",
+    borderColor: "white",
+    alignContent: "center",
     paddingLeft: 4,
     marginTop: 10,
     padding: 10,

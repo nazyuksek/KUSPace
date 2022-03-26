@@ -1,13 +1,48 @@
-import { StyleSheet, Text, View, Dimensions, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  SafeAreaView,
+  TextInput,
+  Alert,
+} from "react-native";
 import * as React from "react";
 import TextField from "../components/TextField";
 import Button from "../components/Button";
+import { useForm } from "react-hook-form";
+import { NavigationContainer } from "@react-navigation/native";
+import { Auth } from "aws-amplify";
 
 const { width, height } = Dimensions.get("screen");
+
 export interface AdminSignUpProps {}
-const AdminSignupScreen = () => {
-  const [text, setText] = React.useState("");
+
+const AdminSignupScreen = ({}: AdminSignUpProps) => {
+  const { control, handleSubmit, watch } = useForm();
+  const [text1, setText1] = React.useState("");
+  const [text2, setText2] = React.useState("");
+  const [text3, setText3] = React.useState("");
+  const [text4, setText4] = React.useState("");
+  const [text5, setText5] = React.useState("");
   const [search, setSearch] = React.useState("");
+  const text_data = [text1, text2, text3, text4, text5];
+
+  const onSignUpPressed = async () => {
+    const [email, gender, birthdate, username, password] = text_data;
+    try {
+      const response = await Auth.signUp({
+        username,
+        password,
+        attributes: { email, gender, birthdate },
+      });
+    } catch (e: any) {
+      Alert.alert("There is a problem with signing up!", e.message);
+    }
+
+    //  navigation.navigate("AdminHome");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
@@ -16,39 +51,44 @@ const AdminSignupScreen = () => {
           A platform that connects football players and football pitch managers!
         </Text>
         <TextField
-          text={"Pitch Name"}
-          style={{ marginTop: 15 }}
-          textState={text}
-          setText={setText}
-          setSearch={setSearch}
-        ></TextField>
-        <TextField
-          text={"Location"}
-          style={{ marginTop: 15 }}
-          textState={text}
-          setText={setText}
-          setSearch={setSearch}
-        ></TextField>
-        <TextField
           text={"Email"}
           style={{ marginTop: 15 }}
-          textState={text}
-          setText={setText}
+          textState={text1}
+          setText={setText1}
           setSearch={setSearch}
+          value={text1}
         ></TextField>
         <TextField
-          text={"Phone Number"}
+          text={"Gender"}
           style={{ marginTop: 15 }}
-          textState={text}
-          setText={setText}
+          textState={text2}
+          setText={setText2}
           setSearch={setSearch}
+          value={text2}
+        ></TextField>
+        <TextField
+          text={"Birthdate"}
+          style={{ marginTop: 15 }}
+          textState={text3}
+          setText={setText3}
+          setSearch={setSearch}
+          value={text3}
+        ></TextField>
+        <TextField
+          text={"Username"}
+          style={{ marginTop: 15 }}
+          textState={text4}
+          setText={setText4}
+          setSearch={setSearch}
+          value={text4}
         ></TextField>
         <TextField
           text={"Password"}
           style={{ marginTop: 15 }}
-          textState={text}
-          setText={setText}
+          textState={text5}
+          setText={setText5}
           setSearch={setSearch}
+          value={text5}
         ></TextField>
         <Button
           style={{
@@ -56,8 +96,17 @@ const AdminSignupScreen = () => {
             marginTop: 30,
           }}
           buttonText="Sign up"
-          onPress={() => {}}
+          onPress={() => onSignUpPressed()}
         />
+        <Text
+          style={{
+            color: "black",
+            fontSize: 12,
+          }}
+          onPress={() => {}}
+        >
+          Already have an account? Sign in
+        </Text>
       </View>
     </SafeAreaView>
   );

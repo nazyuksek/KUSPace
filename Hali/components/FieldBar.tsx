@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import React = require("react");
+import * as React from "react";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 export interface FieldBarProps {
-  item: any
+  item: any;
 }
 
 const { width, height } = Dimensions.get("screen");

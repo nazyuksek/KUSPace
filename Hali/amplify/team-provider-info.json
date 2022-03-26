@@ -1,0 +1,20 @@
+{
+  "devv": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-haliv7-devv-145527-authRole",
+      "UnauthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv7-devv-145527-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv7-devv-145527-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-haliv7-devv-145527-deployment",
+      "UnauthRoleName": "amplify-haliv7-devv-145527-unauthRole",
+      "StackName": "amplify-haliv7-devv-145527",
+      "StackId": "arn:aws:cloudformation:us-east-1:493696846904:stack/amplify-haliv7-devv-145527/b013c190-a844-11ec-96c2-0aed3deb3cf3",
+      "AmplifyAppId": "d3ejfhnu1qz2t3"
+    },
+    "categories": {
+      "auth": {
+        "haliv7": {}
+      }
+    }
+  }
+}

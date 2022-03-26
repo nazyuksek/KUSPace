@@ -1,40 +1,22 @@
-import { StyleSheet, Text, View, SafeAreaView, Alert } from "react-native";
-import * as React from "react";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import React from "react";
 import TextField from "../components/TextField";
 import Button from "../components/Button";
-import { Auth } from "aws-amplify";
-import { NavigationHelpersContext } from "@react-navigation/native";
+import Navigation from "../navigation";
 
-export interface AdminLoginScreenProps {
+export interface ForgotPasswordScreenProps {
   navigation: any;
 }
 
-const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
+const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
   const [text1, setText1] = React.useState("");
   const [text2, setText2] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const text_data = [text1, text2];
 
-  const onSigninPressed = async () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    const [username, password] = text_data;
-    try {
-      const response = await Auth.signIn(username, password);
-    } catch (e: any) {
-      Alert.alert("There is a problem with signing up!", e.message);
-    }
-    setLoading(false);
-    //  navigation.navigate("");
+  const onVerifyPressed = () => {
+    //  navigation.navigate("")
   };
-
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
-  // const onNoaccountPressed = () => {};
+  const onResendCodePressed = () => {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +34,7 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
           value={text1}
         ></TextField>
         <TextField
-          text={"password"}
+          text={"type verification code"}
           style={{}}
           textState={text2}
           setText={setText2}
@@ -61,36 +43,18 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
         ></TextField>
         <Button
           onPress={() => {
-            onSigninPressed();
+            onVerifyPressed();
           }}
-          buttonText={loading ? "Loading..." : "Login as Admin"}
+          buttonText={"Verify"}
           style={{ backgroundColor: "white", marginTop: 50 }}
         ></Button>
-        <Text
-          style={{
-            color: "darkslategrey",
-            fontSize: 14,
-            fontStyle: "italic",
-            marginTop: 20,
-          }}
+        <Button
           onPress={() => {
-            onForgotPasswordPressed();
+            onResendCodePressed();
           }}
-        >
-          Forgot Password?
-        </Text>
-        {/* <Text
-          style={{
-            color: "darkslategrey",
-            fontSize: 12,
-            marginTop: 10,
-          }}
-          onPress={() => {
-            onNoaccountPressed();
-          }}
-        >
-          No Account? Sign up
-        </Text> */}
+          buttonText={"Resend Code"}
+          style={{ backgroundColor: "white", marginTop: 20 }}
+        ></Button>
       </View>
     </SafeAreaView>
   );
@@ -122,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminLoginScreen;
+export default ForgotPasswordScreen;

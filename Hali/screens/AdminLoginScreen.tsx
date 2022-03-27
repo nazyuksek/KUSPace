@@ -28,20 +28,18 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
       Alert.alert("There is a problem with signing up!", e.message);
     }
     setLoading(false);
-    //  navigation.navigate("");
   };
 
   const onForgotPasswordPressed = () => {
     navigation.navigate("ForgotPassword");
   };
-  // const onNoaccountPressed = () => {};
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>
-          A platform that connects football players and football pitch managers!
+          Login as Manager
         </Text>
         <TextField
           text={"username"}
@@ -63,7 +61,7 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
           onPress={() => {
             onSigninPressed();
           }}
-          buttonText={loading ? "Loading..." : "Login as Admin"}
+          buttonText={loading ? "Loading..." : "Login"}
           style={{ backgroundColor: "white", marginTop: 50 }}
         ></Button>
         <Text

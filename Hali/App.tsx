@@ -12,7 +12,7 @@ import SignUpChoices from "./screens/SignUpChoices";
 import AdminSignupScreen from "./screens/AdminSignupScreen";
 import AdminLoginScreen from "./screens/AdminLoginScreen";
 import Amplify, { Auth } from "aws-amplify";
-import config from "./aws-exports";
+import config from "./src/aws-exports";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 
 Auth.configure(config);
@@ -28,8 +28,11 @@ const App = () => {
   } else {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen name="Home Page" component={LandingPage} />
+          {/* <Stack.Screen name="Admin Login" component={AdminLoginScreen} /> */}
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPasswordScreen}

@@ -6,9 +6,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
 import Login from "../components/Login";
 
-export interface LandingPageProps {}
+export interface LandingPageProps {
+  navigation: any
+}
 
-const LandingPage = ({}: LandingPageProps) => {
+const LandingPage = ({ navigation }: LandingPageProps) => {
+  const onLoginAsManagerPress = () => {
+    navigation.navigate("AdminLoginScreen");
+  };
+  const onForgotPasswordPressed = () => {
+    navigation.navigate("ForgotPassword");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
@@ -18,15 +26,28 @@ const LandingPage = ({}: LandingPageProps) => {
         </Text>
         <Login></Login>
         <Button
-          onPress={() => {}}
+          onPress={() => { onLoginAsManagerPress() }}
           buttonText="Login as Manager"
           style={{ marginTop: 150, backgroundColor: "white" }}
         ></Button>
         <Button
-          onPress={() => {}}
+          onPress={() => { }}
           buttonText="Login"
           style={{ marginTop: 10, backgroundColor: "white" }}
         ></Button>
+        <Text
+          style={{
+            color: "darkslategrey",
+            fontSize: 14,
+            fontStyle: "italic",
+            marginTop: 20,
+          }}
+          onPress={() => {
+            onForgotPasswordPressed();
+          }}
+        >
+          Forgot Password?
+        </Text>
       </View>
     </SafeAreaView>
   );

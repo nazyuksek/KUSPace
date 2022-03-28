@@ -17,7 +17,6 @@ import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import { Image } from "react-native";
 import ConfirmEmailScreen from "./screens/ConfirmEmailScreen";
 
-
 Auth.configure(config);
 
 Amplify.configure(config);
@@ -31,9 +30,11 @@ const App = () => {
   } else {
     return (
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerShown: false
-        }}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           {/* <Stack.Screen name="Home Page" component={LandingPage} /> */}
           {/* <Stack.Screen name="Admin Login" component={AdminLoginScreen} /> */}
           <Stack.Screen name="Admin Sign Up" component={AdminSignupScreen} />

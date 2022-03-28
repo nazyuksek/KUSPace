@@ -17,11 +17,10 @@ import navigation from "../navigation";
 import ConfirmEmailScreen from "./ConfirmEmailScreen";
 import { NavigationHelpersContext } from "@react-navigation/native";
 
-
 const { width, height } = Dimensions.get("screen");
 
 export interface AdminSignUpProps {
-  navigation: any
+  navigation: any;
 }
 
 const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
@@ -42,21 +41,17 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
         password,
         attributes: { email, gender, birthdate },
       });
-      navigation.navigate("ConfirmEmailScreen");
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }
-
-    //  navigation.navigate("AdminHome");
+    navigation.navigate("ConfirmEmail");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
-        <Text style={styles.subtext}>
-          Manager Sign Up
-        </Text>
+        <Text style={styles.subtext}>Manager Sign Up</Text>
         <TextField
           text={"Email"}
           style={{ marginTop: 15 }}
@@ -110,7 +105,7 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
             color: "black",
             fontSize: 12,
           }}
-          onPress={() => { }}
+          onPress={() => {}}
         >
           Already have an account? Sign in
         </Text>

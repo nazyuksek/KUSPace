@@ -14,8 +14,8 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
-    "emailVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "HALI User Verification",
+    "emailVerificationMessage": "Greetings! \n\nYour verification code is {####}. You can enter this code and start using HALI application!\n\nHave fun!",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
@@ -35,7 +35,7 @@
     "resourceName": "haliv7",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
-    "useDefault": "default",
+    "useDefault": "manual",
     "userPoolGroups": false,
     "userPoolGroupList": [],
     "adminQueries": false,
@@ -55,6 +55,7 @@
     "breakCircularDependency": false,
     "dependsOn": [],
     "hostedUI": false,
-    "authProviders": []
+    "authProviders": [],
+    "thirdPartyAuth": false
   }
 }

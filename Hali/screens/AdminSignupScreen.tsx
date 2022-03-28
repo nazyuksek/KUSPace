@@ -13,12 +13,18 @@ import Button from "../components/Button";
 import { useForm } from "react-hook-form";
 import { NavigationContainer } from "@react-navigation/native";
 import { Auth } from "aws-amplify";
+import navigation from "../navigation";
+import ConfirmEmailScreen from "./ConfirmEmailScreen";
+import { NavigationHelpersContext } from "@react-navigation/native";
+
 
 const { width, height } = Dimensions.get("screen");
 
-export interface AdminSignUpProps {}
+export interface AdminSignUpProps {
+  navigation: any
+}
 
-const AdminSignupScreen = ({}: AdminSignUpProps) => {
+const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
   const { control, handleSubmit, watch } = useForm();
   const [text1, setText1] = React.useState("");
   const [text2, setText2] = React.useState("");
@@ -36,6 +42,7 @@ const AdminSignupScreen = ({}: AdminSignUpProps) => {
         password,
         attributes: { email, gender, birthdate },
       });
+      navigation.navigate("ConfirmEmailScreen");
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }
@@ -48,7 +55,7 @@ const AdminSignupScreen = ({}: AdminSignUpProps) => {
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>
-          A platform that connects football players and football pitch managers!
+          Manager Sign Up
         </Text>
         <TextField
           text={"Email"}
@@ -103,7 +110,7 @@ const AdminSignupScreen = ({}: AdminSignUpProps) => {
             color: "black",
             fontSize: 12,
           }}
-          onPress={() => {}}
+          onPress={() => { }}
         >
           Already have an account? Sign in
         </Text>
@@ -125,7 +132,7 @@ const styles = StyleSheet.create({
     //   justifyContent: "center",
   },
   itemscontainer: {
-    marginTop: 150,
+    marginTop: 40,
     display: "flex",
     alignItems: "center",
   },

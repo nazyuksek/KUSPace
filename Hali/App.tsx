@@ -14,6 +14,8 @@ import AdminLoginScreen from "./screens/AdminLoginScreen";
 import Amplify, { Auth } from "aws-amplify";
 import config from "./src/aws-exports";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
+import { Image } from "react-native";
+
 
 Auth.configure(config);
 
@@ -31,12 +33,13 @@ const App = () => {
         <Stack.Navigator screenOptions={{
           headerShown: false
         }}>
-          <Stack.Screen name="Home Page" component={LandingPage} />
+          {/* <Stack.Screen name="Home Page" component={LandingPage} /> */}
           {/* <Stack.Screen name="Admin Login" component={AdminLoginScreen} /> */}
-          <Stack.Screen
+          <Stack.Screen name="Admin Sign Up" component={AdminSignupScreen} />
+          {/* <Stack.Screen
             name="ForgotPassword"
             component={ForgotPasswordScreen}
-          />
+          /> */}
         </Stack.Navigator>
       </NavigationContainer>
     );

@@ -17,7 +17,7 @@ const Button = ({ onPress, buttonText, style }: ButtonProps) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: "60%",
+    width: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

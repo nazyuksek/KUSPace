@@ -5,6 +5,8 @@ import Button from "../components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
 import Login from "../components/Login";
+import { Image } from "react-native";
+
 
 export interface LandingPageProps {
   navigation: any
@@ -19,21 +21,20 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <Image style={styles.backgroundimage}
+        source={require('../assets/images/football.jpeg')}
+      />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>
           A platform that connects football players and football pitch managers!
         </Text>
+        <Text style={styles.logintext}>Login as Player:</Text>
         <Login></Login>
-        <Button
-          onPress={() => { onLoginAsManagerPress() }}
-          buttonText="Login as Manager"
-          style={{ marginTop: 150, backgroundColor: "white" }}
-        ></Button>
         <Button
           onPress={() => { }}
           buttonText="Login"
-          style={{ marginTop: 10, backgroundColor: "white" }}
+          style={{ marginTop: 120, backgroundColor: "rgb(231, 232, 230)" }}
         ></Button>
         <Text
           style={{
@@ -48,12 +49,30 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
         >
           Forgot Password?
         </Text>
+        <Text style={styles.orTitle}>OR</Text>
+        <Button
+          onPress={() => { onLoginAsManagerPress() }}
+          buttonText="Login as Manager"
+          style={{ marginTop: 10, backgroundColor: "rgb(230, 245, 191)" }}
+        ></Button>
+
+
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.1
+
+  },
   text: {
     color: "white",
     fontSize: 48,
@@ -77,6 +96,15 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 20,
   },
+  logintext: {
+    color: "#ffffff",
+    fontWeight: "500",
+    fontSize: 16
+  },
+  orTitle: {
+    fontWeight: "600",
+    marginTop: 30
+  }
 });
 
 export default LandingPage;

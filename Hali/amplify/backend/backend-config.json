@@ -9,14 +9,17 @@
         "socialProviders": [],
         "usernameAttributes": [],
         "signupAttributes": [
-          "EMAIL",
-          "GENDER",
-          "BIRTHDATE"
+          "BIRTHDATE",
+          "GIVEN_NAME",
+          "FAMILY_NAME",
+          "EMAIL"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": [
-            "REQUIRES_NUMBERS"
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_UPPERCASE"
           ]
         },
         "mfaConfiguration": "OFF",
@@ -27,6 +30,13 @@
           "EMAIL"
         ]
       }
+    }
+  },
+  "storage": {
+    "s3haliv7storagec7751988": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

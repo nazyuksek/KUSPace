@@ -15,6 +15,7 @@ import Amplify, { Auth } from "aws-amplify";
 import config from "./src/aws-exports";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import { Image } from "react-native";
+import ConfirmEmailScreen from "./screens/ConfirmEmailScreen";
 
 
 Auth.configure(config);
@@ -36,6 +37,7 @@ const App = () => {
           {/* <Stack.Screen name="Home Page" component={LandingPage} /> */}
           {/* <Stack.Screen name="Admin Login" component={AdminLoginScreen} /> */}
           <Stack.Screen name="Admin Sign Up" component={AdminSignupScreen} />
+          {/* <Stack.Screen name="Confirm" component={ConfirmEmailScreen} /> */}
           {/* <Stack.Screen
             name="ForgotPassword"
             component={ForgotPasswordScreen}

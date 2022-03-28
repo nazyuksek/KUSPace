@@ -31,23 +31,25 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
   const [text3, setText3] = React.useState("");
   const [text4, setText4] = React.useState("");
   const [text5, setText5] = React.useState("");
+  const [text6, setText6] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const text_data = [text1, text2, text3, text4, text5];
+  const text_data = [text1, text2, text3, text4, text5, text6];
 
   const onSignUpPressed = async () => {
-    const [email, gender, birthdate, username, password] = text_data;
+    const [email, birthdate, username, password, given_name, family_name] = text_data;
     try {
       const response = await Auth.signUp({
         username,
         password,
-        attributes: { email, gender, birthdate },
+        attributes: { email, birthdate, given_name, family_name },
       });
+
       navigation.navigate("ConfirmEmailScreen");
     } catch (e: any) {
+      //Alert.alert(username);
       Alert.alert("There is a problem with signing up!", e.message);
     }
 
-    //  navigation.navigate("AdminHome");
   };
 
   return (
@@ -66,34 +68,42 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           value={text1}
         ></TextField>
         <TextField
-          text={"Gender"}
+          text={"Birthdate"}
           style={{ marginTop: 15 }}
           textState={text2}
           setText={setText2}
           setSearch={setSearch}
-          value={text2}
+          value={text3}
         ></TextField>
         <TextField
-          text={"Birthdate"}
+          text={"Name"}
           style={{ marginTop: 15 }}
-          textState={text3}
-          setText={setText3}
+          textState={text5}
+          setText={setText5}
+          setSearch={setSearch}
+          value={text3}
+        ></TextField>
+        <TextField
+          text={"Surname"}
+          style={{ marginTop: 15 }}
+          textState={text6}
+          setText={setText6}
           setSearch={setSearch}
           value={text3}
         ></TextField>
         <TextField
           text={"Username"}
           style={{ marginTop: 15 }}
-          textState={text4}
-          setText={setText4}
+          textState={text3}
+          setText={setText3}
           setSearch={setSearch}
           value={text4}
         ></TextField>
         <TextField
           text={"Password"}
           style={{ marginTop: 15 }}
-          textState={text5}
-          setText={setText5}
+          textState={text4}
+          setText={setText4}
           setSearch={setSearch}
           value={text5}
         ></TextField>
@@ -109,6 +119,7 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           style={{
             color: "black",
             fontSize: 12,
+            marginTop: 12
           }}
           onPress={() => { }}
         >

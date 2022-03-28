@@ -10,5 +10,11 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientID": "string",
             "CreatedSNSRole": "string"
         }
+    },
+    "storage": {
+        "s3haliv7storagec7751988": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

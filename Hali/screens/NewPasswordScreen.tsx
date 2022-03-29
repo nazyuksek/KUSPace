@@ -4,18 +4,24 @@ import TextField from "../components/TextField";
 import Button from "../components/Button";
 import { Auth } from "aws-amplify";
 
-export interface ForgotPasswordScreenProps {
+export interface NewPasswordScreenProps {
   navigation: any;
 }
 
-const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
+const NewPasswordScreen = ({ navigation }: NewPasswordScreenProps) => {
   const [username, setUsername] = React.useState("");
+  const [code, setCode] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [search, setSearch] = React.useState("");
 
-  const onSendPressed = async () => {
+  const onSubmitPressed = async () => {
     try {
-      const response = await Auth.forgotPassword(username);
-      navigation.navigate("NewPassword");
+      const response = await Auth.forgotPasswordSubmit(
+        username,
+        code,
+        password
+      );
+      navigation.navigate("Home");
     } catch (e: any) {
       Alert.alert("", e.message);
     }
@@ -34,9 +40,25 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
           setSearch={setSearch}
           value={username}
         ></TextField>
+        <TextField
+          text={"code"}
+          style={{}}
+          textState={code}
+          setText={setCode}
+          setSearch={setSearch}
+          value={code}
+        ></TextField>
+        <TextField
+          text={"new password"}
+          style={{}}
+          textState={password}
+          setText={setPassword}
+          setSearch={setSearch}
+          value={password}
+        ></TextField>
         <Button
           onPress={() => {
-            onSendPressed();
+            onSubmitPressed();
           }}
           buttonText={"Send"}
           style={{ backgroundColor: "white", marginTop: 20 }}
@@ -72,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordScreen;
+export default NewPasswordScreen;

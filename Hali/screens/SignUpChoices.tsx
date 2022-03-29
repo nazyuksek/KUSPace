@@ -6,20 +6,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
 import Login from "../components/Login";
 
-export interface SignUpProps {}
+export interface SignUpProps {
+  navigation: any;
+}
 
-const SignUpChoices = ({}: SignUpProps) => {
+const SignUpChoices = ({ navigation }: SignUpProps) => {
+  const onManagerPresssed = () => {
+    navigation.navigate("AdminSignUp");
+  };
+  const onPlayerPresssed = () => {
+    navigation.navigate("AdminSignUp");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Button
-          onPress={() => {}}
+          onPress={() => {
+            onManagerPresssed();
+          }}
           buttonText="Sign up as Manager"
           style={{ marginTop: 40, backgroundColor: "white" }}
         ></Button>
         <Button
-          onPress={() => {}}
+          onPress={() => {
+            onPlayerPresssed();
+          }}
           buttonText="Sign Up"
           style={{ marginTop: 30, backgroundColor: "white" }}
         ></Button>

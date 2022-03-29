@@ -13,7 +13,6 @@ import Button from "../components/Button";
 import { useForm } from "react-hook-form";
 import { NavigationContainer } from "@react-navigation/native";
 import { Auth } from "aws-amplify";
-import navigation from "../navigation";
 import ConfirmEmailScreen from "./ConfirmEmailScreen";
 import { NavigationHelpersContext } from "@react-navigation/native";
 
@@ -35,7 +34,8 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
   const text_data = [text1, text2, text3, text4, text5, text6];
 
   const onSignUpPressed = async () => {
-    const [email, birthdate, username, password, given_name, family_name] = text_data;
+    const [email, birthdate, username, password, given_name, family_name] =
+      text_data;
     try {
       const response = await Auth.signUp({
         username,
@@ -43,11 +43,15 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
         attributes: { email, birthdate, given_name, family_name },
       });
 
-      navigation.navigate("ConfirmEmailScreen");
+      navigation.navigate("ConfirmEmailScreen", { text3 });
     } catch (e: any) {
       //Alert.alert(username);
       Alert.alert("There is a problem with signing up!", e.message);
     }
+  };
+
+  const onSignInPressed = () => {
+    navigation.navigate("Login");
   };
 
   return (
@@ -115,9 +119,11 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           style={{
             color: "black",
             fontSize: 12,
-            marginTop: 12
+            marginTop: 12,
           }}
-          onPress={() => { }}
+          onPress={() => {
+            onSignInPressed();
+          }}
         >
           Already have an account? Sign in
         </Text>

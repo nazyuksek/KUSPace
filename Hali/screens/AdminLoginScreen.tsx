@@ -13,21 +13,15 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
   const [text1, setText1] = React.useState("");
   const [text2, setText2] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
   const text_data = [text1, text2];
 
   const onSigninPressed = async () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
     const [username, password] = text_data;
     try {
       const response = await Auth.signIn(username, password);
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }
-    setLoading(false);
   };
 
   const onForgotPasswordPressed = () => {
@@ -38,9 +32,7 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
-        <Text style={styles.subtext}>
-          Login as Manager
-        </Text>
+        <Text style={styles.subtext}>Login</Text>
         <TextField
           text={"username"}
           style={{}}
@@ -61,7 +53,7 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
           onPress={() => {
             onSigninPressed();
           }}
-          buttonText={loading ? "Loading..." : "Login"}
+          buttonText={"Login"}
           style={{ backgroundColor: "white", marginTop: 50 }}
         ></Button>
         <Text
@@ -77,18 +69,6 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
         >
           Forgot Password?
         </Text>
-        {/* <Text
-          style={{
-            color: "darkslategrey",
-            fontSize: 12,
-            marginTop: 10,
-          }}
-          onPress={() => {
-            onNoaccountPressed();
-          }}
-        >
-          No Account? Sign up
-        </Text> */}
       </View>
     </SafeAreaView>
   );

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
 import Button from "../components/Button";
@@ -6,23 +6,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
 import Login from "../components/Login";
 import { Image } from "react-native";
-
+import { Auth } from "aws-amplify";
 
 export interface LandingPageProps {
-  navigation: any
+  navigation: any;
 }
 
 const LandingPage = ({ navigation }: LandingPageProps) => {
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [search, setSearch] = React.useState("");
   const onLoginAsManagerPress = () => {
-    navigation.navigate("AdminLoginScreen");
+    navigation.navigate("Login");
   };
   const onForgotPasswordPressed = () => {
     navigation.navigate("ForgotPassword");
   };
+  const onNoaccountPressed = () => {
+    navigation.navigate("SignUpChoices");
+  };
+  const onLoginPressed = async () => {
+    try {
+      const response = await Auth.signIn(username, password);
+      navigation.navigate("Home");
+    } catch (e: any) {
+      Alert.alert("There is a problem with signing up!", e.message);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <Image style={styles.backgroundimage}
-        source={require('../assets/images/football.jpeg')}
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
       />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
@@ -30,9 +45,26 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
           A platform that connects football players and football pitch managers!
         </Text>
         <Text style={styles.logintext}>Login as Player:</Text>
-        <Login></Login>
+        <TextField
+          text={"username"}
+          style={{}}
+          textState={username}
+          setText={setUsername}
+          setSearch={setSearch}
+          value={username}
+        ></TextField>
+        <TextField
+          text={"password"}
+          style={{}}
+          textState={password}
+          setText={setPassword}
+          setSearch={setSearch}
+          value={password}
+        ></TextField>
         <Button
-          onPress={() => { }}
+          onPress={() => {
+            onLoginPressed();
+          }}
           buttonText="Login"
           style={{ marginTop: 120, backgroundColor: "rgb(231, 232, 230)" }}
         ></Button>
@@ -51,12 +83,24 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
         </Text>
         <Text style={styles.orTitle}>OR</Text>
         <Button
-          onPress={() => { onLoginAsManagerPress() }}
+          onPress={() => {
+            onLoginAsManagerPress();
+          }}
           buttonText="Login as Manager"
           style={{ marginTop: 10, backgroundColor: "rgb(230, 245, 191)" }}
         ></Button>
-
-
+        <Text
+          style={{
+            color: "darkslategrey",
+            fontSize: 12,
+            marginTop: 10,
+          }}
+          onPress={() => {
+            onNoaccountPressed();
+          }}
+        >
+          No Account? Sign up
+        </Text>
       </View>
     </SafeAreaView>
   );
@@ -70,8 +114,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     height: "120%",
-    opacity: 0.1
-
+    opacity: 0.1,
   },
   text: {
     color: "white",
@@ -99,12 +142,12 @@ const styles = StyleSheet.create({
   logintext: {
     color: "#ffffff",
     fontWeight: "500",
-    fontSize: 16
+    fontSize: 16,
   },
   orTitle: {
     fontWeight: "600",
-    marginTop: 30
-  }
+    marginTop: 30,
+  },
 });
 
 export default LandingPage;

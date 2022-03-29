@@ -106,6 +106,7 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           setText={setText4}
           setSearch={setSearch}
           value={text5}
+          password={true}
         ></TextField>
         <Button
           style={{

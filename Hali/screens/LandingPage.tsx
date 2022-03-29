@@ -7,6 +7,7 @@ import TextField from "../components/TextField";
 import Login from "../components/Login";
 import { Image } from "react-native";
 import { Auth } from "aws-amplify";
+import { TextInput } from "react-native-gesture-handler";
 
 export interface LandingPageProps {
   navigation: any;
@@ -60,13 +61,14 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
           setText={setPassword}
           setSearch={setSearch}
           value={password}
+          password={true}
         ></TextField>
         <Button
           onPress={() => {
             onLoginPressed();
           }}
           buttonText="Login"
-          style={{ marginTop: 120, backgroundColor: "rgb(231, 232, 230)" }}
+          style={{ marginTop: 40, backgroundColor: "rgb(231, 232, 230)" }}
         ></Button>
         <Text
           style={{
@@ -87,7 +89,7 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
             onLoginAsManagerPress();
           }}
           buttonText="Login as Manager"
-          style={{ marginTop: 10, backgroundColor: "rgb(230, 245, 191)" }}
+          style={{ marginTop: 10, backgroundColor: "rgb(231, 232, 230)" }}
         ></Button>
         <Text
           style={{
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     height: "120%",
-    opacity: 0.1,
+    opacity: 0.05,
   },
   text: {
     color: "white",

@@ -39,6 +39,7 @@ const NewPasswordScreen = ({ navigation }: NewPasswordScreenProps) => {
           setText={setUsername}
           setSearch={setSearch}
           value={username}
+          password={true}
         ></TextField>
         <TextField
           text={"code"}
@@ -55,6 +56,7 @@ const NewPasswordScreen = ({ navigation }: NewPasswordScreenProps) => {
           setText={setPassword}
           setSearch={setSearch}
           value={password}
+          password={true}
         ></TextField>
         <Button
           onPress={() => {

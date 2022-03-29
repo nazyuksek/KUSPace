@@ -9,6 +9,7 @@ export interface textFieldProps {
   setText: any;
   setSearch: any;
   value: string;
+  password?: boolean
 }
 
 const TextField = ({
@@ -17,21 +18,34 @@ const TextField = ({
   textState,
   setText,
   setSearch,
+  password
 }: textFieldProps) => {
   function handleEnd() {
     setSearch(textState);
   }
 
-  return (
-    <TextInput
+  if (password) {
+    return <TextInput
       onChangeText={(text) => setText(text)}
       style={[styles.input, style]}
       onEndEditing={handleEnd}
       placeholder={text}
       placeholderTextColor="black"
       value={textState}
+      autoCapitalize='none'
+      secureTextEntry
     ></TextInput>
-  );
+  } else {
+    return <TextInput
+      onChangeText={(text) => setText(text)}
+      style={[styles.input, style]}
+      onEndEditing={handleEnd}
+      placeholder={text}
+      placeholderTextColor="black"
+      value={textState}
+      autoCapitalize='none'
+    ></TextInput>
+  }
 };
 
 const styles = StyleSheet.create({

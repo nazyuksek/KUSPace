@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -7,6 +7,10 @@ import { RootTabScreenProps } from '../types';
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <Text style={styles.title}>Tab One</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
@@ -15,6 +19,16 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 }
 
 const styles = StyleSheet.create({
+
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   container: {
     flex: 1,
     alignItems: 'center',

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
 import Button from "../components/Button";
@@ -20,6 +20,10 @@ const SignUpChoices = ({ navigation }: SignUpProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Button
@@ -42,6 +46,15 @@ const SignUpChoices = ({ navigation }: SignUpProps) => {
 };
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   container: {
     display: "flex",
     flex: 1,

@@ -7,6 +7,8 @@ import TextField from "../components/TextField";
 import { Auth } from "aws-amplify";
 import { NavigationContainer } from "@react-navigation/native";
 import { NavigationHelpersContext } from "@react-navigation/native";
+import { Image } from "react-native";
+
 
 export interface ConfirmEmailScreenProps {
   navigation: any;
@@ -30,6 +32,10 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>Confirm Your Email</Text>
@@ -41,7 +47,6 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
           setSearch={setSearch}
           value={text1}
         ></TextField>
-
         <Button
           style={{
             backgroundColor: "white",
@@ -56,6 +61,15 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   text: {
     color: "white",
     fontSize: 48,

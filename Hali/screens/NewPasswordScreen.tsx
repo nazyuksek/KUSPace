@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Alert } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Alert, Image } from "react-native";
 import React from "react";
 import TextField from "../components/TextField";
 import Button from "../components/Button";
@@ -29,6 +29,10 @@ const NewPasswordScreen = ({ navigation }: NewPasswordScreenProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>RESET YOUR PASSWORD</Text>
@@ -71,6 +75,15 @@ const NewPasswordScreen = ({ navigation }: NewPasswordScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   text: {
     color: "white",
     fontSize: 48,

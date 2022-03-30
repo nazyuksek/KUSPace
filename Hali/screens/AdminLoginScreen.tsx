@@ -4,6 +4,8 @@ import TextField from "../components/TextField";
 import Button from "../components/Button";
 import { Auth } from "aws-amplify";
 import { NavigationHelpersContext } from "@react-navigation/native";
+import { Image } from "react-native";
+
 
 export interface AdminLoginScreenProps {
   navigation: any;
@@ -30,6 +32,10 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>Login</Text>
@@ -48,6 +54,7 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
           setText={setText2}
           setSearch={setSearch}
           value={text2}
+          password={true}
         ></TextField>
         <Button
           onPress={() => {
@@ -75,6 +82,15 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   text: {
     color: "white",
     fontSize: 48,

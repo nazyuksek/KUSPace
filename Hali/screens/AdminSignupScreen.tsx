@@ -15,6 +15,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Auth } from "aws-amplify";
 import ConfirmEmailScreen from "./ConfirmEmailScreen";
 import { NavigationHelpersContext } from "@react-navigation/native";
+import { Image } from "react-native";
+
 
 const { width, height } = Dimensions.get("screen");
 
@@ -56,6 +58,10 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
         <Text style={styles.subtext}>Manager Sign Up</Text>
@@ -134,6 +140,15 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
 };
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   text: {
     color: "white",
     fontSize: 48,

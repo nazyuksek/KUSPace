@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps } from "../types";
@@ -8,6 +8,10 @@ export default function NotFoundScreen({
 }: RootStackScreenProps<"NotFound">) {
   return (
     <View style={styles.container}>
+      <Image
+        style={styles.backgroundimage}
+        source={require("../assets/images/football.jpeg")}
+      />
       <Text style={styles.title}>This screen doesn't exist.</Text>
       {/* <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}> */}
       <Text style={styles.linkText}>Go to home screen!</Text>
@@ -17,6 +21,15 @@ export default function NotFoundScreen({
 }
 
 const styles = StyleSheet.create({
+  backgroundimage: {
+    flex: 1,
+    position: "absolute",
+    display: "flex",
+    alignSelf: "center",
+    width: "100%",
+    height: "120%",
+    opacity: 0.05,
+  },
   container: {
     flex: 1,
     alignItems: "center",

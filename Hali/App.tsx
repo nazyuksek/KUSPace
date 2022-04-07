@@ -17,12 +17,32 @@ import { Image } from "react-native";
 import ConfirmEmailScreen from "./screens/ConfirmEmailScreen";
 import HomeScreen from "./screens/HomeScreen";
 import NewPasswordScreen from "./screens/NewPasswordScreen";
+//added
+import { listPitches } from './src/graphql/queries';
+import { useState } from 'react';
 
 Auth.configure(config);
 
 Amplify.configure(config);
 
 const App = () => {
+  
+  const [pitches] = useState([]);
+
+  useEffect(() => {
+    fetchPitches();
+  }, []);
+
+  const fetchPitches = async () => {
+      try {
+          const pitchData = await API.graphql(graphqlOperation(listPitches));
+          const pitchList = pitchData.data.listPitches.items;
+          console.log('pitch list', pitchList);
+      } catch (error) {
+          console.log('error on fetching pitches', error);
+      }
+  };
+
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();

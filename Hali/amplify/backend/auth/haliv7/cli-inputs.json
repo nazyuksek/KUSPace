@@ -38,7 +38,10 @@
     "serviceName": "Cognito",
     "useDefault": "default",
     "userPoolGroups": false,
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+      "footballers",
+      "pitchOwners"
+    ],
     "adminQueries": false,
     "useEnabledMfas": false,
     "authRoleArn": {

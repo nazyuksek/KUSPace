@@ -1,4 +1,10 @@
-type Pitch2 @model {
+type Pitch2 @model @auth(
+   rules: [
+      { allow: owner, operations: [create, delete] }
+      { allow: private, operations: [read, update] }
+    ] 
+ ){
+
   id: ID!
   pitch_name: String!
   description: String
@@ -10,3 +16,5 @@ type Pitch2 @model {
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
+
+

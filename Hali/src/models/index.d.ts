@@ -4,7 +4,7 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-export declare class Pitch {
+export declare class Pitch2 {
   readonly id: string;
   readonly pitch_name: string;
   readonly description?: string;
@@ -15,6 +15,6 @@ export declare class Pitch {
   readonly closing_hour: string;
   readonly createdAt: string;
   readonly updatedAt: string;
-  constructor(init: ModelInit<Pitch>);
-  static copyOf(source: Pitch, mutator: (draft: MutableModel<Pitch>) => MutableModel<Pitch> | void): Pitch;
+  constructor(init: ModelInit<Pitch2>);
+  static copyOf(source: Pitch2, mutator: (draft: MutableModel<Pitch2>) => MutableModel<Pitch2> | void): Pitch2;
 }

@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Pitch": {
-            "name": "Pitch",
+        "Pitch2": {
+            "name": "Pitch2",
             "fields": {
                 "id": {
                     "name": "id",
@@ -75,16 +75,40 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Pitches",
+            "pluralName": "Pitch2s",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "operations": [
+                                    "create",
+                                    "delete"
+                                ],
+                                "identityClaim": "cognito:username"
+                            },
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "read",
+                                    "update"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "97424d7bd849476f2abf6185f07e78c1"
+    "version": "5add4d8cce73977e90cb4b3f155601af"
 };

@@ -13,7 +13,7 @@ export default function FieldBar({ item }: FieldBarProps) {
       <MaterialCommunityIcons
         name="soccer-field"
         size={120}
-        color={"forestgreen"}
+        color={"rgba(135, 211, 124, 1)"}
       />
       <Text
         style={{
@@ -51,7 +51,7 @@ const style = StyleSheet.create({
   container: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: "forestgreen",
+    borderColor: "rgba(135, 211, 124, 1)",
     flex: 1,
     flexDirection: "row",
   },

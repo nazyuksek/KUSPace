@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import AdminProfileContainer from "./ProfileScreenContainers/AdminProfileContainer";
+import ProfileContainer from "./ProfileScreenContainers/ProfileContainer";
 
-export interface ProfileScreenProps {}
-
-const ProfileScreen = ({}: ProfileScreenProps) => {
+const ProfileScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.itemscontainer}>
-        <Text>Profile Screen</Text>
-      </View>
+      {false ?
+        <AdminProfileContainer /> : <ProfileContainer />
+      }
     </SafeAreaView>
   );
 };

@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, SafeAreaView, Modal } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Modal,
+  Alert,
+  Dimensions,
+} from "react-native";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ScheduleCalendar from "../../components/ScheduleCalendar";
@@ -14,6 +22,8 @@ export interface ScheduleScreenProps {
   navigation: any;
   date: DateData;
 }
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
   const [selected, setSelected] = React.useState("");
@@ -39,6 +49,10 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
     setModal(false);
   }
   function handleDayPress(day: string) {
+    if (day === selected) {
+      setSelected("");
+      return;
+    }
     setSelected(day);
   }
   function handleTimeChange(
@@ -50,6 +64,10 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
   }
 
   function handleCreatePressed() {
+    if (selected === "") {
+      Alert.alert("Date cannot be empty! Select a date");
+      return;
+    }
     setModal(true);
   }
   return (
@@ -78,20 +96,33 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
           }}
         ></ScheduleCalendar>
         <DateTimePicker
-          style={{ width: 100, height: 100 }}
+          style={{
+            marginTop: 20,
+            width: 200,
+            height: 200,
+          }}
           value={time}
           mode={"time"}
           onChange={(event, date) => handleTimeChange(event, date)}
-          display={"clock"}
-          is24Hour={true} //android only
+          display={"spinner"}
           minuteInterval={30}
         ></DateTimePicker>
-        <Button
-          style={styles.button}
-          textStyle={styles.buttontext}
-          onPress={() => handleCreatePressed()}
-          buttonText={"+"}
-        ></Button>
+        <View
+          style={{
+            marginTop: 170,
+            width: "95%",
+            justifyContent: "flex-end",
+            flexDirection: "column",
+            flex: 1,
+          }}
+        >
+          <Button
+            style={styles.button}
+            textStyle={styles.buttontext}
+            onPress={() => handleCreatePressed()}
+            buttonText={"+"}
+          ></Button>
+        </View>
         <Modal
           style={{
             flex: 1,
@@ -141,12 +172,10 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "flex-end",
-    marginTop: 220,
-    marginRight: 10,
+    position: "absolute",
     backgroundColor: "rgba(135, 211, 124, 1)",
     width: 75,
     height: 75,
-    display: "flex",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 50,

@@ -18,6 +18,9 @@ export const createPitch2 = /* GraphQL */ `
       closing_hour
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -37,6 +40,9 @@ export const updatePitch2 = /* GraphQL */ `
       closing_hour
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -56,6 +62,9 @@ export const deletePitch2 = /* GraphQL */ `
       closing_hour
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

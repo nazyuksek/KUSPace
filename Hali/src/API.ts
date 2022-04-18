@@ -13,6 +13,7 @@ export type CreatePitch2Input = {
   closing_hour: string,
   createdAt?: string | null,
   updatedAt?: string | null,
+  _version?: number | null,
 };
 
 export type ModelPitch2ConditionInput = {
@@ -94,6 +95,9 @@ export type Pitch2 = {
   closing_hour?: string,
   createdAt?: string,
   updatedAt?: string,
+  _version?: number,
+  _deleted?: boolean | null,
+  _lastChangedAt?: number,
 };
 
 export type UpdatePitch2Input = {
@@ -107,10 +111,12 @@ export type UpdatePitch2Input = {
   closing_hour?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
+  _version?: number | null,
 };
 
 export type DeletePitch2Input = {
   id: string,
+  _version?: number | null,
 };
 
 export type ModelPitch2FilterInput = {
@@ -149,6 +155,7 @@ export type ModelPitch2Connection = {
   __typename: "ModelPitch2Connection",
   items?:  Array<Pitch2 | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type CreatePitch2MutationVariables = {
@@ -169,6 +176,9 @@ export type CreatePitch2Mutation = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -190,6 +200,9 @@ export type UpdatePitch2Mutation = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -211,6 +224,40 @@ export type DeletePitch2Mutation = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type SyncPitch2sQueryVariables = {
+  filter?: ModelPitch2FilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncPitch2sQuery = {
+  syncPitch2s?:  {
+    __typename: "ModelPitch2Connection",
+    items:  Array< {
+      __typename: "Pitch2",
+      id: string,
+      pitch_name: string,
+      description?: string | null,
+      pitchowner_name: string,
+      available_slots: string,
+      hourly_price: number,
+      opening_hour: string,
+      closing_hour: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -231,6 +278,9 @@ export type GetPitch2Query = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -255,8 +305,12 @@ export type ListPitch2sQuery = {
       closing_hour: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -273,6 +327,9 @@ export type OnCreatePitch2Subscription = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -289,6 +346,9 @@ export type OnUpdatePitch2Subscription = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -305,5 +365,8 @@ export type OnDeletePitch2Subscription = {
     closing_hour: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };

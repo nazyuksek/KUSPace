@@ -5,9 +5,11 @@ import AdminProfileContainer from "./ProfileScreenContainers/AdminProfileContain
 import ProfileContainer from "./ProfileScreenContainers/ProfileContainer";
 
 const ProfileScreen = () => {
+  // isUserAdmin should set from the API via Redux.
+  const isUserAdmin: Boolean = true
   return (
     <SafeAreaView style={styles.container}>
-      {false ?
+      {isUserAdmin ?
         <AdminProfileContainer /> : <ProfileContainer />
       }
     </SafeAreaView>
@@ -15,29 +17,12 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    fontSize: 48,
-    fontWeight: "900",
-  },
   container: {
     display: "flex",
     flex: 1,
     backgroundColor: "white",
     justifyContent: "center",
-  },
-  itemscontainer: {
-    display: "flex",
-    alignItems: "center",
-  },
-  subtext: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: 16,
-    fontWeight: "500",
-    color: "white",
-    marginBottom: 20,
-  },
+  }
 });
 
 export default ProfileScreen;

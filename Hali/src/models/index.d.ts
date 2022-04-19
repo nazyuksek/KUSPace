@@ -1,9 +1,6 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
 
-
-
-
 export declare class Pitch2 {
   readonly id: string;
   readonly pitch_name: string;

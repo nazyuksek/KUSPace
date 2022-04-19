@@ -20,51 +20,18 @@ import NewPasswordScreen from "./screens/NewPasswordScreen";
 //added
 import { listPitches } from './src/graphql/queries';
 import { useState } from 'react';
-import { DataStore } from '@aws-amplify/datastore'
+import { DataStore } from 'aws-amplify';
+
+//import { schema } from './src/models/schema';
+import { Pitch2 } from './src/models';
+//import { initSchema } from "@aws-amplify/datastore";
 
 Auth.configure(config);
-
 Amplify.configure(config);
 
 const App = () => {
-  
-  // const [pitches] = useState([]);
-
-  // useEffect(() => {
-  //   fetchPitches();
-  // }, []);
-
-  // const fetchPitches = async () => {
-  //     try {
-  //         const pitchData = await API.graphql(graphqlOperation(listPitches));
-  //         const pitchList = pitchData.data.listPitches.items;
-  //         console.log('pitch list', pitchList);
-  //     } catch (error) {
-  //         console.log('error on fetching pitches', error);
-  //     }
-  // };
-
-
-  try {
-    await DataStore.save(
-      new Pitch2({
-        id: 1
-        pitch_name: "pitch_1"
-        description: "Pitch in Sariyer"
-        pitchowner_name: "Suleyman Yilmaz"
-        available_slots:  "Monday 11:00 - 13:00 | Tuesday 14:00 - 15:00"
-        hourly_price: 650
-        opening_hour: "10:00"
-        closing_hour: "24:00"
-        createdAt: "ff"
-        updatedAt: "ffAWSDateTime!"
-      })
-    );
-    console.log("Pitch saved successfully!");
-    } catch (error) {
-    console.log("Error saving pitch", error);
-  }
-
+  saveDataStore();
+  readData();
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();
@@ -114,4 +81,33 @@ const styles = StyleSheet.create({
   },
 });
 
+const saveDataStore = async () => {
+ try {
+  await DataStore.save(
+    new Pitch2({
+      pitch_name: "pitch_1"
+      // description: "Pitch in Sariyer",
+      // pitchowner_name: "Suleyman Yilmaz",
+      // available_slots:  "Monday 11:00 - 13:00 | Tuesday 14:00 - 15:00",
+      // hourly_price: 650,
+      // opening_hour: "10:00",
+      // closing_hour: "24:00"
+    })
+ );
+
+  return (console.log("Pitch saved successfully!"));
+  } catch (error) {
+  return (console.log("Error saving", error));
+ }
+}
+
+const readData = async () => {
+  try {
+    const posts = await DataStore.query(Pitch2);
+    console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
+  } catch (error) {
+    console.log("Error retrieving posts", error);
+  }  
+}
 export default App;
+

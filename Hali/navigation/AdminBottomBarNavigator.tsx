@@ -6,9 +6,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
 import DisplayScheduleScreen from "../screens/AdminBottomBarScreens/DisplayScheduleScreen";
 import ScheduleScreen from "../screens/AdminBottomBarScreens/ScheduleScreen";
-import ProfileScreen from "../screens/AdminBottomBarScreens/ProfileScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
-export default function BottomBar() {
+export default function AdminBottomBar() {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator

@@ -17,12 +17,16 @@ import { Image } from "react-native";
 import ConfirmEmailScreen from "./screens/ConfirmEmailScreen";
 import HomeScreen from "./screens/HomeScreen";
 import NewPasswordScreen from "./screens/NewPasswordScreen";
+import BottomBar from "./navigation/BottomBarNavigator";
+import AdminBottomBar from "./navigation/AdminBottomBarNavigator"
 
 Auth.configure(config);
 
 Amplify.configure(config);
 
 const App = () => {
+  // Mocked isAdmin boolean, It should be recieved from BE.
+  const isAdmin: Boolean = true
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();
@@ -54,7 +58,7 @@ const App = () => {
             name="NewPassword"
             component={NewPasswordScreen}
           ></Stack.Screen>
-          <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
+          <Stack.Screen name="Home" component={isAdmin ? AdminBottomBar : BottomBar}></Stack.Screen>
           <Stack.Screen
             name="SignUpChoices"
             component={SignUpChoices}

@@ -73,46 +73,49 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
-        <Text
-          style={{
-            marginTop: 15,
-            color: "rgba(135, 211, 124, 1)",
-            fontWeight: "900",
-          }}
-        >
-          Select Start Date and Time
-        </Text>
-        <ScheduleCalendar
-          onDayPress={(date) => {
-            handleDayPress(date.dateString);
-          }}
-          markedDates={{
-            [selected]: {
-              marked: true,
-              selected: true,
-              selectedColor: "rgba(135, 211, 124, 1)",
-              selectedTextColor: "white",
-            },
-          }}
-        ></ScheduleCalendar>
-        <DateTimePicker
-          style={{
-            marginTop: 20,
-            width: 200,
-            height: 200,
-          }}
-          value={time}
-          mode={"time"}
-          onChange={(event, date) => handleTimeChange(event, date)}
-          display={"spinner"}
-          minuteInterval={30}
-        ></DateTimePicker>
+        <View style={{ width: "100%", alignItems: "center", height: 300 }}>
+          <Text
+            style={{
+              marginTop: 10,
+              fontSize: 18,
+              color: "rgba(135, 211, 124, 1)",
+              fontWeight: "700",
+            }}
+          >
+            Select Start Date and Time
+          </Text>
+          <ScheduleCalendar
+            onDayPress={(date) => {
+              handleDayPress(date.dateString);
+            }}
+            markedDates={{
+              [selected]: {
+                marked: true,
+                selected: true,
+                selectedColor: "rgba(135, 211, 124, 1)",
+                selectedTextColor: "white",
+              },
+            }}
+          ></ScheduleCalendar>
+        </View>
+        <View style={{ width: "100%", alignItems: "center", marginTop: 50 }}>
+          <DateTimePicker
+            textColor="darkslateblue"
+            style={{
+              width: "95%",
+              height: 250,
+            }}
+            value={time}
+            mode={"time"}
+            onChange={(event, date) => handleTimeChange(event, date)}
+            display={"spinner"}
+            minuteInterval={30}
+          ></DateTimePicker>
+        </View>
         <View
           style={{
-            marginTop: 170,
             width: "95%",
             justifyContent: "flex-end",
-            flexDirection: "column",
             flex: 1,
           }}
         >
@@ -157,11 +160,13 @@ const styles = StyleSheet.create({
   },
   container: {
     display: "flex",
-    flex: 1, //takes up the entire free space
+    flex: 1,
     backgroundColor: "white",
   },
   itemscontainer: {
     display: "flex",
+    width: "100%",
+    flex: 1,
     alignItems: "center",
   },
   subtext: {
@@ -172,10 +177,10 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "flex-end",
-    position: "absolute",
+    marginBottom: 10,
     backgroundColor: "rgba(135, 211, 124, 1)",
-    width: 75,
-    height: 75,
+    width: 90,
+    height: 90,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 50,

@@ -25,7 +25,7 @@ const FieldBar = ({ dataState }: FieldBarProps) => {
 
 const style = StyleSheet.create({
   container: {
-    margin: "5%",
+    margin: "7%",
     width: "100%",
     borderTopWidth: 1,
     borderColor: "rgba(135, 211, 124, 1)",

@@ -35,11 +35,11 @@ const ScheduleCalendar = ({
           textDayFontFamily: "space-mono",
           textMonthFontFamily: "space-mono",
           textDayHeaderFontFamily: "space-mono",
-          textDayFontWeight: "500",
+          textDayFontWeight: "300",
           textMonthFontWeight: "bold",
-          textDayHeaderFontWeight: "500",
-          textDayFontSize: 18,
-          textMonthFontSize: 18,
+          textDayHeaderFontWeight: "300",
+          textDayFontSize: 16,
+          textMonthFontSize: 16,
           textDayHeaderFontSize: 16,
         }}
         markedDates={markedDates}

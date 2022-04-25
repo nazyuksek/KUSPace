@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "haliv7",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/Users/zeynep/K!/KUSpace/Hali/amplify/backend/api/haliv7/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-f423dc4d-bb07-4dc8-836d-ec8129f5b9cb/amplify/backend/api/haliv7/schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authhaliv7"
@@ -13,6 +13,10 @@
         "type": "AUTOMERGE"
       }
     },
-    "additionalAuthTypes": []
+    "additionalAuthTypes": [
+      {
+        "mode": "AWS_IAM"
+      }
+    ]
   }
 }

@@ -24,6 +24,7 @@ import { DataStore } from "aws-amplify";
 
 //import { schema } from './src/models/schema';
 import { Pitch2 } from "./src/models";
+import { Reservation } from "./src/models";
 //import { initSchema } from "@aws-amplify/datastore";
 import BottomBarNavigator from "./navigation/BottomBarNavigator";
 import AdminBottomBar from "./navigation/AdminBottomBarNavigator";
@@ -32,8 +33,10 @@ Auth.configure(config);
 Amplify.configure(config);
 
 const App = () => {
-  saveDataStore();
-  readData();
+  //saveDataStore();
+  saveReservation();
+  readReservation();
+  //readData();
   // Mocked isAdmin boolean, It should be recieved from BE.
   const isAdmin: Boolean = true;
   const isLoadingComplete = useCachedResources();
@@ -123,4 +126,29 @@ const readData = async () => {
     console.log("Error retrieving posts", error);
   }
 };
+
+const saveReservation = async () => {
+  try {
+  await DataStore.save(
+    new Reservation({
+    pitch_id: "1",
+    reserver_username:"Zeynep Dundar",
+    reservation_date: "10 August 2022 Monday 10:00",
+    price: 600,
+    })
+  );
+  return (console.log("Pitch saved successfully!"));
+ } catch (error) {
+  return (console.log("Error saving", error));
+ }
+}
+
+const readReservation = async () => {
+  try {
+    const posts = await DataStore.query(Reservation);
+    console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
+  } catch (error) {
+    console.log("Error retrieving posts", error);
+  }  
+}
 export default App;

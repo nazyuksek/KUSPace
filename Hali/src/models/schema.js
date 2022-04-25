@@ -62,14 +62,14 @@ export const schema = {
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 }

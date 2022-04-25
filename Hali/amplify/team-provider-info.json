@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "haliv7": {}
+        "haliv7": {},
+        "userPoolGroups": {}
       }
     }
   }

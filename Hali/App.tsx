@@ -17,12 +17,25 @@ import { Image } from "react-native";
 import ConfirmEmailScreen from "./screens/ConfirmEmailScreen";
 import HomeScreen from "./screens/HomeScreen";
 import NewPasswordScreen from "./screens/NewPasswordScreen";
+//added
+import { listPitches } from './src/graphql/queries';
+import { useState } from 'react';
+import { DataStore } from 'aws-amplify';
+
+//import { schema } from './src/models/schema';
+import { Pitch2 } from './src/models';
+//import { initSchema } from "@aws-amplify/datastore";
+import BottomBar from "./navigation/BottomBarNavigator";
+import AdminBottomBar from "./navigation/AdminBottomBarNavigator"
 
 Auth.configure(config);
-
 Amplify.configure(config);
 
 const App = () => {
+  saveDataStore();
+  readData();
+  // Mocked isAdmin boolean, It should be recieved from BE.
+  const isAdmin: Boolean = true
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();
@@ -54,7 +67,7 @@ const App = () => {
             name="NewPassword"
             component={NewPasswordScreen}
           ></Stack.Screen>
-          <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
+          <Stack.Screen name="Home" component={isAdmin ? AdminBottomBar : BottomBar}></Stack.Screen>
           <Stack.Screen
             name="SignUpChoices"
             component={SignUpChoices}
@@ -72,4 +85,33 @@ const styles = StyleSheet.create({
   },
 });
 
+const saveDataStore = async () => {
+ try {
+  await DataStore.save(
+    new Pitch2({
+      pitch_name: "pitch_1"
+      // description: "Pitch in Sariyer",
+      // pitchowner_name: "Suleyman Yilmaz",
+      // available_slots:  "Monday 11:00 - 13:00 | Tuesday 14:00 - 15:00",
+      // hourly_price: 650,
+      // opening_hour: "10:00",
+      // closing_hour: "24:00"
+    })
+ );
+
+  return (console.log("Pitch saved successfully!"));
+  } catch (error) {
+  return (console.log("Error saving", error));
+ }
+}
+
+const readData = async () => {
+  try {
+    const posts = await DataStore.query(Pitch2);
+    console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
+  } catch (error) {
+    console.log("Error retrieving posts", error);
+  }  
+}
 export default App;
+

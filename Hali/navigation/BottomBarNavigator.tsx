@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
 import FindPlayerScreen from "../screens/BottomBarScreens/FindPlayerScreen";
 import FindFieldScreen from "../screens/BottomBarScreens/FindFieldScreen";
-import ProfileScreen from "../screens/BottomBarScreens/ProfileScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 export default function BottomBar() {
   const Tab = createBottomTabNavigator();

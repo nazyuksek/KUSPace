@@ -1,0 +1,21 @@
+type Pitch2 @model @auth(
+   rules: [
+      { allow: owner, operations: [create, delete] }
+      { allow: private, operations: [read, update] }
+    ] 
+ ){
+
+  id: ID!
+  pitch_name: String!
+  description: String
+  pitchowner_name: String!
+  available_slots: String!
+  hourly_price: Int!
+  opening_hour: String!
+  closing_hour: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+
+

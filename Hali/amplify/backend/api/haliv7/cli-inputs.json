@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "haliv7",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/zeynep/K!/KUSpace/Hali/amplify/backend/api/haliv7/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authhaliv7"
+    },
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
+    },
+    "additionalAuthTypes": []
+  }
+}

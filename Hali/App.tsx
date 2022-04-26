@@ -35,7 +35,7 @@ const App = () => {
   saveDataStore();
   readData();
   // Mocked isAdmin boolean, It should be recieved from BE.
-  const isAdmin: Boolean = true;
+  const isAdmin: Boolean = true; // because we don't yet receive this data I changed it temporarily Simay
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();
@@ -72,8 +72,12 @@ const App = () => {
             component={NewPasswordScreen}
           ></Stack.Screen>
           <Stack.Screen
-            name="Home"
-            component={isAdmin ? AdminBottomBar : BottomBarNavigator}
+            name="AdminHome"
+            component={AdminBottomBar}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="PlayerHome"
+            component={BottomBarNavigator}
           ></Stack.Screen>
           <Stack.Screen
             name="SignUpChoices"

@@ -6,13 +6,17 @@ import {
 } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function SlotItems(item: any) {
+interface SlotItemsProps {
+  setTime: any;
+  item: any;
+  onPress: () => void;
+}
+
+export default function SlotItems({ item, setTime, onPress }: SlotItemsProps) {
   return (
     <View
       style={{
-        justifyContent: "flex-start",
         flexDirection: "row",
-        flex: 1,
         padding: "3%",
         margin: "1%",
         borderRadius: 20,
@@ -20,22 +24,46 @@ export default function SlotItems(item: any) {
         borderBottomWidth: 1,
       }}
     >
-      <MaterialCommunityIcons
-        style={{ justifyContent: "flex-end" }}
-        name="plus-circle"
-        size={24}
-        color="rgba(135, 211, 124, 1)"
-      />
-      <Text
+      <View
         style={{
-          color: "darkslateblue",
-          fontSize: 18,
-          fontWeight: "500",
-          alignSelf: "center",
+          width: "50%",
+          marginLeft: "25%",
+          alignItems: "flex-end",
+          justifyContent: "flex-end",
         }}
       >
-        {item.item}
-      </Text>
+        <Text
+          style={{
+            color: "darkslateblue",
+            fontSize: 22,
+            fontWeight: "500",
+            alignSelf: "center",
+          }}
+        >
+          {item}
+        </Text>
+      </View>
+      <View
+        style={{
+          width: "25%",
+          alignItems: "flex-end",
+          justifyContent: "flex-end",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            onPress();
+            setTime(item);
+          }}
+        >
+          <MaterialCommunityIcons
+            style={{ justifyContent: "center", alignItems: "center" }}
+            name="plus-circle"
+            size={32}
+            color="rgba(135, 211, 124, 1)"
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

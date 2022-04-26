@@ -17,15 +17,20 @@ import DateTimePicker, {
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import SimpleModal from "../../components/SimpleModal";
+import { Pitch2 } from "../../src/models";
+import { DataStore } from "aws-amplify";
+import { listPitch2s } from "../../src/graphql/queries";
+
 
 export interface ScheduleScreenProps {
   navigation: any;
   date: DateData;
+  route: any;
 }
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
+const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   const [selected, setSelected] = React.useState("");
   const [time, setTime] = React.useState(new Date());
   const [isModalVisible, setModal] = React.useState(false);

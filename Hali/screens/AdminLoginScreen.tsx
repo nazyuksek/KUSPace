@@ -6,7 +6,6 @@ import { Auth } from "aws-amplify";
 import { NavigationHelpersContext } from "@react-navigation/native";
 import { Image } from "react-native";
 
-
 export interface AdminLoginScreenProps {
   navigation: any;
 }
@@ -21,6 +20,7 @@ const AdminLoginScreen = ({ navigation }: AdminLoginScreenProps) => {
     const [username, password] = text_data;
     try {
       const response = await Auth.signIn(username, password);
+      navigation.navigate("AdminHome");
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }

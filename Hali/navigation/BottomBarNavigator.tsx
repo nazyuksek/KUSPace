@@ -8,7 +8,11 @@ import FindPlayerScreen from "../screens/BottomBarScreens/FindPlayerScreen";
 import FindFieldScreen from "../screens/BottomBarScreens/FindFieldScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
-export default function BottomBar() {
+export interface BottomBarProps {
+  route: any;
+}
+
+const BottomBar = ({ route }: BottomBarProps) => {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
@@ -20,6 +24,7 @@ export default function BottomBar() {
       <Tab.Screen
         name="Find Field"
         component={FindFieldScreen}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -92,4 +97,6 @@ export default function BottomBar() {
       />
     </Tab.Navigator>
   );
-}
+};
+
+export default BottomBar;

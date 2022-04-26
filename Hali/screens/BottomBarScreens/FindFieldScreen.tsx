@@ -3,10 +3,50 @@ import React from "react";
 import ScheduleCalendar from "../../components/ScheduleCalendar";
 import { DateData } from "react-native-calendars";
 import FieldBar from "../../components/FieldBar";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { DataStore } from "aws-amplify";
+import { Reservation } from "../../src/models";
 
-export interface FindFieldScreenProps {}
+export interface FindFieldScreenProps {
+  route: any;
+}
 
-const FindFieldScreen = ({}: FindFieldScreenProps) => {
+const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
+  const reserver_username = route?.params?.username;
+  const [time, setTime] = React.useState("");
+  const saveReservation = async (
+    pitch_id: string,
+    reserver_username: string,
+    reservation_date: string,
+    price: number
+  ) => {
+    try {
+      await DataStore.save(
+        new Reservation({
+          pitch_id: pitch_id,
+          reserver_username: reserver_username,
+          reservation_date: reservation_date,
+          price: price,
+        })
+      );
+
+      return console.log("Reservation saved successfully!");
+    } catch (error) {
+      return console.log("Error saving", error);
+    }
+  };
+
+  const readD = async () => {
+    try {
+      const posts = await DataStore.query(Reservation);
+      console.log(
+        "Posts retrieved successfully!",
+        JSON.stringify(posts, null, 2)
+      );
+    } catch (error) {
+      console.log("Error retrieving posts", error);
+    }
+  };
   const timeSlots = [
     "12:00 - 14:00",
     "14:00 - 16:00",
@@ -54,7 +94,7 @@ const FindFieldScreen = ({}: FindFieldScreenProps) => {
 
   const emptyData: string[] = [];
   const [marked, setMarked] = React.useState("");
-
+  let reservation_date = "";
   const [dataState, setDataState] = React.useState(emptyData);
 
   function handleDayPress(date: string): void {
@@ -67,6 +107,13 @@ const FindFieldScreen = ({}: FindFieldScreenProps) => {
     setDataState(timeSlots);
   }
 
+  React.useEffect(() => {}, [time]);
+  
+  function handleReservePress() {
+    reservation_date = marked.concat(" ").concat(time);
+    saveReservation("123", reserver_username, reservation_date, 150);
+    readD();
+  }
   return (
     <View style={styles.container}>
       <View style={styles.itemscontainer}>
@@ -81,7 +128,13 @@ const FindFieldScreen = ({}: FindFieldScreenProps) => {
           }}
           onDayPress={(date) => handleDayPress(date.dateString)}
         ></ScheduleCalendar>
-        <FieldBar dataState={dataState}></FieldBar>
+        <FieldBar
+          dataState={dataState}
+          onPress={() => {
+            handleReservePress();
+          }}
+          setTime={setTime}
+        ></FieldBar>
       </View>
     </View>
   );

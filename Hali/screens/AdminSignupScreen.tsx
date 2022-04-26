@@ -47,7 +47,6 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
 
       navigation.navigate("ConfirmEmailScreen", { text3 });
     } catch (e: any) {
-      //Alert.alert(username);
       Alert.alert("There is a problem with signing up!", e.message);
     }
   };

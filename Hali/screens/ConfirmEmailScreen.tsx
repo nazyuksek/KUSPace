@@ -17,7 +17,6 @@ export interface ConfirmEmailScreenProps {
 
 const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
   const text3 = route?.params?.text3;
-  console.log(route);
   const [text1, setText1] = React.useState("");
   const [search, setSearch] = React.useState("");
 

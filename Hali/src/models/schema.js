@@ -1,5 +1,69 @@
 export const schema = {
     "models": {
+        "Reservation": {
+            "name": "Reservation",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "pitch_id": {
+                    "name": "pitch_id",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reserver_username": {
+                    "name": "reserver_username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reservation_date": {
+                    "name": "reservation_date",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "price": {
+                    "name": "price",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "Reservations",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Pitch2": {
             "name": "Pitch2",
             "fields": {
@@ -110,5 +174,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "5add4d8cce73977e90cb4b3f155601af"
+    "version": "e360ff04f84dc1c10b2fac1cede245c5"
 };

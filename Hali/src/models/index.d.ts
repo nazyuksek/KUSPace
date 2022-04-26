@@ -4,6 +4,16 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+export declare class Reservation {
+  readonly id: string;
+  readonly pitch_id?: string;
+  readonly reserver_username?: string;
+  readonly reservation_date?: string;
+  readonly price?: number;
+  constructor(init: ModelInit<Reservation>);
+  static copyOf(source: Reservation, mutator: (draft: MutableModel<Reservation>) => MutableModel<Reservation> | void): Reservation;
+}
+
 export declare class Pitch2 {
   readonly id: string;
   readonly pitch_name: string;

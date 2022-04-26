@@ -67,7 +67,11 @@
               "userPoolId": "authhaliv7"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       },
       "dependsOn": [

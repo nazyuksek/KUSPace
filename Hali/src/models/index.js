@@ -4,8 +4,9 @@ import { schema } from './schema';
 
 
 
-const { Pitch2 } = initSchema(schema);
+const { Reservation, Pitch2 } = initSchema(schema);
 
 export {
+  Reservation,
   Pitch2
 };

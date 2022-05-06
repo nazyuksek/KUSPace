@@ -30,13 +30,6 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "price": {
-                    "name": "price",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -95,13 +88,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "available_slots": {
-                    "name": "available_slots",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "hourly_price": {
                     "name": "hourly_price",
                     "isArray": false,
@@ -126,16 +112,31 @@ export const schema = {
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
-                    "type": "AWSDateTime",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
-                    "type": "AWSDateTime",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
+                },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "available_slots": {
+                    "name": "available_slots",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             },
             "syncable": true,
@@ -174,5 +175,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "e360ff04f84dc1c10b2fac1cede245c5"
+    "version": "510b1e52c311ac2c227ee42179d239b0"
 };

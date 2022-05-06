@@ -20,7 +20,7 @@ import SimpleModal from "../../components/SimpleModal";
 import { Pitch2 } from "../../src/models";
 import { DataStore } from "aws-amplify";
 import { listPitch2s } from "../../src/graphql/queries";
-
+import { Reservation } from "../../src/models";
 
 export interface ScheduleScreenProps {
   navigation: any;
@@ -31,9 +31,11 @@ const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
+  const username = route?.params.username;
   const [selected, setSelected] = React.useState("");
   const [time, setTime] = React.useState(new Date());
   const [isModalVisible, setModal] = React.useState(false);
+
   let schedule: string =
     "You are creating a slot on " +
     selected +
@@ -46,9 +48,63 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     ":" +
     (time.getMinutes() === 0 ? "00" : time.getMinutes());
 
-  function handleConfirm() {
+  // SAVE SCHEDULE TO DATABASE
+  const saveSchedule = async (
+    pitch_name: string,
+    description: string,
+    pitchowner_name: string,
+    available_slots: [string],
+    hourly_price: number,
+    opening_hour: string,
+    closing_hour: string,
+    username: string
+  ) => {
+    try {
+      await DataStore.save(
+        new Pitch2({
+          pitch_name: pitch_name,
+          description: description,
+          pitchowner_name: pitchowner_name,
+          available_slots: available_slots,
+          hourly_price: hourly_price,
+          opening_hour: opening_hour,
+          closing_hour: closing_hour,
+          username: username,
+        })
+      );
+      return console.log("Pitch saved successfully!");
+    } catch (error) {
+      return console.log("Error saving", error);
+    }
+  };
+
+  const readSchedule = async () => {
+    try {
+      const posts = await DataStore.query(Pitch2, (cond) =>
+        cond.pitch_name("eq", username)
+      );
+      console.log(JSON.stringify(posts, null, 2));
+    } catch (error) {
+      console.log("Error retrieving posts", error);
+    }
+  };
+
+  //DELETE A SPECIFIC SCHEDULE
+  const handleDeleteSchedule = async (reservation_date: string) => {
+    await DataStore.delete(Reservation, (cond) =>
+      cond.reservation_date("eq", reservation_date)
+    );
+  };
+
+  async function handleConfirm() {
     setModal(false);
-    //store the information
+    /*  const original = await DataStore.query(Pitch2, cond => cond.available_slots());
+
+    await DataStore.save(
+      Pitch2.copyOf(original, updated => {
+        updated.title = `title ${Date.now()}`;
+      })
+    ); */
   }
   function handleCancel() {
     setModal(false);

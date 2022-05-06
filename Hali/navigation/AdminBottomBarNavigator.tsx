@@ -8,7 +8,11 @@ import DisplayScheduleScreen from "../screens/AdminBottomBarScreens/DisplaySched
 import ScheduleScreen from "../screens/AdminBottomBarScreens/ScheduleScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
-export default function AdminBottomBar() {
+export interface AdminBottomBarProps {
+  route: any;
+}
+
+const AdminBottomBar = ({ route }: AdminBottomBarProps) => {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
@@ -38,6 +42,7 @@ export default function AdminBottomBar() {
       <Tab.Screen
         name="Schedule"
         component={ScheduleScreen}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -92,4 +97,6 @@ export default function AdminBottomBar() {
       />
     </Tab.Navigator>
   );
-}
+};
+
+export default AdminBottomBar;

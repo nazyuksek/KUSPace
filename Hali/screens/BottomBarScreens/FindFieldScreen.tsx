@@ -14,11 +14,12 @@ export interface FindFieldScreenProps {
 const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
   const reserver_username = route?.params?.username;
   const [time, setTime] = React.useState("");
+  React.useEffect(() => {}, [time]);
+
   const saveReservation = async (
     pitch_id: string,
     reserver_username: string,
-    reservation_date: string,
-    price: number
+    reservation_date: string
   ) => {
     try {
       await DataStore.save(
@@ -26,7 +27,6 @@ const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
           pitch_id: pitch_id,
           reserver_username: reserver_username,
           reservation_date: reservation_date,
-          price: price,
         })
       );
 
@@ -107,11 +107,9 @@ const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
     setDataState(timeSlots);
   }
 
-  React.useEffect(() => {}, [time]);
-  
   function handleReservePress() {
     reservation_date = marked.concat(" ").concat(time);
-    saveReservation("123", reserver_username, reservation_date, 150);
+    saveReservation("123", reserver_username, reservation_date);
     readD();
   }
   return (

@@ -4,15 +4,17 @@ import ScheduleCalendar from "../../components/ScheduleCalendar";
 import { DateData } from "react-native-calendars";
 import FieldBar from "../../components/FieldBar";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { DataStore } from "aws-amplify";
-import { Reservation } from "../../src/models";
+import { DataStore, Predicates } from "aws-amplify";
+import { Reservation, Pitch2 } from "../../src/models";
 
 export interface FindFieldScreenProps {
   route: any;
+  pitch_id: string;
 }
 
-const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
+const FindFieldScreen = ({ route, pitch_id }: FindFieldScreenProps) => {
   const reserver_username = route?.params?.username;
+  let map = new Map();
   const [time, setTime] = React.useState("");
   React.useEffect(() => {}, [time]);
 
@@ -36,61 +38,53 @@ const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
     }
   };
 
+  //DELETES THE RESERVED AVAILABLE SLOT FROM THE PITCH TABLE
+  const deleteAvailable = async (reservation_date: string) => {
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", pitch_id)
+    );
+    let updated_slots = pitch[0].available_slots!;
+    const index = updated_slots.indexOf(reservation_date);
+    updated_slots.splice(index, 1);
+    await DataStore.save(
+      Pitch2.copyOf(pitch[0], (updated) => {
+        updated.available_slots = updated_slots;
+      })
+    );
+  };
+
   const readD = async () => {
     try {
       const posts = await DataStore.query(Reservation);
-      console.log(
-        "Posts retrieved successfully!",
-        JSON.stringify(posts, null, 2)
-      );
     } catch (error) {
       console.log("Error retrieving posts", error);
     }
   };
-  const timeSlots = [
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
+  let slots = [
+    "2022-05-25|12.00-14.00",
+    "2022-05-25|14.00-16.00",
+    "2022-05-23|12.00-14.00",
   ];
+  //TIME SLOT EXTRACTION
+  const extractTimeSlot = async () => {
+    // const pitch = await DataStore.query(Pitch2, (cond) =>
+    //   cond.username("eq", pitch_id)
+    // );
+    //  let slots = pitch[0].available_slots!;
+    slots.forEach((element) => {
+      addToMap(element!.split("|")[0], element!.split("|")[1]);
+    });
+  };
+  extractTimeSlot();
+
+  //ADD TO MAP
+  const addToMap = (key: string, value: string) => {
+    if (map.has(key)) {
+      map.set(key, map.get(key).concat([value]));
+    } else {
+      map.set(key, [value]);
+    }
+  };
 
   const emptyData: string[] = [];
   const [marked, setMarked] = React.useState("");
@@ -104,13 +98,13 @@ const FindFieldScreen = ({ route }: FindFieldScreenProps) => {
       return;
     }
     setMarked(date);
-    setDataState(timeSlots);
+    setDataState(map.get(date));
   }
 
   function handleReservePress() {
-    reservation_date = marked.concat(" ").concat(time);
-    saveReservation("123", reserver_username, reservation_date);
-    readD();
+    reservation_date = marked.concat("|").concat(time);
+    saveReservation(pitch_id, reserver_username, reservation_date);
+    deleteAvailable(reservation_date);
   }
   return (
     <View style={styles.container}>

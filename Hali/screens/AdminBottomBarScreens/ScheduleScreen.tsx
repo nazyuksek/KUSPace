@@ -18,8 +18,7 @@ import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import SimpleModal from "../../components/SimpleModal";
 import { Pitch2 } from "../../src/models";
-import { DataStore } from "aws-amplify";
-import { listPitch2s } from "../../src/graphql/queries";
+import { DataStore, Predicates } from "aws-amplify";
 import { Reservation } from "../../src/models";
 
 export interface ScheduleScreenProps {
@@ -36,10 +35,21 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   const [time, setTime] = React.useState(new Date());
   const [isModalVisible, setModal] = React.useState(false);
 
-  let schedule: string =
+  let schedule: string = // string to write on the modal
     "You are creating a slot on " +
     selected +
     " from " +
+    time.getHours() +
+    ":" +
+    (time.getMinutes() === 0 ? "00" : time.getMinutes()) +
+    " to " +
+    (time.getHours() + 2) +
+    ":" +
+    (time.getMinutes() === 0 ? "00" : time.getMinutes());
+
+  let schedule_slot: string = //string to write to the database
+    selected +
+    "|" +
     time.getHours() +
     ":" +
     (time.getMinutes() === 0 ? "00" : time.getMinutes()) +
@@ -56,8 +66,7 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     available_slots: [string],
     hourly_price: number,
     opening_hour: string,
-    closing_hour: string,
-    username: string
+    closing_hour: string
   ) => {
     try {
       await DataStore.save(
@@ -69,7 +78,7 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
           hourly_price: hourly_price,
           opening_hour: opening_hour,
           closing_hour: closing_hour,
-          username: username,
+          username: "alp",
         })
       );
       return console.log("Pitch saved successfully!");
@@ -80,14 +89,28 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
 
   const readSchedule = async () => {
     try {
-      const posts = await DataStore.query(Pitch2, (cond) =>
-        cond.pitch_name("eq", username)
-      );
-      console.log(JSON.stringify(posts, null, 2));
+      let pitch = await DataStore.query(Pitch2);
     } catch (error) {
-      console.log("Error retrieving posts", error);
+      console.log("Error retrieving data", error);
     }
   };
+  const deleteWholeTableEntries = async () => {
+    await DataStore.delete(Pitch2, Predicates.ALL);
+  };
+
+  async function handleConfirm() {
+    setModal(false);
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", "alp")
+    );
+    let updated_slots = pitch[0].available_slots!;
+    updated_slots = updated_slots.concat([schedule_slot]);
+    await DataStore.save(
+      Pitch2.copyOf(pitch[0], (updated) => {
+        updated.available_slots = updated_slots;
+      })
+    );
+  }
 
   //DELETE A SPECIFIC SCHEDULE
   const handleDeleteSchedule = async (reservation_date: string) => {
@@ -96,16 +119,6 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     );
   };
 
-  async function handleConfirm() {
-    setModal(false);
-    /*  const original = await DataStore.query(Pitch2, cond => cond.available_slots());
-
-    await DataStore.save(
-      Pitch2.copyOf(original, updated => {
-        updated.title = `title ${Date.now()}`;
-      })
-    ); */
-  }
   function handleCancel() {
     setModal(false);
   }

@@ -4,9 +4,11 @@ import { schema } from './schema';
 
 
 
-const { Reservation, Pitch2 } = initSchema(schema);
+const { MatchAnnounce, Player, Reservation, Pitch2 } = initSchema(schema);
 
 export {
+  MatchAnnounce,
+  Player,
   Reservation,
   Pitch2
 };

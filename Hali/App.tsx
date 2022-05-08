@@ -35,7 +35,6 @@ Auth.configure(config);
 Amplify.configure(config);
 
 const App = () => {
-
   // savePlayerDataStore();
   // saveMatchAnnounce();
   // saveReservation();
@@ -50,9 +49,8 @@ const App = () => {
 
   // // to be fixed, detail is in function
   // addPlayerToMatchAnnounce("YZ12","Elvin Altintas");
- 
-  // Mocked isAdmin boolean, It should be recieved from BE.
 
+  // Mocked isAdmin boolean, It should be recieved from BE.
 
   const isAdmin: Boolean = true; // because we don't yet receive this data I changed it temporarily Simay
   const isLoadingComplete = useCachedResources();
@@ -104,8 +102,8 @@ const App = () => {
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-   );
- }
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -114,7 +112,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 });
-
 
 const savePlayerDataStore = async () => {
   try {
@@ -148,14 +145,13 @@ const readData = async () => {
   }
 };
 
-const readDistrictQuery = async (district) => {
+const readDistrictQuery = async (district: string) => {
   try {
-    const sariyer_players = await DataStore.query(Player, p => p.district("eq", district));
-    //const sariyer_players = await DataStore.query(Player);
-    console.log(
-    " players:",
-    JSON.stringify(sariyer_players, null, 2)
+    const sariyer_players = await DataStore.query(Player, (p) =>
+      p.district("eq", district)
     );
+    //const sariyer_players = await DataStore.query(Player);
+    console.log(" players:", JSON.stringify(sariyer_players, null, 2));
   } catch (error) {
     console.log(district);
     console.log("Error retrieving player", error);
@@ -163,15 +159,14 @@ const readDistrictQuery = async (district) => {
 };
 
 // predicate can be 'gt', 'eq', lt : >, <, =
-const readPlayerSkillQuery = async (pred, skillno) => {
+const readPlayerSkillQuery = async (pred: any, skillno: number) => {
   try {
-    console.log("pred is:"+pred);
-    const players = await DataStore.query(Player, p => p.skill(pred, skillno));
-    console.log("Skillno: "+skillno);
-    console.log(
-    "players:",
-    JSON.stringify(players, null, 2)
+    console.log("pred is:" + pred);
+    const players = await DataStore.query(Player, (p) =>
+      p.skill(pred, skillno)
     );
+    console.log("Skillno: " + skillno);
+    console.log("players:", JSON.stringify(players, null, 2));
   } catch (error) {
     console.log("Error retrieving player skillno", error);
   }
@@ -191,89 +186,98 @@ const readDataPlayer = async () => {
 
 const saveReservation = async () => {
   try {
-  await DataStore.save(
-    new Reservation({
-    pitch_id: "1",
-    reserver_username:"Zeynep Dundar",
-    reservation_date: "10 August 2022 Monday 10:00",
-    price: 600,
-    })
-  );
-  return (console.log("Pitch saved successfully!"));
- } catch (error) {
-  return (console.log("Error saving", error));
- }
-}
+    await DataStore.save(
+      new Reservation({
+        pitch_id: "1",
+        reserver_username: "Zeynep Dundar",
+        reservation_date: "10 August 2022 Monday 10:00",
+      })
+    );
+    return console.log("Pitch saved successfully!");
+  } catch (error) {
+    return console.log("Error saving", error);
+  }
+};
 
 const readReservation = async () => {
   try {
     const posts = await DataStore.query(Reservation);
-    console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
+    console.log(
+      "Posts retrieved successfully!",
+      JSON.stringify(posts, null, 2)
+    );
   } catch (error) {
     console.log("Error retrieving posts", error);
-  }  
-}
+  }
+};
 
 const saveMatchAnnounce = async () => {
   try {
-  await DataStore.save(
-    new MatchAnnounce({
-    hour: "18:00",
-    pitch_name: "Moda Stadyumu",
-    number_of_attendees: 10,
-    total_capacity: 14,
-    attendees_list: ["Simay Ozdemir", "Naz Yuksek"],
-    announcement_name:"YZ12"})
-  );
-  return (console.log("Match Announce saved successfully!"));
- } catch (error) {
-  return (console.log("Error saving Match Announce", error));
- }
-}
+    await DataStore.save(
+      new MatchAnnounce({
+        hour: "18:00",
+        pitch_name: "Moda Stadyumu",
+        number_of_attendees: 10,
+        total_capacity: 14,
+        attendees_list: ["Simay Ozdemir", "Naz Yuksek"],
+        announcement_name: "YZ12",
+      })
+    );
+    return console.log("Match Announce saved successfully!");
+  } catch (error) {
+    return console.log("Error saving Match Announce", error);
+  }
+};
 
 const readMatchAnnounce = async () => {
   try {
     const match_announce = await DataStore.query(MatchAnnounce);
-    console.log("MatchAnnounce retrieved successfully!", JSON.stringify(match_announce, null, 2));
+    console.log(
+      "MatchAnnounce retrieved successfully!",
+      JSON.stringify(match_announce, null, 2)
+    );
   } catch (error) {
     console.log("Error retrieving MatchAnnounce", error);
-  }  
-}
+  }
+};
 
-// This method pushes the current playername to the MAtch announce
+// This method pushes the current playername to the Match announce
 // Note updating attendees_list is not complete
-const addPlayerToMatchAnnounce  = async (announcement_name, player_name)  => {
-   try {
-    const original = await DataStore.query(MatchAnnounce, m => m.announcement_name("eq", announcement_name));
-    
-    // fix adding player to attendees_list 
-    const attendees_list_original = original[0].attendees_list;
-    console.log(typeof attendees_list_original);
+const addPlayerToMatchAnnounce = async (
+  announcement_name: string,
+  player_name: string
+) => {
+  try {
+    const original = await DataStore.query(MatchAnnounce, (m) =>
+      m.announcement_name("eq", announcement_name)
+    );
+
+    // fix adding player to attendees_list
+    let updated_list = original[0].attendees_list!;
     updated_list.push(player_name);
     //
 
     await DataStore.save(
-          MatchAnnounce.copyOf(original, updated => {
-          updated.attendees_list = updated_list;
+      MatchAnnounce.copyOf(original[0], (updated) => {
+        updated.attendees_list = updated_list;
       })
     );
     console.log("MatchAnnounce updated successfully!");
     // update chosen announcement
   } catch (error) {
     console.log("Error updating MatchAnnounce", error);
-  }  
-}
+  }
+};
 
 const deletePlayers = async () => {
   try {
     // realnames: "Mehmet Yilmaz", "Ahmet Yilmaz", "Yilmaz Yilmaz"
     // usernames: dummy1, dummy2, dummy3
-    await DataStore.delete(Players, p => p.username("eq", "Mehmet Yilmaz"));
+    await DataStore.delete(Player, (p) => p.username("eq", "Mehmet Yilmaz"));
     console.log("Players deleted successfully!");
   } catch (error) {
     console.log("Error deleting players ", error);
-  }  
-}
-
+  }
+};
 
 export default App;

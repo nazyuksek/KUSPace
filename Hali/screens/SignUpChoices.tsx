@@ -15,7 +15,7 @@ const SignUpChoices = ({ navigation }: SignUpProps) => {
     navigation.navigate("AdminSignUp");
   };
   const onPlayerPresssed = () => {
-    navigation.navigate("AdminSignUp");
+    navigation.navigate("SignUp");
   };
 
   return (

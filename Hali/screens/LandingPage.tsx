@@ -29,7 +29,7 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
   const onLoginPressed = async () => {
     try {
       const response = await Auth.signIn(username, password);
-      navigation.navigate("PlayerHome", { username });
+      navigation.navigate("PlayerHome", { username});
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }

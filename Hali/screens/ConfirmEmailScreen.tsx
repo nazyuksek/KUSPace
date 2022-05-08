@@ -8,7 +8,9 @@ import { Auth } from "aws-amplify";
 import { NavigationContainer } from "@react-navigation/native";
 import { NavigationHelpersContext } from "@react-navigation/native";
 import { Image } from "react-native";
-
+import { Pitch2 } from "../src/models";
+import { DataStore, Predicates } from "aws-amplify";
+import { Reservation } from "../src/models";
 
 export interface ConfirmEmailScreenProps {
   navigation: any;
@@ -16,19 +18,56 @@ export interface ConfirmEmailScreenProps {
 }
 
 const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
-  const text3 = route?.params?.text3;
-  const [text1, setText1] = React.useState("");
-  const [search, setSearch] = React.useState("");
+  const username = route?.params?.username;
+  const flag = route?.params?.flag;
+  const email = route?.params?.email;
+  const birthdate = route?.params.birthdate;
+  const name = route?.params.name + " " + route?.params.surname;
 
+  // SAVE SCHEDULE TO DATABASE
+  const saveSchedule = async (
+    pitch_name: string,
+    description: string,
+    pitchowner_name: string,
+    available_slots: [string],
+    hourly_price: number,
+    opening_hour: string,
+    closing_hour: string
+  ) => {
+    try {
+      await DataStore.save(
+        new Pitch2({
+          pitch_name: pitch_name,
+          description: description,
+          pitchowner_name: pitchowner_name,
+          available_slots: available_slots,
+          hourly_price: hourly_price,
+          opening_hour: opening_hour,
+          closing_hour: closing_hour,
+          username: username,
+        })
+      );
+      return console.log("Pitch saved successfully!");
+    } catch (error) {
+      return console.log("Error saving", error);
+    }
+  };
+
+  const [code, setCode] = React.useState("");
+  const [search, setSearch] = React.useState("");
   const onConfirmPressed = async (data: any) => {
     try {
-      const response = await Auth.confirmSignUp(data.text3, data.text1);
-      navigation.navigate("Login");
+      const response = await Auth.confirmSignUp(data.username, data.code);
+      if (flag === "admin") {
+        //       saveSchedule();
+        navigation.navigate("AdminHome");
+      } else if (flag === "player") {
+        navigation.navigate("PlayerHome");
+      }
     } catch (e: any) {
       Alert.alert("", e.message);
     }
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -41,10 +80,10 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
         <TextField
           text={"Enter your verification code"}
           style={{ marginTop: 15 }}
-          textState={text1}
-          setText={setText1}
+          textState={code}
+          setText={setCode}
           setSearch={setSearch}
-          value={text1}
+          value={code}
         ></TextField>
         <Button
           style={{
@@ -52,7 +91,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
             marginTop: 30,
           }}
           buttonText="Sign up"
-          onPress={() => onConfirmPressed({ text3, text1 })}
+          onPress={() => onConfirmPressed({ username, code })}
         />
       </View>
     </SafeAreaView>

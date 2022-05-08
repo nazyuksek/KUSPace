@@ -18,9 +18,8 @@ import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import SimpleModal from "../../components/SimpleModal";
 import { Pitch2 } from "../../src/models";
-import { DataStore } from "aws-amplify";
-import { listPitch2s } from "../../src/graphql/queries";
-
+import { DataStore, Predicates } from "aws-amplify";
+import { Reservation } from "../../src/models";
 
 export interface ScheduleScreenProps {
   navigation: any;
@@ -31,10 +30,12 @@ const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
+  const username = route?.params.username;
   const [selected, setSelected] = React.useState("");
   const [time, setTime] = React.useState(new Date());
   const [isModalVisible, setModal] = React.useState(false);
-  let schedule: string =
+
+  let schedule: string = // string to write on the modal
     "You are creating a slot on " +
     selected +
     " from " +
@@ -46,10 +47,78 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     ":" +
     (time.getMinutes() === 0 ? "00" : time.getMinutes());
 
-  function handleConfirm() {
+  let schedule_slot: string = //string to write to the database
+    selected +
+    "|" +
+    time.getHours() +
+    ":" +
+    (time.getMinutes() === 0 ? "00" : time.getMinutes()) +
+    " to " +
+    (time.getHours() + 2) +
+    ":" +
+    (time.getMinutes() === 0 ? "00" : time.getMinutes());
+
+  // SAVE SCHEDULE TO DATABASE
+  const saveSchedule = async (
+    pitch_name: string,
+    description: string,
+    pitchowner_name: string,
+    available_slots: [string],
+    hourly_price: number,
+    opening_hour: string,
+    closing_hour: string
+  ) => {
+    try {
+      await DataStore.save(
+        new Pitch2({
+          pitch_name: pitch_name,
+          description: description,
+          pitchowner_name: pitchowner_name,
+          available_slots: available_slots,
+          hourly_price: hourly_price,
+          opening_hour: opening_hour,
+          closing_hour: closing_hour,
+          username: "alp",
+        })
+      );
+      return console.log("Pitch saved successfully!");
+    } catch (error) {
+      return console.log("Error saving", error);
+    }
+  };
+
+  const readSchedule = async () => {
+    try {
+      let pitch = await DataStore.query(Pitch2);
+    } catch (error) {
+      console.log("Error retrieving data", error);
+    }
+  };
+  const deleteWholeTableEntries = async () => {
+    await DataStore.delete(Pitch2, Predicates.ALL);
+  };
+
+  async function handleConfirm() {
     setModal(false);
-    //store the information
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", "alp")
+    );
+    let updated_slots = pitch[0].available_slots!;
+    updated_slots = updated_slots.concat([schedule_slot]);
+    await DataStore.save(
+      Pitch2.copyOf(pitch[0], (updated) => {
+        updated.available_slots = updated_slots;
+      })
+    );
   }
+
+  //DELETE A SPECIFIC SCHEDULE
+  const handleDeleteSchedule = async (reservation_date: string) => {
+    await DataStore.delete(Reservation, (cond) =>
+      cond.reservation_date("eq", reservation_date)
+    );
+  };
+
   function handleCancel() {
     setModal(false);
   }

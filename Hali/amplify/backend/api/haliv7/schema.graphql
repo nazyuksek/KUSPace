@@ -1,9 +1,30 @@
+type MatchAnnounce @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  hour: String!
+  pitch_name: String!
+  number_of_attendees: Int
+  attendees_list: [String]
+  total_capacity: Int
+  announcement_name: String!
+}
+
+type Player @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  username: String
+  skill: Int
+  district: String
+  birthdate: String
+  reservations: [String]
+  email: String
+  pitches_played: [String]
+  realname: String
+}
+
 type Reservation @model @auth(rules: [{allow: private}]) {
   id: ID!
   pitch_id: String
   reserver_username: String
   reservation_date: String
-  price: Int
 }
 
 type Pitch2 @model @auth(rules: [{allow: owner, operations: [create, delete]}, {allow: private, operations: [read, update]}]) {
@@ -11,10 +32,18 @@ type Pitch2 @model @auth(rules: [{allow: owner, operations: [create, delete]}, {
   pitch_name: String!
   description: String
   pitchowner_name: String!
-  available_slots: String!
   hourly_price: Int!
   opening_hour: String!
   closing_hour: String!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-} 
+  createdAt: String!
+  updatedAt: String!
+  username: String
+  available_slots: [String]
+  city: String
+  district: String
+  province: String
+  address: String
+  email: String
+  rating: Int
+}
+ 

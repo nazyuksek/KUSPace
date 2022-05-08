@@ -51,7 +51,7 @@ const App = () => {
 
   // // to be fixed, detail is in function
   // addPlayerToMatchAnnounce("YZ12","Elvin Altintas");
- 
+
   // Mocked isAdmin boolean, It should be recieved from BE.
 
 
@@ -109,8 +109,8 @@ const App = () => {
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-   );
- }
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -158,8 +158,8 @@ const readDistrictQuery = async (district) => {
     const sariyer_players = await DataStore.query(Player, p => p.district("eq", district));
     //const sariyer_players = await DataStore.query(Player);
     console.log(
-    " players:",
-    JSON.stringify(sariyer_players, null, 2)
+      " players:",
+      JSON.stringify(sariyer_players, null, 2)
     );
   } catch (error) {
     console.log(district);
@@ -170,12 +170,12 @@ const readDistrictQuery = async (district) => {
 // predicate can be 'gt', 'eq', lt : >, <, =
 const readPlayerSkillQuery = async (pred, skillno) => {
   try {
-    console.log("pred is:"+pred);
+    console.log("pred is:" + pred);
     const players = await DataStore.query(Player, p => p.skill(pred, skillno));
-    console.log("Skillno: "+skillno);
+    console.log("Skillno: " + skillno);
     console.log(
-    "players:",
-    JSON.stringify(players, null, 2)
+      "players:",
+      JSON.stringify(players, null, 2)
     );
   } catch (error) {
     console.log("Error retrieving player skillno", error);
@@ -221,19 +221,20 @@ const readReservation = async () => {
 
 const saveMatchAnnounce = async () => {
   try {
-  await DataStore.save(
-    new MatchAnnounce({
-    hour: "18:00",
-    pitch_name: "Moda Stadyumu",
-    number_of_attendees: 10,
-    total_capacity: 14,
-    attendees_list: ["Simay Ozdemir", "Naz Yuksek"],
-    announcement_name:"YZ12"})
-  );
-  return (console.log("Match Announce saved successfully!"));
- } catch (error) {
-  return (console.log("Error saving Match Announce", error));
- }
+    await DataStore.save(
+      new MatchAnnounce({
+        hour: "18:00",
+        pitch_name: "Moda Stadyumu",
+        number_of_attendees: 10,
+        total_capacity: 14,
+        attendees_list: ["Simay Ozdemir", "Naz Yuksek"],
+        announcement_name: "YZ12"
+      })
+    );
+    return (console.log("Match Announce saved successfully!"));
+  } catch (error) {
+    return (console.log("Error saving Match Announce", error));
+  }
 }
 
 const readMatchAnnounce = async () => {
@@ -242,15 +243,15 @@ const readMatchAnnounce = async () => {
     console.log("MatchAnnounce retrieved successfully!", JSON.stringify(match_announce, null, 2));
   } catch (error) {
     console.log("Error retrieving MatchAnnounce", error);
-  }  
+  }
 }
 
 // This method pushes the current playername to the MAtch announce
 // Note updating attendees_list is not complete
-const addPlayerToMatchAnnounce  = async (announcement_name, player_name)  => {
-   try {
+const addPlayerToMatchAnnounce = async (announcement_name, player_name) => {
+  try {
     const original = await DataStore.query(MatchAnnounce, m => m.announcement_name("eq", announcement_name));
-    
+
     // fix adding player to attendees_list 
     const attendees_list_original = original[0].attendees_list;
     console.log(typeof attendees_list_original);
@@ -258,15 +259,15 @@ const addPlayerToMatchAnnounce  = async (announcement_name, player_name)  => {
     //
 
     await DataStore.save(
-          MatchAnnounce.copyOf(original, updated => {
-          updated.attendees_list = updated_list;
+      MatchAnnounce.copyOf(original, updated => {
+        updated.attendees_list = updated_list;
       })
     );
     console.log("MatchAnnounce updated successfully!");
     // update chosen announcement
   } catch (error) {
     console.log("Error updating MatchAnnounce", error);
-  }  
+  }
 }
 
 const deletePlayers = async () => {
@@ -277,7 +278,7 @@ const deletePlayers = async () => {
     console.log("Players deleted successfully!");
   } catch (error) {
     console.log("Error deleting players ", error);
-  }  
+  }
 }
 
 

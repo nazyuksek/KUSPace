@@ -12,35 +12,31 @@ import TextField from "../components/TextField";
 import Button from "../components/Button";
 import { useForm } from "react-hook-form";
 import { NavigationContainer } from "@react-navigation/native";
-import { Auth, DataStore } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import ConfirmEmailScreen from "./ConfirmEmailScreen";
 import { NavigationHelpersContext } from "@react-navigation/native";
 import { Image } from "react-native";
-import { Pitch2 } from "../src/models";
 
 const { width, height } = Dimensions.get("screen");
 
-export interface AdminSignUpProps {
+export interface SignUpProps {
   navigation: any;
 }
 
-const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
-
+const SignupScreen = ({ navigation }: SignUpProps) => {
   const { control, handleSubmit, watch } = useForm();
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
-  const [city, setCity] = React.useState("");
+  const [birthdate, setBirthdate] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const birthdate = "";
   const text_data = [email, birthdate, username, password, name, surname];
-  const flag = "admin";
-
+  const flag = "player";
 
   const onSignUpPressed = async () => {
-    const [email, , username, password, given_name, family_name] =
+    const [email, birthdate, username, password, given_name, family_name] =
       text_data;
     try {
       const response = await Auth.signUp({
@@ -49,7 +45,7 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
         attributes: { email, birthdate, given_name, family_name },
       });
 
-      navigation.navigate("ConfirmEmailScreen", { username , flag , email, birthdate, password, name, surname});
+      navigation.navigate("ConfirmEmailScreen", { username , flag });
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }
@@ -67,7 +63,7 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
       />
       <View style={styles.itemscontainer}>
         <Text style={styles.text}>HALI</Text>
-        <Text style={styles.subtext}>Manager Sign Up</Text>
+        <Text style={styles.subtext}>Sign Up!</Text>
         <TextField
           text={"Username"}
           style={{ marginTop: 15 }}
@@ -101,12 +97,12 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           value={surname}
         ></TextField>
         <TextField
-          text={"City"}
+          text={"Birthdate"}
           style={{ marginTop: 15 }}
-          textState={city}
-          setText={setCity}
+          textState={birthdate}
+          setText={setBirthdate}
           setSearch={setSearch}
-          value={city}
+          value={birthdate}
         ></TextField>
         <TextField
           text={"Password"}
@@ -178,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminSignupScreen;
+export default SignupScreen;

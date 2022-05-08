@@ -101,12 +101,12 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           value={surname}
         ></TextField>
         <TextField
-          text={"Birthdate"}
+          text={"City"}
           style={{ marginTop: 15 }}
-          textState={birthdate}
-          setText={setBirthdate}
+          textState={city}
+          setText={setCity}
           setSearch={setSearch}
-          value={birthdate}
+          value={city}
         ></TextField>
         <TextField
           text={"Password"}

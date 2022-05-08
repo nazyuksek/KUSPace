@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "haliv7",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-86b1f25b-eca3-4096-a5db-09a6ae95e40a/amplify/backend/api/haliv7/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-5982268d-e1be-44a6-8b41-a1eff3a7ef22/amplify/backend/api/haliv7/schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authhaliv7"

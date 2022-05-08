@@ -28,6 +28,7 @@ import { Reservation } from "./src/models";
 //import { initSchema } from "@aws-amplify/datastore";
 import BottomBarNavigator from "./navigation/BottomBarNavigator";
 import AdminBottomBar from "./navigation/AdminBottomBarNavigator";
+import PlayerSearch from "./screens/SearchScreens/PlayerSearch";
 
 Auth.configure(config);
 Amplify.configure(config);
@@ -52,10 +53,10 @@ const App = () => {
             headerShown: false,
           }}
         >
-          {/* <Stack.Screen
+          <Stack.Screen
             name="BottomBar"
             component={BottomBarNavigator}
-          ></Stack.Screen> */}
+          ></Stack.Screen>
           <Stack.Screen name="Landing" component={LandingPage}></Stack.Screen>
           <Stack.Screen name="AdminSignUp" component={AdminSignupScreen} />
           <Stack.Screen
@@ -85,6 +86,10 @@ const App = () => {
           <Stack.Screen
             name="SignUpChoices"
             component={SignUpChoices}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="PlayerSearch"
+            component={PlayerSearch}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
@@ -133,18 +138,18 @@ const readData = async () => {
 
 const saveReservation = async () => {
   try {
-  await DataStore.save(
-    new Reservation({
-    pitch_id: "1",
-    reserver_username:"Zeynep Dundar",
-    reservation_date: "10 August 2022 Monday 10:00",
-    price: 600,
-    })
-  );
-  return (console.log("Pitch saved successfully!"));
- } catch (error) {
-  return (console.log("Error saving", error));
- }
+    await DataStore.save(
+      new Reservation({
+        pitch_id: "1",
+        reserver_username: "Zeynep Dundar",
+        reservation_date: "10 August 2022 Monday 10:00",
+        price: 600,
+      })
+    );
+    return (console.log("Pitch saved successfully!"));
+  } catch (error) {
+    return (console.log("Error saving", error));
+  }
 }
 
 const readReservation = async () => {
@@ -153,6 +158,6 @@ const readReservation = async () => {
     console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
   } catch (error) {
     console.log("Error retrieving posts", error);
-  }  
+  }
 }
 export default App;

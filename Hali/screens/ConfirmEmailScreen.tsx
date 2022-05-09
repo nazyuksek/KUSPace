@@ -8,7 +8,7 @@ import { Auth } from "aws-amplify";
 import { NavigationContainer } from "@react-navigation/native";
 import { NavigationHelpersContext } from "@react-navigation/native";
 import { Image } from "react-native";
-import { Pitch2 } from "../src/models";
+import { Pitch2, Player } from "../src/models";
 import { DataStore, Predicates } from "aws-amplify";
 import { Reservation } from "../src/models";
 
@@ -18,33 +18,38 @@ export interface ConfirmEmailScreenProps {
 }
 
 const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
-  const username = route?.params?.username;
   const flag = route?.params?.flag;
+  const username = route?.params?.username;
+  const district = route?.params?.district;
   const email = route?.params?.email;
-  const birthdate = route?.params.birthdate;
   const name = route?.params.name + " " + route?.params.surname;
 
   // SAVE SCHEDULE TO DATABASE
-  const saveSchedule = async (
+  const savePitchAdmin = async (
     pitch_name: string,
-    description: string,
     pitchowner_name: string,
-    available_slots: [string],
     hourly_price: number,
     opening_hour: string,
-    closing_hour: string
+    closing_hour: string,
+    username: string,
+    city: string,
+    district: string,
+    province: string,
+    address: string
   ) => {
     try {
       await DataStore.save(
         new Pitch2({
           pitch_name: pitch_name,
-          description: description,
           pitchowner_name: pitchowner_name,
-          available_slots: available_slots,
           hourly_price: hourly_price,
           opening_hour: opening_hour,
           closing_hour: closing_hour,
           username: username,
+          city: city,
+          district: district,
+          province: province,
+          address: address,
         })
       );
       return console.log("Pitch saved successfully!");
@@ -53,15 +58,45 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
     }
   };
 
+  const savePlayer = async (
+    name: string,
+    email: string,
+    username: string,
+    birthdate: string,
+    district: string
+  ) => {
+    await DataStore.save(
+      new Player({
+        username: username,
+        district: district,
+        birthdate: birthdate,
+        email: email,
+        realname: name,
+      })
+    );
+  };
+
   const [code, setCode] = React.useState("");
   const [search, setSearch] = React.useState("");
   const onConfirmPressed = async (data: any) => {
     try {
       const response = await Auth.confirmSignUp(data.username, data.code);
       if (flag === "admin") {
-        //       saveSchedule();
+        savePitchAdmin(
+          route?.params?.pitchname,
+          name,
+          Number(route?.params?.price),
+          route?.params?.opening_hour,
+          route?.params?.closing_hour,
+          username,
+          route?.params?.city,
+          district,
+          route?.params?.province,
+          route?.params?.address
+        );
         navigation.navigate("AdminHome");
-      } else if (flag === "player") {
+      } else {
+        savePlayer(username, district, route?.params?.birthdate, email, name);
         navigation.navigate("PlayerHome");
       }
     } catch (e: any) {

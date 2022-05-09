@@ -9,7 +9,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import SignUpChoices from "./screens/SignUpChoices";
 import AdminSignupScreen from "./screens/AdminSignupScreen";
-import AdminLoginScreen from "./screens/AdminLoginScreen";
 import Amplify, { Auth, StorageClass } from "aws-amplify";
 import config from "./src/aws-exports";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
@@ -30,6 +29,8 @@ import { MatchAnnounce } from "./src/models";
 //import { initSchema } from "@aws-amplify/datastore";
 import BottomBarNavigator from "./navigation/BottomBarNavigator";
 import AdminBottomBar from "./navigation/AdminBottomBarNavigator";
+import AdminSignupScreen2 from "./screens/AdminSignupScreen2";
+import SignupScreen from "./screens/SignupScreen";
 
 Auth.configure(config);
 Amplify.configure(config);
@@ -66,19 +67,14 @@ const App = () => {
             headerShown: false,
           }}
         >
-          {/* <Stack.Screen
-            name="BottomBar"
-            component={BottomBarNavigator}
-          ></Stack.Screen> */}
           <Stack.Screen name="Landing" component={LandingPage}></Stack.Screen>
-          <Stack.Screen name="AdminSignUp" component={AdminSignupScreen} />
+          <Stack.Screen
+            name="AdminSignupScreen"
+            component={AdminSignupScreen}
+          />
           <Stack.Screen
             name="ConfirmEmailScreen"
             component={ConfirmEmailScreen}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Login"
-            component={AdminLoginScreen}
           ></Stack.Screen>
           <Stack.Screen
             name="ForgotPassword"
@@ -95,6 +91,14 @@ const App = () => {
           <Stack.Screen
             name="PlayerHome"
             component={BottomBarNavigator}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="AdminSignupScreen2"
+            component={AdminSignupScreen2}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="SignupScreen"
+            component={SignupScreen}
           ></Stack.Screen>
           <Stack.Screen
             name="SignUpChoices"
@@ -243,7 +247,7 @@ const readMatchAnnounce = async () => {
 
 // This method pushes the current playername to the Match announce
 // Note updating attendees_list is not complete
-const addPlayerToMatchAnnounce = async (
+const addPlayerToMatchAnnaounce = async (
   announcement_name: string,
   player_name: string
 ) => {
@@ -255,7 +259,13 @@ const addPlayerToMatchAnnounce = async (
     // fix adding player to attendees_list
     let updated_list = original[0].attendees_list!;
     updated_list.push(player_name);
-    //
+    let attendee_count = original[0].number_of_attendees! + 1;
+
+    await DataStore.save(
+      MatchAnnounce.copyOf(original[0], (updated) => {
+        updated.number_of_attendees = attendee_count;
+      })
+    );
 
     await DataStore.save(
       MatchAnnounce.copyOf(original[0], (updated) => {
@@ -269,11 +279,11 @@ const addPlayerToMatchAnnounce = async (
   }
 };
 
-const deletePlayers = async () => {
+const deletePlayers = async (player_name: string) => {
   try {
     // realnames: "Mehmet Yilmaz", "Ahmet Yilmaz", "Yilmaz Yilmaz"
     // usernames: dummy1, dummy2, dummy3
-    await DataStore.delete(Player, (p) => p.username("eq", "Mehmet Yilmaz"));
+    await DataStore.delete(Player, (p) => p.username("eq", player_name));
     console.log("Players deleted successfully!");
   } catch (error) {
     console.log("Error deleting players ", error);

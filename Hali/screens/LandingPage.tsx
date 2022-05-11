@@ -6,8 +6,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
 import Login from "../components/Login";
 import { Image } from "react-native";
-import { Auth } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 import { TextInput } from "react-native-gesture-handler";
+import { Pitch2 } from "../src/models";
 
 export interface LandingPageProps {
   navigation: any;
@@ -17,23 +18,34 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const onLoginAsManagerPress = () => {
-    navigation.navigate("Login");
-  };
+
   const onForgotPasswordPressed = () => {
     navigation.navigate("ForgotPassword");
   };
   const onNoaccountPressed = () => {
     navigation.navigate("SignUpChoices");
   };
+
   const onLoginPressed = async () => {
     try {
       const response = await Auth.signIn(username, password);
-      navigation.navigate("PlayerHome", { username});
+      if (await checkifAdmin(username)) {
+        navigation.navigate("AdminHome", { username });
+      } else {
+        navigation.navigate("PlayerHome", { username });
+      }
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
     }
   };
+
+  const checkifAdmin = async (username: string) => {
+    const response = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", username)
+    );
+    return response[0] !== null;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -45,7 +57,6 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
         <Text style={styles.subtext}>
           A platform that connects football players and football pitch managers!
         </Text>
-        <Text style={styles.logintext}>Login as Player:</Text>
         <TextField
           text={"username"}
           style={{}}
@@ -84,17 +95,10 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
           Forgot Password?
         </Text>
         <Text style={styles.orTitle}>OR</Text>
-        <Button
-          onPress={() => {
-            onLoginAsManagerPress();
-          }}
-          buttonText="Login as Manager"
-          style={{ marginTop: 10, backgroundColor: "rgb(231, 232, 230)" }}
-        ></Button>
         <Text
           style={{
             color: "darkslategrey",
-            fontSize: 12,
+            fontSize: 14,
             marginTop: 10,
           }}
           onPress={() => {

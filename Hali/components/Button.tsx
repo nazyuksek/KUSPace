@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   buttontext: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "700",
   },
 });

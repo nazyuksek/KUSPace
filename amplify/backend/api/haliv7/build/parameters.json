@@ -1,0 +1,14 @@
+{
+    "CreateAPIKey": 0,
+    "AppSyncApiName": "haliv7",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authhaliv7",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "S3DeploymentBucket": "amplify-haliv7-devv-145527-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/139f8eb46b7bad9b01e3146db1bbfb72ec439de4"
+}

@@ -1,0 +1,154 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-haliv7-devv-145527-authRole",
+      "UnauthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv7-devv-145527-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::493696846904:role/amplify-haliv7-devv-145527-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-haliv7-devv-145527-deployment",
+      "UnauthRoleName": "amplify-haliv7-devv-145527-unauthRole",
+      "StackName": "amplify-haliv7-devv-145527",
+      "StackId": "arn:aws:cloudformation:us-east-1:493696846904:stack/amplify-haliv7-devv-145527/b013c190-a844-11ec-96c2-0aed3deb3cf3",
+      "AmplifyAppId": "d3ejfhnu1qz2t3"
+    }
+  },
+  "auth": {
+    "haliv7": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "BIRTHDATE",
+          "GIVEN_NAME",
+          "FAMILY_NAME",
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "output": {
+        "CreatedSNSRole": "arn:aws:iam::493696846904:role/sns3b187b3f145527-devv",
+        "UserPoolId": "us-east-1_GsohljqvD",
+        "AppClientIDWeb": "69l7bfgdiblas0ueqs11psr5ts",
+        "AppClientID": "37r1daabobnp15dlj9vq96tfue",
+        "IdentityPoolId": "us-east-1:a6faa37e-0e81-4c99-b463-701d1af62495",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:493696846904:userpool/us-east-1_GsohljqvD",
+        "IdentityPoolName": "testAuthIdentityPool__devv",
+        "UserPoolName": "haliv7"
+      },
+      "lastPushTimeStamp": "2022-05-07T19:02:32.222Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-haliv7-devv-145527-deployment/amplify-cfn-templates/auth/haliv7-cloudformation-template.json",
+        "logicalId": "authhaliv7"
+      }
+    },
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "haliv7",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ],
+      "output": {
+        "footballersGroupRole": "arn:aws:iam::493696846904:role/us-east-1_GsohljqvD-footballersGroupRole",
+        "pitchOwnersGroupRole": "arn:aws:iam::493696846904:role/us-east-1_GsohljqvD-pitchOwnersGroupRole"
+      },
+      "lastPushTimeStamp": "2022-05-07T19:02:32.224Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-haliv7-devv-145527-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "logicalId": "authuserPoolGroups"
+      },
+      "userPoolGroups": {
+        "service": "Cognito-UserPool-Groups",
+        "providerPlugin": "awscloudformation",
+        "dependsOn": [
+          {
+            "category": "auth",
+            "resourceName": "haliv7",
+            "attributes": [
+              "UserPoolId",
+              "AppClientIDWeb",
+              "AppClientID",
+              "IdentityPoolId"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "storage": {
+    "s3haliv7storagec7751988": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "BucketName": "haliv7-storage-c7751988145527-devv",
+        "Region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2022-05-07T19:02:32.225Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-haliv7-devv-145527-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3haliv7storagec7751988"
+      }
+    }
+  },
+  "api": {
+    "haliv7": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authhaliv7"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "2hgup2o4jjhc7anblln2pox4ye",
+        "GraphQLAPIEndpointOutput": "https://n2umehdlxnhmpmoyrsbntsmfiy.appsync-api.us-east-1.amazonaws.com/graphql"
+      },
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "haliv7",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ],
+      "lastPushTimeStamp": "2022-05-07T19:02:32.293Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-haliv7-devv-145527-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apihaliv7"
+      },
+      "lastPushDirHash": "Pz2E0WrpIU4lK+YFRyfiiguAYRk="
+    }
+  }
+}

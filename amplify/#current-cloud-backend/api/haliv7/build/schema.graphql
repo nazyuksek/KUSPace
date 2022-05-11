@@ -1,0 +1,470 @@
+type MatchAnnounce @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  hour: String!
+  pitch_name: String!
+  number_of_attendees: Int
+  attendees_list: [String]
+  total_capacity: Int
+  announcement_name: String!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Player @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  username: String
+  skill: Int
+  district: String
+  birthdate: String
+  reservations: [String]
+  email: String
+  pitches_played: [String]
+  realname: String
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Reservation @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  pitch_id: String
+  reserver_username: String
+  reservation_date: String
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Pitch2 @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  pitch_name: String!
+  description: String
+  pitchowner_name: String!
+  hourly_price: Int!
+  opening_hour: String!
+  closing_hour: String!
+  createdAt: String!
+  updatedAt: String!
+  username: String
+  available_slots: [String]
+  city: String
+  district: String
+  province: String
+  address: String
+  email: String
+  rating: Int
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelMatchAnnounceConnection @aws_iam @aws_cognito_user_pools {
+  items: [MatchAnnounce]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelMatchAnnounceFilterInput {
+  id: ModelIDInput
+  hour: ModelStringInput
+  pitch_name: ModelStringInput
+  number_of_attendees: ModelIntInput
+  attendees_list: ModelStringInput
+  total_capacity: ModelIntInput
+  announcement_name: ModelStringInput
+  and: [ModelMatchAnnounceFilterInput]
+  or: [ModelMatchAnnounceFilterInput]
+  not: ModelMatchAnnounceFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getMatchAnnounce(id: ID!): MatchAnnounce @aws_iam @aws_cognito_user_pools
+  listMatchAnnounces(filter: ModelMatchAnnounceFilterInput, limit: Int, nextToken: String): ModelMatchAnnounceConnection @aws_iam @aws_cognito_user_pools
+  syncMatchAnnounces(filter: ModelMatchAnnounceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelMatchAnnounceConnection @aws_iam @aws_cognito_user_pools
+  getPlayer(id: ID!): Player @aws_iam @aws_cognito_user_pools
+  listPlayers(filter: ModelPlayerFilterInput, limit: Int, nextToken: String): ModelPlayerConnection @aws_iam @aws_cognito_user_pools
+  syncPlayers(filter: ModelPlayerFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPlayerConnection @aws_iam @aws_cognito_user_pools
+  getReservation(id: ID!): Reservation @aws_iam @aws_cognito_user_pools
+  listReservations(filter: ModelReservationFilterInput, limit: Int, nextToken: String): ModelReservationConnection @aws_iam @aws_cognito_user_pools
+  syncReservations(filter: ModelReservationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelReservationConnection @aws_iam @aws_cognito_user_pools
+  getPitch2(id: ID!): Pitch2 @aws_iam @aws_cognito_user_pools
+  listPitch2s(filter: ModelPitch2FilterInput, limit: Int, nextToken: String): ModelPitch2Connection @aws_iam @aws_cognito_user_pools
+  syncPitch2s(filter: ModelPitch2FilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPitch2Connection @aws_iam @aws_cognito_user_pools
+}
+
+input CreateMatchAnnounceInput {
+  id: ID
+  hour: String!
+  pitch_name: String!
+  number_of_attendees: Int
+  attendees_list: [String]
+  total_capacity: Int
+  announcement_name: String!
+  _version: Int
+}
+
+input UpdateMatchAnnounceInput {
+  id: ID!
+  hour: String
+  pitch_name: String
+  number_of_attendees: Int
+  attendees_list: [String]
+  total_capacity: Int
+  announcement_name: String
+  _version: Int
+}
+
+input DeleteMatchAnnounceInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createMatchAnnounce(input: CreateMatchAnnounceInput!, condition: ModelMatchAnnounceConditionInput): MatchAnnounce @aws_iam @aws_cognito_user_pools
+  updateMatchAnnounce(input: UpdateMatchAnnounceInput!, condition: ModelMatchAnnounceConditionInput): MatchAnnounce @aws_iam @aws_cognito_user_pools
+  deleteMatchAnnounce(input: DeleteMatchAnnounceInput!, condition: ModelMatchAnnounceConditionInput): MatchAnnounce @aws_iam @aws_cognito_user_pools
+  createPlayer(input: CreatePlayerInput!, condition: ModelPlayerConditionInput): Player @aws_iam @aws_cognito_user_pools
+  updatePlayer(input: UpdatePlayerInput!, condition: ModelPlayerConditionInput): Player @aws_iam @aws_cognito_user_pools
+  deletePlayer(input: DeletePlayerInput!, condition: ModelPlayerConditionInput): Player @aws_iam @aws_cognito_user_pools
+  createReservation(input: CreateReservationInput!, condition: ModelReservationConditionInput): Reservation @aws_iam @aws_cognito_user_pools
+  updateReservation(input: UpdateReservationInput!, condition: ModelReservationConditionInput): Reservation @aws_iam @aws_cognito_user_pools
+  deleteReservation(input: DeleteReservationInput!, condition: ModelReservationConditionInput): Reservation @aws_iam @aws_cognito_user_pools
+  createPitch2(input: CreatePitch2Input!, condition: ModelPitch2ConditionInput): Pitch2 @aws_iam @aws_cognito_user_pools
+  updatePitch2(input: UpdatePitch2Input!, condition: ModelPitch2ConditionInput): Pitch2 @aws_iam @aws_cognito_user_pools
+  deletePitch2(input: DeletePitch2Input!, condition: ModelPitch2ConditionInput): Pitch2 @aws_iam @aws_cognito_user_pools
+}
+
+input ModelMatchAnnounceConditionInput {
+  hour: ModelStringInput
+  pitch_name: ModelStringInput
+  number_of_attendees: ModelIntInput
+  attendees_list: ModelStringInput
+  total_capacity: ModelIntInput
+  announcement_name: ModelStringInput
+  and: [ModelMatchAnnounceConditionInput]
+  or: [ModelMatchAnnounceConditionInput]
+  not: ModelMatchAnnounceConditionInput
+}
+
+type Subscription {
+  onCreateMatchAnnounce: MatchAnnounce @aws_subscribe(mutations: ["createMatchAnnounce"]) @aws_iam @aws_cognito_user_pools
+  onUpdateMatchAnnounce: MatchAnnounce @aws_subscribe(mutations: ["updateMatchAnnounce"]) @aws_iam @aws_cognito_user_pools
+  onDeleteMatchAnnounce: MatchAnnounce @aws_subscribe(mutations: ["deleteMatchAnnounce"]) @aws_iam @aws_cognito_user_pools
+  onCreatePlayer: Player @aws_subscribe(mutations: ["createPlayer"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePlayer: Player @aws_subscribe(mutations: ["updatePlayer"]) @aws_iam @aws_cognito_user_pools
+  onDeletePlayer: Player @aws_subscribe(mutations: ["deletePlayer"]) @aws_iam @aws_cognito_user_pools
+  onCreateReservation: Reservation @aws_subscribe(mutations: ["createReservation"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReservation: Reservation @aws_subscribe(mutations: ["updateReservation"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReservation: Reservation @aws_subscribe(mutations: ["deleteReservation"]) @aws_iam @aws_cognito_user_pools
+  onCreatePitch2: Pitch2 @aws_subscribe(mutations: ["createPitch2"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePitch2: Pitch2 @aws_subscribe(mutations: ["updatePitch2"]) @aws_iam @aws_cognito_user_pools
+  onDeletePitch2: Pitch2 @aws_subscribe(mutations: ["deletePitch2"]) @aws_iam @aws_cognito_user_pools
+}
+
+type ModelPlayerConnection @aws_iam @aws_cognito_user_pools {
+  items: [Player]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPlayerFilterInput {
+  id: ModelIDInput
+  username: ModelStringInput
+  skill: ModelIntInput
+  district: ModelStringInput
+  birthdate: ModelStringInput
+  reservations: ModelStringInput
+  email: ModelStringInput
+  pitches_played: ModelStringInput
+  realname: ModelStringInput
+  and: [ModelPlayerFilterInput]
+  or: [ModelPlayerFilterInput]
+  not: ModelPlayerFilterInput
+}
+
+input CreatePlayerInput {
+  id: ID
+  username: String
+  skill: Int
+  district: String
+  birthdate: String
+  reservations: [String]
+  email: String
+  pitches_played: [String]
+  realname: String
+  _version: Int
+}
+
+input UpdatePlayerInput {
+  id: ID!
+  username: String
+  skill: Int
+  district: String
+  birthdate: String
+  reservations: [String]
+  email: String
+  pitches_played: [String]
+  realname: String
+  _version: Int
+}
+
+input DeletePlayerInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelPlayerConditionInput {
+  username: ModelStringInput
+  skill: ModelIntInput
+  district: ModelStringInput
+  birthdate: ModelStringInput
+  reservations: ModelStringInput
+  email: ModelStringInput
+  pitches_played: ModelStringInput
+  realname: ModelStringInput
+  and: [ModelPlayerConditionInput]
+  or: [ModelPlayerConditionInput]
+  not: ModelPlayerConditionInput
+}
+
+type ModelReservationConnection @aws_iam @aws_cognito_user_pools {
+  items: [Reservation]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelReservationFilterInput {
+  id: ModelIDInput
+  pitch_id: ModelStringInput
+  reserver_username: ModelStringInput
+  reservation_date: ModelStringInput
+  and: [ModelReservationFilterInput]
+  or: [ModelReservationFilterInput]
+  not: ModelReservationFilterInput
+}
+
+input CreateReservationInput {
+  id: ID
+  pitch_id: String
+  reserver_username: String
+  reservation_date: String
+  _version: Int
+}
+
+input UpdateReservationInput {
+  id: ID!
+  pitch_id: String
+  reserver_username: String
+  reservation_date: String
+  _version: Int
+}
+
+input DeleteReservationInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelReservationConditionInput {
+  pitch_id: ModelStringInput
+  reserver_username: ModelStringInput
+  reservation_date: ModelStringInput
+  and: [ModelReservationConditionInput]
+  or: [ModelReservationConditionInput]
+  not: ModelReservationConditionInput
+}
+
+type ModelPitch2Connection @aws_iam @aws_cognito_user_pools {
+  items: [Pitch2]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPitch2FilterInput {
+  id: ModelIDInput
+  pitch_name: ModelStringInput
+  description: ModelStringInput
+  pitchowner_name: ModelStringInput
+  hourly_price: ModelIntInput
+  opening_hour: ModelStringInput
+  closing_hour: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  username: ModelStringInput
+  available_slots: ModelStringInput
+  city: ModelStringInput
+  district: ModelStringInput
+  province: ModelStringInput
+  address: ModelStringInput
+  email: ModelStringInput
+  rating: ModelIntInput
+  and: [ModelPitch2FilterInput]
+  or: [ModelPitch2FilterInput]
+  not: ModelPitch2FilterInput
+}
+
+input CreatePitch2Input {
+  id: ID
+  pitch_name: String!
+  description: String
+  pitchowner_name: String!
+  hourly_price: Int!
+  opening_hour: String!
+  closing_hour: String!
+  createdAt: String
+  updatedAt: String
+  username: String
+  available_slots: [String]
+  city: String
+  district: String
+  province: String
+  address: String
+  email: String
+  rating: Int
+  _version: Int
+}
+
+input UpdatePitch2Input {
+  id: ID!
+  pitch_name: String
+  description: String
+  pitchowner_name: String
+  hourly_price: Int
+  opening_hour: String
+  closing_hour: String
+  createdAt: String
+  updatedAt: String
+  username: String
+  available_slots: [String]
+  city: String
+  district: String
+  province: String
+  address: String
+  email: String
+  rating: Int
+  _version: Int
+}
+
+input DeletePitch2Input {
+  id: ID!
+  _version: Int
+}
+
+input ModelPitch2ConditionInput {
+  pitch_name: ModelStringInput
+  description: ModelStringInput
+  pitchowner_name: ModelStringInput
+  hourly_price: ModelIntInput
+  opening_hour: ModelStringInput
+  closing_hour: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  username: ModelStringInput
+  available_slots: ModelStringInput
+  city: ModelStringInput
+  district: ModelStringInput
+  province: ModelStringInput
+  address: ModelStringInput
+  email: ModelStringInput
+  rating: ModelIntInput
+  and: [ModelPitch2ConditionInput]
+  or: [ModelPitch2ConditionInput]
+  not: ModelPitch2ConditionInput
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "groupName": "footballers",
+    "precedence": 1
+  },
+  {
+    "groupName": "pitchOwners",
+    "precedence": 2
+  }
+]

@@ -44,7 +44,7 @@ const App = () => {
   // saveMatchAnnounce();
   // saveReservation();
 
-  // readMatchAnnounce();
+  readMatchAnnounce();
   // readDataPlayer();
   // readDistrictQuery("Sariyer");
   // readDistrictQuery("Beylikduzu");
@@ -250,7 +250,7 @@ const readReservation = async () => {
   }
 };
 
-const saveMatchAnnounce = async () => {
+export const saveMatchAnnounce = async () => {
   try {
     await DataStore.save(
       new MatchAnnounce({
@@ -271,6 +271,7 @@ const saveMatchAnnounce = async () => {
 export const readMatchAnnounce = async () => {
   try {
     const match_announce = await DataStore.query(MatchAnnounce);
+    return match_announce;
     console.log(
       "MatchAnnounce retrieved successfully!",
       JSON.stringify(match_announce, null, 2)

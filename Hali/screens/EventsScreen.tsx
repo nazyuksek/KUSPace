@@ -1,8 +1,12 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
 import { StyleSheet, Image, View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Text } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { SearchBar } from 'react-native-elements';
+import { addPlayerToMatchAnnounce, readMatchAnnounce, saveMatchAnnounce } from '../App';
+import { MatchAnnounce } from '../src/models';
+import Button from '../components/Button';
 
 
 export interface EventsScreenProps {
@@ -10,11 +14,46 @@ export interface EventsScreenProps {
 }
 
 const EventsScreen = ({ navigation }: EventsScreenProps) => {
+    const [events, setEvents] = React.useState<MatchAnnounce[] | undefined>();
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const data = await readMatchAnnounce();
+            setEvents(data);
+        }
+        fetchData();
+    }, [events]);
 
+    const handlePlusIconClick = async (
+        announcement_name: string,
+        player_name: string
+    ) => {
+        const res = await addPlayerToMatchAnnounce(announcement_name, player_name);
+    }
+    const handleAddEventButtonClick = async () => {
+        const result = await saveMatchAnnounce();
+    }
     return (
         <SafeAreaView style={styles.container}>
-
-        </SafeAreaView >
+            <Image
+                style={styles.backgroundimage}
+                source={require("../assets/images/football.jpeg")}
+            />
+            <View style={styles.eventsView}>
+                {events?.map((el, i) => {
+                    return (
+                        <View key={i} style={styles.eventContainer}>
+                            <Text style={styles.resultText} key={i}>{el.announcement_name}</Text>
+                            <TouchableOpacity onPress={() => handlePlusIconClick(el.announcement_name, 'eldksşfjd')}>
+                                <Text style={styles.plusIcon}>+</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                })}
+            </View>
+            <View style={styles.buttonContainer}>
+                <Button buttonText='Add a New Event' onPress={handleAddEventButtonClick} style={styles.addEventButton}></Button>
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -43,38 +82,6 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
     },
-    subtext: {
-        textAlign: "center",
-        marginTop: 20,
-        fontSize: 16,
-        fontWeight: "500",
-        color: "white",
-        marginBottom: 20,
-    },
-    searchcontainer: {
-        backgroundColor: "rgba(255, 255, 255, 1)"
-    },
-    searchcontainerbackground: {
-        backgroundColor: "rgba(135, 211, 124, 1)"
-    },
-    buttons: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "1%"
-    },
-    button: {
-        backgroundColor: "rgba(255, 255, 255, 1)",
-        width: "45%"
-
-    },
-    buttonleft: {
-        backgroundColor: "rgba(255, 255, 255, 1)",
-        marginRight: "3%",
-        width: "45%"
-
-    },
     players: {
 
     },
@@ -82,8 +89,33 @@ const styles = StyleSheet.create({
         color: "#eeeeee",
         fontWeight: "600",
         marginTop: 8,
-        alignSelf: "center",
-        fontSize: 20
+        alignSelf: "flex-start",
+        fontSize: 20,
+    },
+    eventsView: {
+        padding: "5%"
+    },
+    eventContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 8
+
+    },
+    plusIcon: {
+        color: "#eeeeee",
+        fontWeight: "600",
+        fontSize: 24
+    },
+    buttonContainer: {
+        display: "flex",
+        alignContent: "center",
+        padding: "5%"
+    },
+    addEventButton: {
+        backgroundColor: "#ffffff",
+
     }
 });
 

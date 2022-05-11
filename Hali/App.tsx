@@ -32,6 +32,8 @@ import AdminBottomBar from "./navigation/AdminBottomBarNavigator";
 import PlayerSearch from "./screens/SearchScreens/PlayerSearch";
 import AdminSignupScreen2 from "./screens/AdminSignupScreen2";
 import SignupScreen from "./screens/SignupScreen";
+import FindFieldScreen from "./screens/BottomBarScreens/FindFieldScreen";
+import ReservationScreen from "./screens/ReservationScreen";
 
 Auth.configure(config);
 Amplify.configure(config);
@@ -39,7 +41,16 @@ Amplify.configure(config);
 const App = () => {
   savePlayerDataStore();
   savePitchAdmin(
-    'test', 'Mehmet', 10, '', '', '', '', 'Beylikduzu', '', 'dummy address'
+    "test",
+    "Mehmet",
+    10,
+    "",
+    "",
+    "",
+    "",
+    "Beylikduzu",
+    "",
+    "dummy address"
   );
   // saveMatchAnnounce();
   // saveReservation();
@@ -73,10 +84,6 @@ const App = () => {
             headerShown: false,
           }}
         >
-          <Stack.Screen
-            name="BottomBar"
-            component={BottomBarNavigator}
-          ></Stack.Screen>
           <Stack.Screen name="Landing" component={LandingPage}></Stack.Screen>
           <Stack.Screen
             name="AdminSignupScreen"
@@ -93,6 +100,10 @@ const App = () => {
           <Stack.Screen
             name="NewPassword"
             component={NewPasswordScreen}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Reservation"
+            component={ReservationScreen}
           ></Stack.Screen>
           <Stack.Screen
             name="AdminHome"
@@ -184,7 +195,9 @@ export const readPitchDistrictQuery = async (district: string) => {
   }
 };
 
-export const readUsernameQuery = async (username: string): Promise<Player[] | undefined> => {
+export const readUsernameQuery = async (
+  username: string
+): Promise<Player[] | undefined> => {
   try {
     const sariyer_players = await DataStore.query(Player, (p) =>
       p.username("eq", username)

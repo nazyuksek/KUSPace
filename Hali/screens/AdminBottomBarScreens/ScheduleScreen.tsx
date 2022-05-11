@@ -43,7 +43,7 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     ":" +
     (time.getMinutes() === 0 ? "00" : time.getMinutes()) +
     " to " +
-    (time.getHours() + 2) +
+    ((time.getHours() + 2) % 24) +
     ":" +
     (time.getMinutes() === 0 ? "00" : time.getMinutes());
 
@@ -78,13 +78,24 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
           hourly_price: hourly_price,
           opening_hour: opening_hour,
           closing_hour: closing_hour,
-          username: "alp",
+          username: username,
         })
       );
       return console.log("Pitch saved successfully!");
     } catch (error) {
       return console.log("Error saving", error);
     }
+  };
+
+  const deleteWholeSchedule = async () => {
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", username)
+    );
+    await DataStore.save(
+      Pitch2.copyOf(pitch[0], (updated) => {
+        updated.available_slots = [];
+      })
+    );
   };
 
   const readSchedule = async () => {
@@ -101,10 +112,15 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   async function handleConfirm() {
     setModal(false);
     const pitch = await DataStore.query(Pitch2, (cond) =>
-      cond.username("eq", "alp")
+      cond.username("eq", username)
     );
-    let updated_slots = pitch[0].available_slots!;
-    updated_slots = updated_slots.concat([schedule_slot]);
+    let updated_slots: any;
+    if (pitch[0].available_slots === undefined) {
+      updated_slots = [schedule_slot];
+    } else {
+      updated_slots = pitch[0].available_slots!;
+      updated_slots = updated_slots.concat([schedule_slot]);
+    }
     await DataStore.save(
       Pitch2.copyOf(pitch[0], (updated) => {
         updated.available_slots = updated_slots;

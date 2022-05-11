@@ -44,6 +44,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
           pitchowner_name: pitchowner_name,
           hourly_price: hourly_price,
           opening_hour: opening_hour,
+          available_slots: [],
           closing_hour: closing_hour,
           username: username,
           city: city,
@@ -94,7 +95,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
           route?.params?.province,
           route?.params?.address
         );
-        navigation.navigate("AdminHome");
+        navigation.navigate("AdminHome", { username });
       } else {
         savePlayer(username, district, route?.params?.birthdate, email, name);
         navigation.navigate("PlayerHome");

@@ -41,9 +41,12 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
 
   const checkifAdmin = async (username: string) => {
     const response = await DataStore.query(Pitch2, (cond) =>
-      cond.username("eq", username)
+      cond.username("contains", username)
     );
-    return response[0] !== null;
+    if (response[0] === undefined) {
+      return false;
+    }
+    return true;
   };
 
   return (

@@ -1,20 +1,44 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import ScheduleCalendar from "../../components/ScheduleCalendar";
+import ScheduleCalendar from "../components/ScheduleCalendar";
 import { DateData } from "react-native-calendars";
-import FieldBar from "../../components/FieldBar";
+import FieldBar from "../components/FieldBar";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { DataStore, Predicates } from "aws-amplify";
-import { Reservation, Pitch2 } from "../../src/models";
+import { Reservation, Pitch2 } from "../src/models";
 
-export interface FindFieldScreenProps {
+export interface ReservationScreenProps {
   route: any;
   navigation: any;
 }
 
-const FindFieldScreen = ({navigation, route }: FindFieldScreenProps) => {
+const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   const reserver_username = route?.params?.username;
   const pitch_username = route?.params?.pitch_username;
+  //TIME SLOT EXTRACTION
+  const extractTimeSlot = async () => {
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", pitch_username)
+    );
+    if (pitch[0].available_slots === undefined) {
+      return;
+    }
+    let slots = pitch[0].available_slots!;
+    slots.forEach((element) => {
+      addToMap(element!.split("|")[0], element!.split("|")[1]);
+    });
+  };
+
+  //ADD TO MAP
+  const addToMap = (key: string, value: string) => {
+    if (map.has(key)) {
+      map.set(key, map.get(key).concat([value]));
+    } else {
+      map.set(key, [value]);
+    }
+  };
+
+  extractTimeSlot();
   let map = new Map();
   const [time, setTime] = React.useState("");
   React.useEffect(() => {}, [time]);
@@ -46,10 +70,11 @@ const FindFieldScreen = ({navigation, route }: FindFieldScreenProps) => {
     );
     let updated_slots = pitch[0].available_slots!;
     const index = updated_slots.indexOf(reservation_date);
-    updated_slots.splice(index, 1);
+    let tmp = [...updated_slots];
+    tmp.splice(index, 1);
     await DataStore.save(
       Pitch2.copyOf(pitch[0], (updated) => {
-        updated.available_slots = updated_slots;
+        updated.available_slots = tmp;
       })
     );
   };
@@ -62,35 +87,12 @@ const FindFieldScreen = ({navigation, route }: FindFieldScreenProps) => {
     }
   };
 
-  //TIME SLOT EXTRACTION
-  const extractTimeSlot = async () => {
-    const pitch = await DataStore.query(Pitch2, (cond) =>
-      cond.username("eq", pitch_username)
-    );
-    let slots = pitch[0].available_slots!;
-    slots.forEach((element) => {
-      addToMap(element!.split("|")[0], element!.split("|")[1]);
-    });
-  };
-
-  //ADD TO MAP
-  const addToMap = (key: string, value: string) => {
-    if (map.has(key)) {
-      map.set(key, map.get(key).concat([value]));
-    } else {
-      map.set(key, [value]);
-    }
-  };
-
   const emptyData: string[] = [];
   const [marked, setMarked] = React.useState("");
   let reservation_date = "";
   const [dataState, setDataState] = React.useState(emptyData);
 
   function handleDayPress(date: string): void {
-    if (map.size === 0) {
-      extractTimeSlot();
-    }
     if (date === marked) {
       setMarked("");
       setDataState(emptyData);
@@ -156,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FindFieldScreen;
+export default ReservationScreen;

@@ -27,7 +27,7 @@ const BottomBar = ({ route }: BottomBarProps) => {
       <Tab.Screen
         name="Find Field"
         component={PitchSearch}
-        initialParams={{ username: route?.params?.username }}
+        initialParams={{ username: route?.params?.username}}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",

@@ -1,0 +1,16 @@
+{
+  "resourceName": "s3haliv7storagec7751988",
+  "bucketName": "haliv7-storage-c7751988",
+  "policyUUID": "a7c31e9b",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "DELETE",
+    "READ",
+    "CREATE_AND_UPDATE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

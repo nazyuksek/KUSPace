@@ -36,7 +36,10 @@ Auth.configure(config);
 Amplify.configure(config);
 
 const App = () => {
-  // savePlayerDataStore();
+  savePlayerDataStore();
+  savePitchAdmin(
+    'test', 'Mehmet', 10, '', '', '', '', 'Beylikduzu', '', 'dummy address'
+  );
   // saveMatchAnnounce();
   // saveReservation();
 
@@ -49,7 +52,7 @@ const App = () => {
   // readData();
 
   // // to be fixed, detail is in function
-  // addPlayerToMatchAnnounce("YZ12","Elvin Altintas");
+  addPlayerToMatchAnnounce("YZ12", "Elvin Altintas");
 
   // Mocked isAdmin boolean, It should be recieved from BE.
 
@@ -103,10 +106,6 @@ const App = () => {
             name="SignUpChoices"
             component={SignUpChoices}
           ></Stack.Screen>
-          <Stack.Screen
-            name="PlayerSearch"
-            component={PlayerSearch}
-          ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -152,15 +151,40 @@ const readData = async () => {
   }
 };
 
-const readDistrictQuery = async (district: string) => {
+export const readDistrictQuery = async (district: string) => {
   try {
     const sariyer_players = await DataStore.query(Player, (p) =>
       p.district("eq", district)
     );
     //const sariyer_players = await DataStore.query(Player);
-    console.log(" players:", JSON.stringify(sariyer_players, null, 2));
+    return sariyer_players;
   } catch (error) {
     console.log(district);
+    console.log("Error retrieving player", error);
+  }
+};
+
+export const readPitchDistrictQuery = async (district: string) => {
+  try {
+    const pitches = await DataStore.query(Pitch2, (p) =>
+      p.district("eq", district)
+    );
+    return pitches;
+  } catch (error) {
+    console.log(district);
+    console.log("Error retrieving player", error);
+  }
+};
+
+export const readUsernameQuery = async (username: string): Promise<Player[] | undefined> => {
+  try {
+    const sariyer_players = await DataStore.query(Player, (p) =>
+      p.username("eq", username)
+    );
+    return sariyer_players;
+    //const sariyer_players = await DataStore.query(Player);
+    //console.log(" players:", JSON.stringify(sariyer_players, null, 2));
+  } catch (error) {
     console.log("Error retrieving player", error);
   }
 };
@@ -236,7 +260,7 @@ const saveMatchAnnounce = async () => {
   }
 };
 
-const readMatchAnnounce = async () => {
+export const readMatchAnnounce = async () => {
   try {
     const match_announce = await DataStore.query(MatchAnnounce);
     console.log(
@@ -250,7 +274,7 @@ const readMatchAnnounce = async () => {
 
 // This method pushes the current playername to the Match announce
 // Note updating attendees_list is not complete
-const addPlayerToMatchAnnounce = async (
+export const addPlayerToMatchAnnounce = async (
   announcement_name: string,
   player_name: string
 ) => {
@@ -261,9 +285,8 @@ const addPlayerToMatchAnnounce = async (
 
     // fix adding player to attendees_list
     let updated_list = original[0].attendees_list!;
-    updated_list.push(player_name);
+    updated_list = updated_list.concat(player_name);
     //
-
     await DataStore.save(
       MatchAnnounce.copyOf(original[0], (updated) => {
         updated.attendees_list = updated_list;
@@ -284,6 +307,39 @@ const deletePlayers = async () => {
     console.log("Players deleted successfully!");
   } catch (error) {
     console.log("Error deleting players ", error);
+  }
+};
+
+const savePitchAdmin = async (
+  pitch_name: string,
+  pitchowner_name: string,
+  hourly_price: number,
+  opening_hour: string,
+  closing_hour: string,
+  username: string,
+  city: string,
+  district: string,
+  province: string,
+  address: string
+) => {
+  try {
+    await DataStore.save(
+      new Pitch2({
+        pitch_name: pitch_name,
+        pitchowner_name: pitchowner_name,
+        hourly_price: hourly_price,
+        opening_hour: opening_hour,
+        closing_hour: closing_hour,
+        username: username,
+        city: city,
+        district: district,
+        province: province,
+        address: address,
+      })
+    );
+    return console.log("Pitch saved successfully!");
+  } catch (error) {
+    return console.log("Error saving", error);
   }
 };
 

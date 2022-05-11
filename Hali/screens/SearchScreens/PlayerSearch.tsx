@@ -4,6 +4,9 @@ import { Searchbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SearchBar } from 'react-native-elements';
 import { Text } from '../../components/Themed';
+import Button from '../../components/Button';
+import { readDistrictQuery, readUsernameQuery } from '../../App';
+import { Player } from '../../src/models';
 
 
 export interface PlayerSearchProps {
@@ -12,9 +15,21 @@ export interface PlayerSearchProps {
 
 const PlayerSearch = ({ navigation }: PlayerSearchProps) => {
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [players, setPlayers] = React.useState<Player[] | null>();
     const updateSearch = (search: string) => {
         setSearchQuery(search);
     };
+    const handleDistrictClick = async () => {
+        const result = await readDistrictQuery(searchQuery);
+        setPlayers(null);
+        setPlayers(result);
+    }
+    const handleUsernameClick = async () => {
+        const result = await readUsernameQuery(searchQuery);
+        setPlayers(null);
+        setPlayers(result);
+
+    }
     return (
         <SafeAreaView style={styles.container}>
             <Image
@@ -29,9 +44,17 @@ const PlayerSearch = ({ navigation }: PlayerSearchProps) => {
                     platform={"ios" || "android"}
                     inputContainerStyle={styles.searchcontainer}
                     containerStyle={styles.searchcontainerbackground}
+                    autoCapitalize="none"
                 />
             </View>
-        </SafeAreaView>
+            <View style={styles.buttons}>
+                <Button buttonText='Search by District' onPress={handleDistrictClick} style={styles.buttonleft}></Button>
+                <Button buttonText='Search by Username' onPress={handleUsernameClick} style={styles.button}></Button>
+            </View>
+            <View style={styles.players}>
+                {players?.map((el, i) => <Text style={styles.resultText} key={i}>{el.realname}</Text>)}
+            </View>
+        </SafeAreaView >
     );
 }
 
@@ -69,10 +92,38 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     searchcontainer: {
-        backgroundColor: "rgba(135, 211, 124, 1)"
+        backgroundColor: "rgba(255, 255, 255, 1)"
     },
     searchcontainerbackground: {
         backgroundColor: "rgba(135, 211, 124, 1)"
+    },
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1%"
+    },
+    button: {
+        backgroundColor: "rgba(255, 255, 255, 1)",
+        width: "45%"
+
+    },
+    buttonleft: {
+        backgroundColor: "rgba(255, 255, 255, 1)",
+        marginRight: "3%",
+        width: "45%"
+
+    },
+    players: {
+
+    },
+    resultText: {
+        color: "#eeeeee",
+        fontWeight: "600",
+        marginTop: 8,
+        alignSelf: "center",
+        fontSize: 20
     }
 });
 

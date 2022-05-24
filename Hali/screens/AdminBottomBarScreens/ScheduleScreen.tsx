@@ -20,43 +20,88 @@ import SimpleModal from "../../components/SimpleModal";
 import { Pitch2 } from "../../src/models";
 import { DataStore, Predicates } from "aws-amplify";
 import { Reservation } from "../../src/models";
+import FieldBar from "../../components/FieldBar";
+import TimeField from "../../components/TimeField";
 
 export interface ScheduleScreenProps {
   navigation: any;
   date: DateData;
   route: any;
 }
-const width = Dimensions.get("window").width;
+const width = Dimensions.get("screen").width;
 const height = Dimensions.get("window").height;
 
 const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   const username = route?.params.username;
   const [selected, setSelected] = React.useState("");
-  const [time, setTime] = React.useState(new Date());
+  const [time, setTime] = React.useState<string>("");
+  const [validTime, setValidTime] = React.useState<boolean>(true);
+  const [time2, setTime2] = React.useState<string>("");
   const [isModalVisible, setModal] = React.useState(false);
+  const handleTimeValueReady = (isValid: boolean, updated: string): void => {
+    setTime(updated);
+    setValidTime(isValid);
+  };
+  let map = new Map();
 
-  let schedule: string = // string to write on the modal
-    "You are creating a slot on " +
+  //TIME SLOT EXTRACTION
+  const extractTimeSlot = async () => {
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", username)
+    );
+    if (pitch[0].available_slots === undefined) {
+      return;
+    }
+    let slots = pitch[0].available_slots!;
+    slots.forEach((element) => {
+      addToMap(element!.split("|")[0], element!.split("|")[1]);
+    });
+  };
+
+  //ADD TO MAP
+  const addToMap = (key: string, value: string) => {
+    if (map.has(key)) {
+      map.set(key, map.get(key).concat([value]));
+    } else {
+      map.set(key, [value]);
+    }
+  };
+
+  extractTimeSlot();
+  function checkSlotAvailability(startTime: Number, finishTime: Number) {
+    var isavailable = true;
+    let scheduled_slots = map.get(selected);
+    if (scheduled_slots !== undefined) {
+      scheduled_slots.forEach((x: string) => {
+        let number1 = x.split(" ")[0];
+        let number2 = x.split(" ")[1];
+        let num1 = Number(number1.replace(":", ""));
+        let num2 = Number(number2.replace(":", ""));
+        if (
+          (startTime > num1 && startTime < num2) ||
+          (finishTime > num1 && finishTime < num2)
+        ) {
+          //if range is full slot will not be available
+          isavailable = false;
+        }
+      });
+    }
+    return isavailable;
+  }
+
+  const handleTimeValueReady2 = (isValid: boolean, updated: string): void => {
+    setTime2(updated);
+    setValidTime(isValid);
+  };
+  let schedule: string =
+    "You are creating a slot on " + // string to write on the modal
     selected +
     " from " +
-    time.getHours() +
-    ":" +
-    (time.getMinutes() === 0 ? "00" : time.getMinutes()) +
+    time +
     " to " +
-    ((time.getHours() + 2) % 24) +
-    ":" +
-    (time.getMinutes() === 0 ? "00" : time.getMinutes());
+    time2;
 
-  let schedule_slot: string = //string to write to the database
-    selected +
-    "|" +
-    time.getHours() +
-    ":" +
-    (time.getMinutes() === 0 ? "00" : time.getMinutes()) +
-    " to " +
-    (time.getHours() + 2) +
-    ":" +
-    (time.getMinutes() === 0 ? "00" : time.getMinutes());
+  let schedule_slot: string = selected + "|" + time + " " + time2; //string to write to the database
 
   // SAVE SCHEDULE TO DATABASE
   const saveSchedule = async (
@@ -109,6 +154,19 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     await DataStore.delete(Pitch2, Predicates.ALL);
   };
 
+  async function deleteAvailableSlots() {
+    const original = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", username)
+    );
+    let updated_slots = original[0].available_slots!;
+
+    await DataStore.save(
+      Pitch2.copyOf(original[0], (updated) => {
+        updated.available_slots = [];
+      })
+    );
+  }
+
   async function handleConfirm() {
     setModal(false);
     const pitch = await DataStore.query(Pitch2, (cond) =>
@@ -145,25 +203,36 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     }
     setSelected(day);
   }
-  function handleTimeChange(
-    event: DateTimePickerEvent,
-    selecteddate: Date | undefined
-  ) {
-    const currentlySelected = selecteddate! || time;
-    setTime(currentlySelected);
-  }
 
   function handleCreatePressed() {
     if (selected === "") {
       Alert.alert("Date cannot be empty! Select a date");
       return;
     }
-    setModal(true);
+    if (
+      !checkSlotAvailability(
+        Number(time.replace(":", "")),
+        Number(time2.replace(":", ""))
+      )
+    ) {
+      Alert.alert(
+        "The slot you chose is already scheduled! Choose another slot"
+      );
+      return;
+    } else {
+      setModal(true);
+    }
   }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
-        <View style={{ width: "100%", alignItems: "center", height: 300 }}>
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            height: 300,
+          }}
+        >
           <Text
             style={{
               marginTop: 10,
@@ -187,56 +256,63 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
               },
             }}
           ></ScheduleCalendar>
-        </View>
-        <View style={{ width: "100%", alignItems: "center", marginTop: 50 }}>
-          <DateTimePicker
-            textColor="darkslateblue"
+          <View
             style={{
-              width: "95%",
-              height: 250,
+              marginTop: 15,
+              marginLeft: 30,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
             }}
-            value={time}
-            mode={"time"}
-            onChange={(event, date) => handleTimeChange(event, date)}
-            display={"spinner"}
-            minuteInterval={30}
-          ></DateTimePicker>
-        </View>
-        <View
-          style={{
-            width: "95%",
-            justifyContent: "flex-end",
-            flex: 1,
-          }}
-        >
+          >
+            <Text style={styles.subtext}>Please enter start time:</Text>
+            <TimeField
+              style={{}}
+              onTimeValueReady={handleTimeValueReady}
+              givenTime={time}
+            ></TimeField>
+          </View>
+          <View
+            style={{
+              marginTop: 30,
+              marginLeft: 30,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Text style={styles.subtext}>Please enter finish time:</Text>
+            <TimeField
+              style={{}}
+              onTimeValueReady={handleTimeValueReady2}
+              givenTime={time2}
+            ></TimeField>
+          </View>
+
           <Button
-            style={styles.button}
-            textStyle={styles.buttontext}
-            onPress={() => handleCreatePressed()}
+            onPress={handleCreatePressed}
             buttonText={"+"}
+            textStyle={{ fontSize: 48, color: "white" }}
+            style={styles.button}
           ></Button>
+
+          <Modal
+            style={{}}
+            visible={isModalVisible}
+            animationType={"fade"}
+            transparent={true}
+            onRequestClose={() => {
+              setModal(false);
+            }}
+          >
+            <SimpleModal
+              handleCancel={handleCancel}
+              handleConfirm={handleConfirm}
+              Headertext={"Schedule Confirmation"}
+              text={schedule}
+            ></SimpleModal>
+          </Modal>
         </View>
-        <Modal
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          visible={isModalVisible}
-          animationType={"fade"}
-          transparent={true}
-          onRequestClose={() => {
-            setModal(false);
-          }}
-        >
-          <SimpleModal
-            handleCancel={handleCancel}
-            handleConfirm={handleConfirm}
-            Headertext={"Schedule Confirmation"}
-            text={schedule}
-          ></SimpleModal>
-        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -251,6 +327,7 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flex: 1,
+    width: "100%",
     backgroundColor: "white",
   },
   itemscontainer: {
@@ -261,17 +338,26 @@ const styles = StyleSheet.create({
   },
   subtext: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "500",
-    color: "white",
+    color: "darkslateblue",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
+
   button: {
-    alignSelf: "flex-end",
-    marginBottom: 10,
     backgroundColor: "rgba(135, 211, 124, 1)",
-    width: 90,
-    height: 90,
+    width: 80,
+    height: 80,
     alignItems: "center",
+    marginRight: 10,
+    alignSelf: "flex-end",
+    marginTop: height * 0.178,
     justifyContent: "center",
     borderRadius: 50,
     padding: 10,
@@ -280,11 +366,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-  },
-  buttontext: {
-    color: "darkslateblue",
-    fontSize: 48,
-    fontWeight: "500",
   },
 });
 

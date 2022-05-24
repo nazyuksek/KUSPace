@@ -58,13 +58,6 @@ const styles = StyleSheet.create({
   modal: {
     borderRadius: 10,
     shadowColor: "mintcream",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
     height: height_modal,
     width: width - 80,
     paddingTop: 10,
@@ -75,6 +68,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
     color: "darkslateblue",
     marginTop: 5,
     fontSize: 16,

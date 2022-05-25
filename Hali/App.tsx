@@ -37,39 +37,8 @@ import ReservationScreen from "./screens/ReservationScreen";
 
 Auth.configure(config);
 Amplify.configure(config);
-
 const App = () => {
-  savePlayerDataStore();
-  savePitchAdmin(
-    "test",
-    "Mehmet",
-    10,
-    "",
-    "",
-    "",
-    "",
-    "Beylikduzu",
-    "",
-    "dummy address"
-  );
-  // saveMatchAnnounce();
-  // saveReservation();
-
-  readMatchAnnounce();
-  // readDataPlayer();
-  // readDistrictQuery("Sariyer");
-  // readDistrictQuery("Beylikduzu");
-  // readPlayerSkillQuery("eq", 2);
-  // readReservation();
-  // readData();
-
-  // // to be fixed, detail is in function
-  addPlayerToMatchAnnounce("YZ12", "Elvin Altintas");
-
-  // Mocked isAdmin boolean, It should be recieved from BE.
-
-  // Mocked isAdmin boolean, It should be recieved from BE.
-
+  let pitch_dists = getNearPitchesByDistance(200, "Sariyer");
   const isAdmin: Boolean = true; // because we don't yet receive this data I changed it temporarily Simay
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -131,6 +100,49 @@ const App = () => {
   }
 };
 
+
+export const getNearPitchesByDistance = async (dist:number, user_city:string) => {
+
+ var pitch_dists = new Map<string, number>();
+ var returned_pitch_dists = new Map<[string, string], number>();
+ var dist1 = getDistanceByCity(user_city);
+ var pitches = await readPitches()
+ var dist_threshold = 500;
+
+ for (var p of pitches) {
+    var dist2 = getDistanceByCity(p.district); // prints values: 10, 20, 30, 40
+    console.log("Is p.district as a key exists: ", !pitch_dists.has(p.district));
+    if (!pitch_dists.has(p.district)){
+      console.log("No district exists, go!");
+      var diff = Math.abs(dist1 - dist2);
+      if (diff < dist_threshold){
+        let pitch_tuple: [string, string] = [p.pitch_name, p.district];
+        pitch_dists.set(p.district, dist2);
+        returned_pitch_dists.set(pitch_tuple, diff);
+      }else{
+        console.log("Duplicate key!");
+      }
+    }
+ }
+
+  for (let value of returned_pitch_dists.keys()) {  
+        console.log("Map Keys = " +value);      
+      } 
+
+
+  return returned_pitch_dists;
+};
+
+
+export const readPitches = async (): Promise <Pitch2[] | undefined> => {
+   try {
+    const posts = await DataStore.query(Pitch2);
+    return posts;
+  } catch (error) {
+    console.log("Error retrieving pitches", error);
+  }
+}
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -161,10 +173,8 @@ const savePlayerDataStore = async () => {
 const readData = async () => {
   try {
     const posts = await DataStore.query(Pitch2);
-    console.log(
-      "Posts retrieved successfully!",
-      JSON.stringify(posts, null, 2)
-    );
+   console.log("Post: ", posts[0].district);
+
   } catch (error) {
     console.log("Error retrieving posts", error);
   }
@@ -227,10 +237,11 @@ const readPlayerSkillQuery = async (pred: any, skillno: number) => {
 const readDataPlayer = async () => {
   try {
     const posts = await DataStore.query(Player);
-    console.log(
-      "Player retrieved successfully!",
-      JSON.stringify(posts, null, 2)
-    );
+    // console.log(
+    //   "Player retrieved successfully!",
+    //   JSON.stringify(posts, null, 2)
+    // );
+    console.log("Type of player data:", typeof(posts))
   } catch (error) {
     console.log("Error retrieving players", error);
   }
@@ -349,6 +360,7 @@ const savePitchAdmin = async (
   province: string,
   address: string
 ) => {
+
   try {
     await DataStore.save(
       new Pitch2({
@@ -369,5 +381,17 @@ const savePitchAdmin = async (
     return console.log("Error saving", error);
   }
 };
+
+function getDistanceByCity(city:string): number  {
+  var dist_list = new Map<string, number>();
+  dist_list.set("Sariyer", 0);
+  dist_list.set("Beylikduzu", 450);
+  dist_list.set("Kadikoy", 300);
+  return dist_list.get(city);
+};
+
+
+
+
 
 export default App;

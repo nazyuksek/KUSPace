@@ -6,10 +6,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
 import FindPlayerScreen from "../screens/BottomBarScreens/FindPlayerScreen";
 import FindFieldScreen from "../screens/BottomBarScreens/FindFieldScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import PlayerSearch from "../screens/SearchScreens/PlayerSearch";
 import PitchSearch from "../screens/SearchScreens/PitchSearch";
 import EventsScreen from "../screens/EventsScreen";
+import ProfileContainer from "../screens/ProfileScreenContainers/ProfileContainer";
 
 export interface BottomBarProps {
   route: any;
@@ -81,7 +81,8 @@ const BottomBar = ({ route }: BottomBarProps) => {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileContainer}
+        initialParams={{ username: route?.params?.username}}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",

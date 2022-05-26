@@ -36,14 +36,18 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   const [selected, setSelected] = React.useState("");
   const [time, setTime] = React.useState<string>("");
   const [validTime, setValidTime] = React.useState<boolean>(true);
+  const [validTime2, setValidTime2] = React.useState<boolean>(true);
   const [time2, setTime2] = React.useState<string>("");
   const [isModalVisible, setModal] = React.useState(false);
+  const [componentErrorText, setComponentErrorText] = React.useState<string>(
+    "Enter a valid time!"
+  );
+  var isErrorTextVisible = true;
   const handleTimeValueReady = (isValid: boolean, updated: string): void => {
     setTime(updated);
     setValidTime(isValid);
   };
   let map = new Map();
-
   //TIME SLOT EXTRACTION
   const extractTimeSlot = async () => {
     const pitch = await DataStore.query(Pitch2, (cond) =>
@@ -91,7 +95,7 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
 
   const handleTimeValueReady2 = (isValid: boolean, updated: string): void => {
     setTime2(updated);
-    setValidTime(isValid);
+    setValidTime2(isValid);
   };
   let schedule: string =
     "You are creating a slot on " + // string to write on the modal
@@ -256,39 +260,42 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
               },
             }}
           ></ScheduleCalendar>
-          <View
-            style={{
-              marginTop: 15,
-              marginLeft: 30,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
+          <View style={styles.timeField}>
             <Text style={styles.subtext}>Please enter start time:</Text>
-            <TimeField
-              style={{}}
-              onTimeValueReady={handleTimeValueReady}
-              givenTime={time}
-            ></TimeField>
+            <View
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TimeField
+                style={{}}
+                onTimeValueReady={handleTimeValueReady}
+                givenTime={time}
+              ></TimeField>
+              {isErrorTextVisible && (
+                <Text style={styles.errorText}>
+                  {validTime ? "" : componentErrorText}
+                </Text>
+              )}
+            </View>
           </View>
-          <View
-            style={{
-              marginTop: 30,
-              marginLeft: 30,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
+          <View style={styles.timeField}>
             <Text style={styles.subtext}>Please enter finish time:</Text>
-            <TimeField
-              style={{}}
-              onTimeValueReady={handleTimeValueReady2}
-              givenTime={time2}
-            ></TimeField>
+            <View style={styles.errorText}>
+              <TimeField
+                style={{}}
+                onTimeValueReady={handleTimeValueReady2}
+                givenTime={time2}
+              ></TimeField>
+              {isErrorTextVisible && (
+                <Text style={styles.errorText}>
+                  {validTime2 ? "" : componentErrorText}
+                </Text>
+              )}
+            </View>
           </View>
-
           <Button
             onPress={handleCreatePressed}
             buttonText={"+"}
@@ -319,11 +326,6 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
 };
 
 const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    fontSize: 48,
-    fontWeight: "900",
-  },
   container: {
     display: "flex",
     flex: 1,
@@ -335,6 +337,25 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     alignItems: "center",
+  },
+  text: {
+    color: "white",
+    fontSize: 48,
+    fontWeight: "900",
+  },
+  errorText: {
+    marginTop: 8,
+    textAlign: "center",
+    color: "red",
+    fontSize: 12,
+    fontWeight: "700",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   subtext: {
     textAlign: "center",
@@ -357,7 +378,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 10,
     alignSelf: "flex-end",
-    marginTop: height * 0.178,
+    marginTop: height * 0.14,
     justifyContent: "center",
     borderRadius: 50,
     padding: 10,
@@ -366,6 +387,13 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
+  },
+  timeField: {
+    marginTop: 15,
+    marginLeft: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
 });
 

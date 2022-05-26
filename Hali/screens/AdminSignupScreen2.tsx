@@ -29,8 +29,8 @@ const AdminSignupScreen2 = ({ navigation, route }: AdminSignUp2Props) => {
   const email = route?.params.email;
   const username = route?.params.username;
   const password = route?.params.password;
-  const given_name = route?.params.given_name;
-  const family_name = route?.params.family_name;
+  const given_name = route?.params.name;
+  const family_name = route?.params.surname;
   const pitchname = route?.params.pitchname;
 
   const { control, handleSubmit, watch } = useForm();
@@ -143,7 +143,6 @@ const AdminSignupScreen2 = ({ navigation, route }: AdminSignUp2Props) => {
           setText={setProvince}
           setSearch={setSearch}
           value={province}
-          password={true}
         ></TextField>
         <TextField
           text={"Address"}

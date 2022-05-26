@@ -118,8 +118,8 @@ const SignupScreen = ({ navigation }: SignUpProps) => {
           text={"District"}
           style={{ marginTop: 15 }}
           textState={district}
-          setText={setBirthdate}
-          setSearch={setDist}
+          setText={setDist}
+          setSearch={setSearch}
           value={district}
         ></TextField>
         <TextField

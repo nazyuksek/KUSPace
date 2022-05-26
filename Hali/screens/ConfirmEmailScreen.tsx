@@ -22,7 +22,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
   const username = route?.params?.username;
   const district = route?.params?.district;
   const email = route?.params?.email;
-  const name = route?.params.name + " " + route?.params.surname;
+  const name = route?.params?.given_name + " " + route?.params?.family_name;
 
   // SAVE SCHEDULE TO DATABASE
   const savePitchAdmin = async (
@@ -33,6 +33,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
     closing_hour: string,
     username: string,
     city: string,
+    email: string,
     district: string,
     province: string,
     address: string
@@ -48,6 +49,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
           closing_hour: closing_hour,
           username: username,
           city: city,
+          email: email,
           district: district,
           province: province,
           address: address,
@@ -91,6 +93,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
           route?.params?.closing_hour,
           username,
           route?.params?.city,
+          email,
           district,
           route?.params?.province,
           route?.params?.address

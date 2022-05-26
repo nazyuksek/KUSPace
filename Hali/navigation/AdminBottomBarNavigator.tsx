@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
 import DisplayScheduleScreen from "../screens/AdminBottomBarScreens/DisplayScheduleScreen";
 import ScheduleScreen from "../screens/AdminBottomBarScreens/ScheduleScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import AdminProfileContainer from "../screens/ProfileScreenContainers/AdminProfileContainer";
 
 export interface AdminBottomBarProps {
   route: any;
@@ -24,6 +24,7 @@ const AdminBottomBar = ({ route }: AdminBottomBarProps) => {
       <Tab.Screen
         name="Display Schedule"
         component={DisplayScheduleScreen}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -60,7 +61,8 @@ const AdminBottomBar = ({ route }: AdminBottomBarProps) => {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={AdminProfileContainer}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -80,6 +82,7 @@ const AdminBottomBar = ({ route }: AdminBottomBarProps) => {
       <Tab.Screen
         name="Settings"
         component={SettingsScreen}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",

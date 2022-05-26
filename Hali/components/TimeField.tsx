@@ -18,8 +18,12 @@ const TimeField = ({ givenTime, onTimeValueReady, style }: TimeFieldProps) => {
   } = useDebounce(time, 250);
 
   function validate(value: string) {
-    let regex = new RegExp("^(0?[1-9]|1[012]):[0-5][0-9]$");
-    return value.length ? regex.test(value) : true;
+    let regex = new RegExp("([01][0-9]):[0-5][0-9]$");
+    let regex2 = new RegExp("([2][0-3]):[0-5][0-9]$");
+    return (
+      (value.length ? regex.test(value) : true) ||
+      (value.length ? regex2.test(value) : true)
+    );
   }
 
   useEffect(() => {

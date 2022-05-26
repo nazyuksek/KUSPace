@@ -20,14 +20,14 @@ const SignUpChoices = ({ navigation }: SignUpProps) => {
     navigation.navigate("SignupScreen");
   };
 
-  const readSaved = async () => {
+  const readSaved = async (value: string) => {
     const post = await DataStore.query(Pitch2, (cond) =>
-      cond.username("eq", "simaycik")
+      cond.username("eq", value)
     );
     console.log(JSON.stringify(post, null, 2));
   };
 
-  readSaved();
+  // readSaved();
 
   return (
     <SafeAreaView style={styles.container}>

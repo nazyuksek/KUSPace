@@ -62,11 +62,11 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
   };
 
   const savePlayer = async (
-    name: string,
-    email: string,
     username: string,
+    district: string,
     birthdate: string,
-    district: string
+    email: string,
+    name: string
   ) => {
     await DataStore.save(
       new Player({

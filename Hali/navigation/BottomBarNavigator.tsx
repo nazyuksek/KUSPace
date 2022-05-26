@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
 import FindPlayerScreen from "../screens/BottomBarScreens/FindPlayerScreen";
@@ -27,7 +27,7 @@ const BottomBar = ({ route }: BottomBarProps) => {
       <Tab.Screen
         name="Find Field"
         component={PitchSearch}
-        initialParams={{ username: route?.params?.username}}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -70,8 +70,8 @@ const BottomBar = ({ route }: BottomBarProps) => {
           },
           tabBarIcon: (Info) => {
             return (
-              <Ionicons
-                name="md-person"
+              <MaterialIcons
+                name="emoji-events"
                 size={24}
                 color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
               />
@@ -82,7 +82,7 @@ const BottomBar = ({ route }: BottomBarProps) => {
       <Tab.Screen
         name="Profile"
         component={ProfileContainer}
-        initialParams={{ username: route?.params?.username}}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",

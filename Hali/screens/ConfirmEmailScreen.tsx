@@ -101,7 +101,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
         navigation.navigate("AdminHome", { username });
       } else {
         savePlayer(username, district, route?.params?.birthdate, email, name);
-        navigation.navigate("PlayerHome");
+        navigation.navigate("PlayerHome", { username });
       }
     } catch (e: any) {
       Alert.alert("", e.message);

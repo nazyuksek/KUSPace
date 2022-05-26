@@ -19,13 +19,12 @@ export interface ProfileContainerProps {
 
 const ProfileContainer = ({ route }: ProfileContainerProps) => {
   const player_username = route?.params.username;
-  const [username, setUsername] = React.useState("");
+  const [username, setUsername] = React.useState(player_username);
   const [name, setName] = React.useState("");
   const [birthday, setBirthday] = React.useState("");
   const [district, setDist] = React.useState("");
 
-  async function gatherPlayerInfo(username: string) {
-    setUsername(player_username);
+  async function gatherPlayerInfo() {
     const player = await DataStore.query(Player, (cond) =>
       cond.username("eq", username)
     );
@@ -35,13 +34,13 @@ const ProfileContainer = ({ route }: ProfileContainerProps) => {
     if (player[0].realname !== undefined) {
       setName(player[0].realname);
     }
-    console.log(username);
     if (player[0].district !== undefined) {
       setDist(player[0].district);
     }
+    console.log(birthday);
   }
 
-  gatherPlayerInfo(player_username);
+  gatherPlayerInfo();
   return (
     <ScrollView style={styles.container}>
       <View style={styles.photoUpload}>
@@ -88,8 +87,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   value: {
+    color: "darkslateblue",
+    fontWeight: "900",
     paddingVertical: 24,
   },
 });
-
 export default ProfileContainer;

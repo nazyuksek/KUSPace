@@ -11,14 +11,16 @@ export interface FieldBarProps {
 }
 
 const { width, height } = Dimensions.get("screen");
-const FieldBar = ({ dataState, onPress, setTime}: FieldBarProps) => {
+const FieldBar = ({ dataState, onPress, setTime }: FieldBarProps) => {
   return (
     <View style={style.container}>
       <FlatList
         bounces={true}
         data={dataState}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <SlotItems item={item} onPress={onPress} setTime={setTime} />}
+        renderItem={({ item }) => (
+          <SlotItems item={item} onPress={onPress} setTime={setTime} />
+        )}
         keyExtractor={(item, index) => `${index}`}
       ></FlatList>
     </View>

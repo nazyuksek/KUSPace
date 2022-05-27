@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Modal, SafeAreaView } from "react-native";
 import React from "react";
 import ScheduleCalendar from "../components/ScheduleCalendar";
 import { DateData } from "react-native-calendars";
@@ -6,6 +6,7 @@ import FieldBar from "../components/FieldBar";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { DataStore, Predicates } from "aws-amplify";
 import { Reservation, Pitch2 } from "../src/models";
+import SimpleModal from "../components/SimpleModal";
 
 export interface ReservationScreenProps {
   route: any;
@@ -15,6 +16,8 @@ export interface ReservationScreenProps {
 const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   const reserver_username = route?.params?.username;
   const pitch_username = route?.params?.pitch_username;
+  const [isModalVisible, setModal] = React.useState(false);
+
   //TIME SLOT EXTRACTION
   const extractTimeSlot = async () => {
     const pitch = await DataStore.query(Pitch2, (cond) =>
@@ -41,7 +44,24 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   extractTimeSlot();
   let map = new Map();
   const [time, setTime] = React.useState("");
+  const emptyData: string[] = [];
+  const [marked, setMarked] = React.useState("");
+  const [date, setDate] = React.useState("");
+  let reservation_date = "";
+  const [dataState, setDataState] = React.useState(emptyData);
   React.useEffect(() => {}, [time]);
+  React.useEffect(() => {}, [dataState]);
+  let reservation_text =
+    "You are reserving a pitch on " + marked + " at " + time;
+
+  async function handleConfirm() {
+    setModal(false);
+    reservation_date = marked.concat("|").concat(time);
+    saveReservation(pitch_username, reserver_username, reservation_date);
+    const b = await deleteAvailable(reservation_date);
+    const a = await extractTimeSlot();
+    setDataState(map.get(date));
+  }
 
   const saveReservation = async (
     pitch_id: string,
@@ -87,10 +107,9 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
     }
   };
 
-  const emptyData: string[] = [];
-  const [marked, setMarked] = React.useState("");
-  let reservation_date = "";
-  const [dataState, setDataState] = React.useState(emptyData);
+  function handleCancel() {
+    setModal(false);
+  }
 
   function handleDayPress(date: string): void {
     if (date === marked) {
@@ -99,16 +118,15 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
       return;
     }
     setMarked(date);
+    setDate(date);
     setDataState(map.get(date));
   }
 
   function handleReservePress() {
-    reservation_date = marked.concat("|").concat(time);
-    saveReservation(pitch_username, reserver_username, reservation_date);
-    deleteAvailable(reservation_date);
+    setModal(true);
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
         <ScheduleCalendar
           markedDates={{
@@ -128,8 +146,24 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
           }}
           setTime={setTime}
         ></FieldBar>
+        <Modal
+          style={{}}
+          visible={isModalVisible}
+          animationType={"fade"}
+          transparent={true}
+          onRequestClose={() => {
+            setModal(false);
+          }}
+        >
+          <SimpleModal
+            handleCancel={handleCancel}
+            handleConfirm={handleConfirm}
+            Headertext={"Schedule Confirmation"}
+            text={reservation_text}
+          ></SimpleModal>
+        </Modal>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

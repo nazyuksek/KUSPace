@@ -59,8 +59,7 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
     reservation_date = marked.concat("|").concat(time);
     saveReservation(pitch_username, reserver_username, reservation_date);
     const b = await deleteAvailable(reservation_date);
-    const a = await extractTimeSlot();
-    setDataState(map.get(date));
+    navigation.navigate("Find Player");
   }
 
   const saveReservation = async (

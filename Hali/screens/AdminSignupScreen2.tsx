@@ -12,29 +12,46 @@ import TextField from "../components/TextField";
 import Button from "../components/Button";
 import { useForm } from "react-hook-form";
 import { NavigationContainer } from "@react-navigation/native";
-import { Auth } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 import ConfirmEmailScreen from "./ConfirmEmailScreen";
 import { NavigationHelpersContext } from "@react-navigation/native";
 import { Image } from "react-native";
+import { Pitch2 } from "../src/models";
 
 const { width, height } = Dimensions.get("screen");
 
-export interface SignUpProps {
+export interface AdminSignUp2Props {
   navigation: any;
+  route: any;
 }
 
-const SignupScreen = ({ navigation }: SignUpProps) => {
+const AdminSignupScreen2 = ({ navigation, route }: AdminSignUp2Props) => {
+  const email = route?.params.email;
+  const username = route?.params.username;
+  const password = route?.params.password;
+  const given_name = route?.params.name;
+  const family_name = route?.params.surname;
+  const pitchname = route?.params.pitchname;
+
   const { control, handleSubmit, watch } = useForm();
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [name, setName] = React.useState("");
-  const [surname, setSurname] = React.useState("");
-  const [birthdate, setBirthdate] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [district, setDist] = React.useState("");
+  const [price, setPrice] = React.useState("");
+  const [opening_hour, setOpening] = React.useState("");
+  const [closing_hour, setClosing] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [district, setDistrict] = React.useState("");
+  const [province, setProvince] = React.useState("");
+  const [address, setAddress] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const text_data = [email, birthdate, username, password, name, surname];
-  const flag = "player";
+  const birthdate = "";
+  const text_data = [
+    email,
+    birthdate,
+    username,
+    password,
+    given_name,
+    family_name,
+  ];
+  const flag = "admin";
 
   const onSignUpPressed = async () => {
     const [email, birthdate, username, password, given_name, family_name] =
@@ -50,11 +67,16 @@ const SignupScreen = ({ navigation }: SignUpProps) => {
         username,
         flag,
         email,
-        birthdate,
-        password,
+        pitchname,
         given_name,
         family_name,
+        city,
+        price,
+        opening_hour,
+        closing_hour,
         district,
+        province,
+        address,
       });
     } catch (e: any) {
       Alert.alert("There is a problem with signing up!", e.message);
@@ -72,85 +94,71 @@ const SignupScreen = ({ navigation }: SignUpProps) => {
         source={require("../assets/images/football.jpeg")}
       />
       <View style={styles.itemscontainer}>
-        <Text style={styles.text}>HALI</Text>
-        <Text style={styles.subtext}>Sign Up!</Text>
+        <Text style={styles.subtext}>MANAGER SIGN UP CONTINUED</Text>
         <TextField
-          text={"Username"}
+          text={"Price"}
           style={{ marginTop: 15 }}
-          textState={username}
-          setText={setUsername}
+          textState={price}
+          setText={setPrice}
           setSearch={setSearch}
           value={username}
         ></TextField>
         <TextField
-          text={"Email"}
+          text={"Opening Hour"}
           style={{ marginTop: 15 }}
-          textState={email}
-          setText={setEmail}
+          textState={opening_hour}
+          setText={setOpening}
           setSearch={setSearch}
-          value={email}
+          value={opening_hour}
         ></TextField>
         <TextField
-          text={"Name"}
+          text={"Closing Hour"}
           style={{ marginTop: 15 }}
-          textState={name}
-          setText={setName}
+          textState={closing_hour}
+          setText={setClosing}
           setSearch={setSearch}
-          value={name}
+          value={closing_hour}
         ></TextField>
         <TextField
-          text={"Surname"}
+          text={"City"}
           style={{ marginTop: 15 }}
-          textState={surname}
-          setText={setSurname}
+          textState={city}
+          setText={setCity}
           setSearch={setSearch}
-          value={surname}
-        ></TextField>
-        <TextField
-          text={"Birthdate"}
-          style={{ marginTop: 15 }}
-          textState={birthdate}
-          setText={setBirthdate}
-          setSearch={setSearch}
-          value={birthdate}
+          value={city}
         ></TextField>
         <TextField
           text={"District"}
           style={{ marginTop: 15 }}
           textState={district}
-          setText={setDist}
+          setText={setDistrict}
           setSearch={setSearch}
           value={district}
         ></TextField>
         <TextField
-          text={"Password"}
+          text={"Province"}
           style={{ marginTop: 15 }}
-          textState={password}
-          setText={setPassword}
+          textState={province}
+          setText={setProvince}
           setSearch={setSearch}
-          value={password}
-          password={true}
+          value={province}
+        ></TextField>
+        <TextField
+          text={"Address"}
+          style={{ marginTop: 15 }}
+          textState={address}
+          setText={setAddress}
+          setSearch={setSearch}
+          value={address}
         ></TextField>
         <Button
           style={{
             backgroundColor: "white",
             marginTop: 30,
           }}
-          buttonText="Sign up"
+          buttonText="Signup"
           onPress={() => onSignUpPressed()}
         />
-        <Text
-          style={{
-            color: "black",
-            fontSize: 12,
-            marginTop: 12,
-          }}
-          onPress={() => {
-            onSignInPressed();
-          }}
-        >
-          Already have an account? Sign in
-        </Text>
       </View>
     </SafeAreaView>
   );
@@ -192,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+export default AdminSignupScreen2;

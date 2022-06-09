@@ -3,15 +3,22 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AdminProfileContainer from "./ProfileScreenContainers/AdminProfileContainer";
 import ProfileContainer from "./ProfileScreenContainers/ProfileContainer";
+import { StackRouter } from "@react-navigation/native";
 
-const ProfileScreen = () => {
+export interface ProfileScreenProps {
+  route: any;
+}
+
+const ProfileScreen = ({ route }: ProfileScreenProps) => {
   // isUserAdmin should set from the API via Redux.
-  const isUserAdmin: Boolean = true
+  const isUserAdmin: Boolean = true;
   return (
     <SafeAreaView style={styles.container}>
-      {isUserAdmin ?
-        <AdminProfileContainer /> : <ProfileContainer />
-      }
+      {isUserAdmin ? (
+        <AdminProfileContainer route={route} />
+      ) : (
+        <ProfileContainer route={StackRouter} />
+      )}
     </SafeAreaView>
   );
 };
@@ -22,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     justifyContent: "center",
-  }
+  },
 });
 
 export default ProfileScreen;

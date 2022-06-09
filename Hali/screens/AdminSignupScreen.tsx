@@ -17,7 +17,7 @@ import ConfirmEmailScreen from "./ConfirmEmailScreen";
 import { NavigationHelpersContext } from "@react-navigation/native";
 import { Image } from "react-native";
 import { Pitch2 } from "../src/models";
-
+import AdminSignupScreen2 from "./AdminSignupScreen2";
 const { width, height } = Dimensions.get("screen");
 
 export interface AdminSignUpProps {
@@ -25,34 +25,28 @@ export interface AdminSignUpProps {
 }
 
 const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
-
   const { control, handleSubmit, watch } = useForm();
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
-  const [city, setCity] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [pitchname, setPitchname] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const birthdate = "";
-  const text_data = [email, birthdate, username, password, name, surname];
-  const flag = "admin";
+  const text_data = [email, username, password, name, surname];
 
-
-  const onSignUpPressed = async () => {
-    const [email, , username, password, given_name, family_name] =
-      text_data;
-    try {
-      const response = await Auth.signUp({
-        username,
-        password,
-        attributes: { email, birthdate, given_name, family_name },
-      });
-
-      navigation.navigate("ConfirmEmailScreen", { username , flag , email, birthdate, password, name, surname});
-    } catch (e: any) {
-      Alert.alert("There is a problem with signing up!", e.message);
-    }
+  const onContinuePressed = () => {
+    console.log(username);
+    console.log(pitchname);
+    console.log(email);
+    navigation.navigate("AdminSignupScreen2", {
+      email,
+      username,
+      password,
+      name,
+      surname,
+      pitchname,
+    });
   };
 
   const onSignInPressed = () => {
@@ -85,6 +79,14 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           value={email}
         ></TextField>
         <TextField
+          text={"Pitch Name"}
+          style={{ marginTop: 15 }}
+          textState={pitchname}
+          setText={setPitchname}
+          setSearch={setSearch}
+          value={pitchname}
+        ></TextField>
+        <TextField
           text={"Name"}
           style={{ marginTop: 15 }}
           textState={name}
@@ -101,14 +103,6 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
           value={surname}
         ></TextField>
         <TextField
-          text={"City"}
-          style={{ marginTop: 15 }}
-          textState={city}
-          setText={setCity}
-          setSearch={setSearch}
-          value={city}
-        ></TextField>
-        <TextField
           text={"Password"}
           style={{ marginTop: 15 }}
           textState={password}
@@ -122,8 +116,10 @@ const AdminSignupScreen = ({ navigation }: AdminSignUpProps) => {
             backgroundColor: "white",
             marginTop: 30,
           }}
-          buttonText="Sign up"
-          onPress={() => onSignUpPressed()}
+          buttonText="Continue"
+          onPress={() => {
+            onContinuePressed();
+          }}
         />
         <Text
           style={{

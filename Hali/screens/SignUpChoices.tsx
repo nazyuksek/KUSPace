@@ -5,6 +5,8 @@ import Button from "../components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextField from "../components/TextField";
 import Login from "../components/Login";
+import { DataStore } from "aws-amplify";
+import { Pitch2 } from "../src/models";
 
 export interface SignUpProps {
   navigation: any;
@@ -12,11 +14,20 @@ export interface SignUpProps {
 
 const SignUpChoices = ({ navigation }: SignUpProps) => {
   const onManagerPresssed = () => {
-    navigation.navigate("AdminSignUp");
+    navigation.navigate("AdminSignupScreen");
   };
   const onPlayerPresssed = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("SignupScreen");
   };
+
+  const readSaved = async (value: string) => {
+    const post = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", value)
+    );
+    console.log(JSON.stringify(post, null, 2));
+  };
+
+  // readSaved();
 
   return (
     <SafeAreaView style={styles.container}>

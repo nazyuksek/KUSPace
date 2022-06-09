@@ -1,15 +1,13 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
-import FindPlayerScreen from "../screens/BottomBarScreens/FindPlayerScreen";
-import FindFieldScreen from "../screens/BottomBarScreens/FindFieldScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import PlayerSearch from "../screens/SearchScreens/PlayerSearch";
 import PitchSearch from "../screens/SearchScreens/PitchSearch";
 import EventsScreen from "../screens/EventsScreen";
+import ProfileContainer from "../screens/ProfileScreenContainers/ProfileContainer";
+import ReservationsScreen from "../screens/BottomBarScreens/ReservationsScreen";
 
 export interface BottomBarProps {
   route: any;
@@ -70,8 +68,8 @@ const BottomBar = ({ route }: BottomBarProps) => {
           },
           tabBarIcon: (Info) => {
             return (
-              <Ionicons
-                name="md-person"
+              <MaterialIcons
+                name="emoji-events"
                 size={24}
                 color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
               />
@@ -81,7 +79,8 @@ const BottomBar = ({ route }: BottomBarProps) => {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileContainer}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -97,10 +96,10 @@ const BottomBar = ({ route }: BottomBarProps) => {
           },
         }}
       />
-
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Reservations"
+        component={ReservationsScreen}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",
@@ -108,7 +107,7 @@ const BottomBar = ({ route }: BottomBarProps) => {
           tabBarIcon: (Info) => {
             return (
               <Ionicons
-                name="settings-sharp"
+                name="md-calendar-sharp"
                 size={24}
                 color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
               />

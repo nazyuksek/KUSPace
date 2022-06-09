@@ -7,18 +7,31 @@ import SlotItems from "./SlotItems";
 export interface FieldBarProps {
   dataState: string[];
   onPress: () => void;
-  setTime: any;
+  setString: any;
+  icon_name: any;
 }
 
 const { width, height } = Dimensions.get("screen");
-const FieldBar = ({ dataState, onPress, setTime}: FieldBarProps) => {
+const FieldBar = ({
+  dataState,
+  onPress,
+  setString,
+  icon_name,
+}: FieldBarProps) => {
   return (
     <View style={style.container}>
       <FlatList
         bounces={true}
         data={dataState}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <SlotItems item={item} onPress={onPress} setTime={setTime} />}
+        renderItem={({ item }) => (
+          <SlotItems
+            item={item}
+            onPress={onPress}
+            setString={setString}
+            icon_name={icon_name}
+          />
+        )}
         keyExtractor={(item, index) => `${index}`}
       ></FlatList>
     </View>

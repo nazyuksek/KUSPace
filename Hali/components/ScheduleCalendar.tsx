@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import React from "react";
 import {
   Calendar,
@@ -14,17 +14,28 @@ export interface CalendarProps {
   markedDates: any;
   onDayPress: { (date: DateData): void };
 }
+const width = Dimensions.get("screen").width;
+const height = Dimensions.get("screen").height;
 
 const ScheduleCalendar = ({
   calendarStyle,
   markedDates,
   onDayPress,
 }: CalendarProps) => {
+  let date: Date = new Date();
+  date.setDate(date.getDate() + 1);
   return (
     <View style={[styles.calendar, calendarStyle]}>
       <Calendar
         onDayPress={onDayPress}
+        minDate={date.toDateString()}
         theme={{
+          /*    "stylesheet.day.basic": {
+            base: {
+              width: "100%",
+              height: height * 0.4,
+            },
+          }, */
           todayTextColor: "rgba(135, 211, 124, 1)",
           arrowColor: "rgba(135, 211, 124, 1)",
           calendarBackground: "white",
@@ -53,6 +64,8 @@ const ScheduleCalendar = ({
 const styles = StyleSheet.create({
   calendar: {
     width: "100%",
+
+    display: "flex",
   },
 });
 

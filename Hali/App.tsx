@@ -9,7 +9,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import SignUpChoices from "./screens/SignUpChoices";
 import AdminSignupScreen from "./screens/AdminSignupScreen";
-import AdminLoginScreen from "./screens/AdminLoginScreen";
 import Amplify, { Auth, StorageClass } from "aws-amplify";
 import config from "./src/aws-exports";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
@@ -31,37 +30,53 @@ import { MatchAnnounce } from "./src/models";
 import BottomBarNavigator from "./navigation/BottomBarNavigator";
 import AdminBottomBar from "./navigation/AdminBottomBarNavigator";
 import PlayerSearch from "./screens/SearchScreens/PlayerSearch";
+import AdminSignupScreen2 from "./screens/AdminSignupScreen2";
+import SignupScreen from "./screens/SignupScreen";
+import ReservationScreen from "./screens/ReservationScreen";
+import ReservationsScreen from "./screens/BottomBarScreens/ReservationsScreen";
 
 Auth.configure(config);
 Amplify.configure(config);
-
 const App = () => {
-  savePlayerDataStore();
-  savePitchAdmin(
-    'test', 'Mehmet', 10, '', '', '', '', 'Beylikduzu', '', 'dummy address'
-  );
-  // saveMatchAnnounce();
-  // saveReservation();
-
-  readMatchAnnounce();
-  // readDataPlayer();
-  // readDistrictQuery("Sariyer");
-  // readDistrictQuery("Beylikduzu");
-  // readPlayerSkillQuery("eq", 2);
-  // readReservation();
-  // readData();
-
-  // // to be fixed, detail is in function
-  addPlayerToMatchAnnounce("YZ12", "Elvin Altintas");
-
-  // Mocked isAdmin boolean, It should be recieved from BE.
-
-  // Mocked isAdmin boolean, It should be recieved from BE.
-
+  // let pitch_dists = getNearPitchesByDistance(200, "Sariyer");
   const isAdmin: Boolean = true; // because we don't yet receive this data I changed it temporarily Simay
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();
+  const dummy = async () => {
+    const pitches = await readPitches();
+    for (var p of pitches!) {
+      // console.log("read pitches: ", p.district);
+      console.log("read pitches: ", p.district);
+
+      // console.log("read pitches: ", p.username);
+    }
+  };
+
+  /*  const dummy2 = async () => {
+    try {
+      const pitches = await readPitches();
+      console.log("in fonk2");
+      for (var p of pitches!) {
+        //|| p.district == "Ataşehir" || p.district == "Arnavutköy"  || p.district == "Bağcılar" ||  p.district == "Bakirköy" || p.district == "Beşiktaş")
+        if (p.district == "Beylikduzu") {
+          //var dist2: number = getDistanceByCity(p.district);
+          console.log("in Beylikduzu");
+          let dist2 = 100;
+          if (dist2 < distance) {
+            console.log("ALOHA! city by distance is: ", p);
+          } else {
+            console.log("NEIN");
+          }
+        }
+      }
+      // filter the pitches equal to the distance whose distance is loweerr than 500
+      return pitches;
+    } catch (error) {
+      console.log("Error retrieving distance", error);
+    }
+  }; */
+
   if (!isLoadingComplete) {
     return null;
   } else {
@@ -72,19 +87,14 @@ const App = () => {
             headerShown: false,
           }}
         >
-          <Stack.Screen
-            name="BottomBar"
-            component={BottomBarNavigator}
-          ></Stack.Screen>
           <Stack.Screen name="Landing" component={LandingPage}></Stack.Screen>
-          <Stack.Screen name="AdminSignUp" component={AdminSignupScreen} />
+          <Stack.Screen
+            name="AdminSignupScreen"
+            component={AdminSignupScreen}
+          />
           <Stack.Screen
             name="ConfirmEmailScreen"
             component={ConfirmEmailScreen}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Login"
-            component={AdminLoginScreen}
           ></Stack.Screen>
           <Stack.Screen
             name="ForgotPassword"
@@ -95,6 +105,10 @@ const App = () => {
             component={NewPasswordScreen}
           ></Stack.Screen>
           <Stack.Screen
+            name="Reservation"
+            component={ReservationScreen}
+          ></Stack.Screen>
+          <Stack.Screen
             name="AdminHome"
             component={AdminBottomBar}
           ></Stack.Screen>
@@ -103,12 +117,69 @@ const App = () => {
             component={BottomBarNavigator}
           ></Stack.Screen>
           <Stack.Screen
+            name="AdminSignupScreen2"
+            component={AdminSignupScreen2}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="SignupScreen"
+            component={SignupScreen}
+          ></Stack.Screen>
+          <Stack.Screen
             name="SignUpChoices"
             component={SignUpChoices}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Reservations"
+            component={ReservationsScreen}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     );
+  }
+};
+
+export const getNearPitchesByDistance = async (
+  dist: number,
+  user_city: string
+) => {
+  var pitch_dists = new Map<string, number>();
+  var returned_pitch_dists = new Map<[string, string], number>();
+  var dist1 = getDistanceByCity(user_city);
+  var pitches = await readPitches();
+  var dist_threshold = 500;
+
+  for (var p of pitches!) {
+    var dist2 = getDistanceByCity(p.district!); // prints values: 10, 20, 30, 40
+    console.log(
+      "Is p.district as a key exists: ",
+      !pitch_dists.has(p.district!)
+    );
+    if (!pitch_dists.has(p.district!)) {
+      console.log("No district exists, go!");
+      var diff = Math.abs(dist1 - dist2);
+      if (diff < dist_threshold) {
+        let pitch_tuple: [string, string] = [p.pitch_name, p.district!];
+        pitch_dists.set(p.district!, dist2);
+        returned_pitch_dists.set(pitch_tuple, diff);
+      } else {
+        console.log("Duplicate key!");
+      }
+    }
+  }
+
+  for (let value of returned_pitch_dists.keys()) {
+    console.log("Map Keys = " + value);
+  }
+
+  return returned_pitch_dists;
+};
+
+export const readPitches = async (): Promise<Pitch2[] | undefined> => {
+  try {
+    const posts = await DataStore.query(Pitch2);
+    return posts;
+  } catch (error) {
+    console.log("Error retrieving pitches", error);
   }
 };
 
@@ -142,10 +213,7 @@ const savePlayerDataStore = async () => {
 const readData = async () => {
   try {
     const posts = await DataStore.query(Pitch2);
-    console.log(
-      "Posts retrieved successfully!",
-      JSON.stringify(posts, null, 2)
-    );
+    console.log("Post: ", posts[0].district);
   } catch (error) {
     console.log("Error retrieving posts", error);
   }
@@ -176,7 +244,39 @@ export const readPitchDistrictQuery = async (district: string) => {
   }
 };
 
-export const readUsernameQuery = async (username: string): Promise<Player[] | undefined> => {
+export const readPitchDistanceQuery = async (distance: number) => {
+  try {
+    const pitches = await readPitches();
+    for (var p of pitches!) {
+      if (
+        p.district == "Beylikduzu" ||
+        p.district == "Ataşehir" ||
+        p.district == "Arnavutköy" ||
+        p.district == "Bağcılar" ||
+        p.district == "Bakirköy" ||
+        p.district == "Beşiktaş"
+      ) {
+        var dist2: number = getDistanceByCity(p.district);
+        console.log("District: ", p.district);
+        console.log("Dist2: ", dist2);
+        // let dist2  = 100;
+        if (dist2 < distance) {
+          console.log("ALOHA! city by distance is: ", p.pitch_name);
+        } else {
+          console.log("NEIN");
+        }
+      }
+    }
+    // filter the pitches equal to the distance whose distance is loweerr than 500
+    return pitches;
+  } catch (error) {
+    console.log("Error retrieving distance", error);
+  }
+};
+
+export const readUsernameQuery = async (
+  username: string
+): Promise<Player[] | undefined> => {
   try {
     const sariyer_players = await DataStore.query(Player, (p) =>
       p.username("eq", username)
@@ -200,18 +300,6 @@ const readPlayerSkillQuery = async (pred: any, skillno: number) => {
     console.log("players:", JSON.stringify(players, null, 2));
   } catch (error) {
     console.log("Error retrieving player skillno", error);
-  }
-};
-
-const readDataPlayer = async () => {
-  try {
-    const posts = await DataStore.query(Player);
-    console.log(
-      "Player retrieved successfully!",
-      JSON.stringify(posts, null, 2)
-    );
-  } catch (error) {
-    console.log("Error retrieving players", error);
   }
 };
 
@@ -287,7 +375,12 @@ export const addPlayerToMatchAnnounce = async (
     // fix adding player to attendees_list
     let updated_list = original[0].attendees_list!;
     updated_list = updated_list.concat(player_name);
-    //
+    let attendee_count = original[0].number_of_attendees! + 1;
+    await DataStore.save(
+      MatchAnnounce.copyOf(original[0], (updated) => {
+        updated.number_of_attendees = attendee_count;
+      })
+    );
     await DataStore.save(
       MatchAnnounce.copyOf(original[0], (updated) => {
         updated.attendees_list = updated_list;
@@ -300,14 +393,26 @@ export const addPlayerToMatchAnnounce = async (
   }
 };
 
+
 const deletePlayers = async (username: string) => {
   try {
     // realnames: "Mehmet Yilmaz", "Ahmet Yilmaz", "Yilmaz Yilmaz"
     // usernames: dummy1, dummy2, dummy3
     await DataStore.delete(Player, (p) => p.username("eq", username));
+
+
     console.log("Players deleted successfully!");
   } catch (error) {
     console.log("Error deleting players ", error);
+  }
+};
+
+const readDataPlayer = async () => {
+  try {
+    const posts = await DataStore.query(Player);
+    return posts;
+  } catch (error) {
+    console.log("Error retrieving players", error);
   }
 };
 
@@ -343,5 +448,17 @@ const savePitchAdmin = async (
     return console.log("Error saving", error);
   }
 };
+
+function getDistanceByCity(city: string): number {
+  var dist_list = new Map<string, number>();
+
+  dist_list.set("Beylikduzu", 450);
+  dist_list.set("Beşiktaş", 600);
+  dist_list.set("Ataşehir", 200);
+  dist_list.set("Bakırköy", 100);
+  dist_list.set("Arnavutköy", 50);
+  dist_list.set("Bağcılar", 600);
+  return dist_list.get(city)!;
+}
 
 export default App;

@@ -8,6 +8,7 @@ import Button from "../../components/Button";
 import {
   readDistrictQuery,
   readPitchDistrictQuery,
+  readPitchDistanceQuery,
   readUsernameQuery,
 } from "../../App";
 import { Pitch2 } from "../../src/models";
@@ -25,14 +26,25 @@ const PitchSearch = ({ navigation, route }: PitchSearchProps) => {
   const updateSearch = (search: string) => {
     setSearchQuery(search);
   };
+
+  
+
   const handleDistrictClick = async () => {
     let result = await readPitchDistrictQuery(searchQuery);
     setPitches(result);
     console.log(result);
   };
+
+  const handleDistanceClick = async () => {
+    let result = await readPitchDistanceQuery(searchQuery);
+    setPitches(result);
+    console.log(result);
+  };
+
   const handlePitchClick = (pitch_username: string) => {
     navigation.navigate("Reservation", { username, pitch_username });
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -57,6 +69,15 @@ const PitchSearch = ({ navigation, route }: PitchSearchProps) => {
           style={styles.buttonleft}
         ></Button>
       </View>
+
+        <View style={styles.buttons}>
+        <Button
+          buttonText="Search by Distance"
+          onPress={handleDistanceClick}
+          style={styles.buttonleft}
+        ></Button>
+      </View>
+      
       <View style={styles.pitches}>
         {pitches?.map((el, i) => (
           <Text

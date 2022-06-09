@@ -32,7 +32,6 @@ import AdminBottomBar from "./navigation/AdminBottomBarNavigator";
 import PlayerSearch from "./screens/SearchScreens/PlayerSearch";
 import AdminSignupScreen2 from "./screens/AdminSignupScreen2";
 import SignupScreen from "./screens/SignupScreen";
-import FindFieldScreen from "./screens/BottomBarScreens/FindFieldScreen";
 import ReservationScreen from "./screens/ReservationScreen";
 
 Auth.configure(config);
@@ -45,42 +44,37 @@ const App = () => {
   const Stack = createStackNavigator();
   const dummy = async () => {
     const pitches = await readPitches();
-    for (var p of pitches) {
+    for (var p of pitches!) {
       // console.log("read pitches: ", p.district);
       console.log("read pitches: ", p.district);
-      
+
       // console.log("read pitches: ", p.username);
     }
-  }
+  };
 
-  const dummy2 = async () => {
-      try {
+  /*  const dummy2 = async () => {
+    try {
       const pitches = await readPitches();
       console.log("in fonk2");
-      console.log("Pitches2: ", pitches.pitch_name);
-      for (var p of pitches) {
-      //|| p.district == "Ataşehir" || p.district == "Arnavutköy"  || p.district == "Bağcılar" ||  p.district == "Bakirköy" || p.district == "Beşiktaş")
+      for (var p of pitches!) {
+        //|| p.district == "Ataşehir" || p.district == "Arnavutköy"  || p.district == "Bağcılar" ||  p.district == "Bakirköy" || p.district == "Beşiktaş")
         if (p.district == "Beylikduzu") {
-        //var dist2: number = getDistanceByCity(p.district);
+          //var dist2: number = getDistanceByCity(p.district);
           console.log("in Beylikduzu");
-          let dist2  = 100;
+          let dist2 = 100;
           if (dist2 < distance) {
-            console.log("ALOHA! city by distance is: ", p); 
-          }else{
-            console.log("NEIN"); 
+            console.log("ALOHA! city by distance is: ", p);
+          } else {
+            console.log("NEIN");
           }
         }
       }
       // filter the pitches equal to the distance whose distance is loweerr than 500
       return pitches;
-      } catch (error) {
-
+    } catch (error) {
       console.log("Error retrieving distance", error);
-      }
-
-  }
-
-
+    }
+  }; */
 
   if (!isLoadingComplete) {
     return null;
@@ -139,48 +133,50 @@ const App = () => {
   }
 };
 
+export const getNearPitchesByDistance = async (
+  dist: number,
+  user_city: string
+) => {
+  var pitch_dists = new Map<string, number>();
+  var returned_pitch_dists = new Map<[string, string], number>();
+  var dist1 = getDistanceByCity(user_city);
+  var pitches = await readPitches();
+  var dist_threshold = 500;
 
-export const getNearPitchesByDistance = async (dist:number, user_city:string) => {
-
- var pitch_dists = new Map<string, number>();
- var returned_pitch_dists = new Map<[string, string], number>();
- var dist1 = getDistanceByCity(user_city);
- var pitches = await readPitches()
- var dist_threshold = 500;
-
- for (var p of pitches) {
-    var dist2 = getDistanceByCity(p.district); // prints values: 10, 20, 30, 40
-    console.log("Is p.district as a key exists: ", !pitch_dists.has(p.district));
-    if (!pitch_dists.has(p.district)){
+  for (var p of pitches!) {
+    var dist2 = getDistanceByCity(p.district!); // prints values: 10, 20, 30, 40
+    console.log(
+      "Is p.district as a key exists: ",
+      !pitch_dists.has(p.district!)
+    );
+    if (!pitch_dists.has(p.district!)) {
       console.log("No district exists, go!");
       var diff = Math.abs(dist1 - dist2);
-      if (diff < dist_threshold){
-        let pitch_tuple: [string, string] = [p.pitch_name, p.district];
-        pitch_dists.set(p.district, dist2);
+      if (diff < dist_threshold) {
+        let pitch_tuple: [string, string] = [p.pitch_name, p.district!];
+        pitch_dists.set(p.district!, dist2);
         returned_pitch_dists.set(pitch_tuple, diff);
-      }else{
+      } else {
         console.log("Duplicate key!");
       }
     }
- }
+  }
 
-  for (let value of returned_pitch_dists.keys()) {  
-        console.log("Map Keys = " +value);      
-      } 
-
+  for (let value of returned_pitch_dists.keys()) {
+    console.log("Map Keys = " + value);
+  }
 
   return returned_pitch_dists;
 };
 
-
-export const readPitches = async (): Promise <Pitch2[] | undefined> => {
-   try {
+export const readPitches = async (): Promise<Pitch2[] | undefined> => {
+  try {
     const posts = await DataStore.query(Pitch2);
     return posts;
   } catch (error) {
     console.log("Error retrieving pitches", error);
   }
-}
+};
 
 const styles = StyleSheet.create({
   root: {
@@ -212,8 +208,7 @@ const savePlayerDataStore = async () => {
 const readData = async () => {
   try {
     const posts = await DataStore.query(Pitch2);
-   console.log("Post: ", posts[0].district);
-
+    console.log("Post: ", posts[0].district);
   } catch (error) {
     console.log("Error retrieving posts", error);
   }
@@ -244,31 +239,35 @@ export const readPitchDistrictQuery = async (district: string) => {
   }
 };
 
-
-export const readPitchDistanceQuery = async (distance: string) => {
+export const readPitchDistanceQuery = async (distance: number) => {
   try {
     const pitches = await readPitches();
-    for (var p of pitches) {
-      if (p.district == "Beylikduzu" || p.district == "Ataşehir" || p.district == "Arnavutköy"  || p.district == "Bağcılar" ||  p.district == "Bakirköy" || p.district == "Beşiktaş"){
+    for (var p of pitches!) {
+      if (
+        p.district == "Beylikduzu" ||
+        p.district == "Ataşehir" ||
+        p.district == "Arnavutköy" ||
+        p.district == "Bağcılar" ||
+        p.district == "Bakirköy" ||
+        p.district == "Beşiktaş"
+      ) {
         var dist2: number = getDistanceByCity(p.district);
         console.log("District: ", p.district);
         console.log("Dist2: ", dist2);
         // let dist2  = 100;
         if (dist2 < distance) {
-          console.log("ALOHA! city by distance is: ", p.pitch_name); 
-        }else{
-          console.log("NEIN"); 
+          console.log("ALOHA! city by distance is: ", p.pitch_name);
+        } else {
+          console.log("NEIN");
         }
       }
     }
     // filter the pitches equal to the distance whose distance is loweerr than 500
     return pitches;
   } catch (error) {
-    
     console.log("Error retrieving distance", error);
   }
 };
-
 
 export const readUsernameQuery = async (
   username: string
@@ -298,7 +297,6 @@ const readPlayerSkillQuery = async (pred: any, skillno: number) => {
     console.log("Error retrieving player skillno", error);
   }
 };
-
 
 const saveReservation = async () => {
   try {
@@ -422,7 +420,6 @@ const savePitchAdmin = async (
   province: string,
   address: string
 ) => {
-
   try {
     await DataStore.save(
       new Pitch2({
@@ -444,7 +441,7 @@ const savePitchAdmin = async (
   }
 };
 
-function getDistanceByCity(city:string): number  {
+function getDistanceByCity(city: string): number {
   var dist_list = new Map<string, number>();
 
   dist_list.set("Beylikduzu", 450);
@@ -453,8 +450,7 @@ function getDistanceByCity(city:string): number  {
   dist_list.set("Bakırköy", 100);
   dist_list.set("Arnavutköy", 50);
   dist_list.set("Bağcılar", 600);
-  return dist_list.get(city);
-};
-
+  return dist_list.get(city)!;
+}
 
 export default App;

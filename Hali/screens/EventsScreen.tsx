@@ -15,6 +15,13 @@ export interface EventsScreenProps {
 
 const EventsScreen = ({ navigation }: EventsScreenProps) => {
     const [events, setEvents] = React.useState<MatchAnnounce[] | undefined>();
+    const [step, setStep] = React.useState<Number>(1);
+    const [hour, setHour] = React.useState<string>('');
+    const [pitch_name, setPitchName] = React.useState<string>('');
+    const [number_of_attendees, hetNumberOfAttendees] = React.useState(0);
+    const [total_capacity, setTotalCapacity] = React.useState(0);
+    const [attendees_list, setAttendeesList] = React.useState([]);
+    const [announcement_name, setAnnouncementName] = React.useState<string>('');
     React.useEffect(() => {
         const fetchData = async () => {
             const data = await readMatchAnnounce();
@@ -30,7 +37,8 @@ const EventsScreen = ({ navigation }: EventsScreenProps) => {
         const res = await addPlayerToMatchAnnounce(announcement_name, player_name);
     }
     const handleAddEventButtonClick = async () => {
-        const result = await saveMatchAnnounce();
+        const result = await saveMatchAnnounce(hour, pitch_name, number_of_attendees, total_capacity, attendees_list, announcement_name);
+        setStep(2);
     }
     return (
         <SafeAreaView style={styles.container}>

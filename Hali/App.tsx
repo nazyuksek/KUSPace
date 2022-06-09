@@ -330,16 +330,16 @@ const readReservation = async () => {
   }
 };
 
-export const saveMatchAnnounce = async () => {
+export const saveMatchAnnounce = async (hour: string, pitch_name: string, number_of_attendees: number, total_capacity: number, attendees_list: string[], announcement_name: string) => {
   try {
     await DataStore.save(
       new MatchAnnounce({
-        hour: "18:00",
-        pitch_name: "Moda Stadyumu",
-        number_of_attendees: 10,
-        total_capacity: 14,
-        attendees_list: ["Simay Ozdemir", "Naz Yuksek"],
-        announcement_name: "YZ12",
+        hour: hour,
+        pitch_name: pitch_name,
+        number_of_attendees: number_of_attendees,
+        total_capacity: total_capacity,
+        attendees_list: attendees_list,
+        announcement_name: announcement_name,
       })
     );
     return console.log("Match Announce saved successfully!");
@@ -393,11 +393,14 @@ export const addPlayerToMatchAnnounce = async (
   }
 };
 
-const deletePlayers = async (player_name: string) => {
+
+const deletePlayers = async (username: string) => {
   try {
     // realnames: "Mehmet Yilmaz", "Ahmet Yilmaz", "Yilmaz Yilmaz"
     // usernames: dummy1, dummy2, dummy3
-    await DataStore.delete(Player, (p) => p.username("eq", player_name));
+    await DataStore.delete(Player, (p) => p.username("eq", username));
+
+
     console.log("Players deleted successfully!");
   } catch (error) {
     console.log("Error deleting players ", error);

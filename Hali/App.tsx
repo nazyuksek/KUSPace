@@ -38,11 +38,50 @@ import ReservationScreen from "./screens/ReservationScreen";
 Auth.configure(config);
 Amplify.configure(config);
 const App = () => {
-  let pitch_dists = getNearPitchesByDistance(200, "Sariyer");
+  // let pitch_dists = getNearPitchesByDistance(200, "Sariyer");
   const isAdmin: Boolean = true; // because we don't yet receive this data I changed it temporarily Simay
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const Stack = createStackNavigator();
+  const dummy = async () => {
+    const pitches = await readPitches();
+    for (var p of pitches) {
+      // console.log("read pitches: ", p.district);
+      console.log("read pitches: ", p.district);
+      
+      // console.log("read pitches: ", p.username);
+    }
+  }
+
+  const dummy2 = async () => {
+      try {
+      const pitches = await readPitches();
+      console.log("in fonk2");
+      console.log("Pitches2: ", pitches.pitch_name);
+      for (var p of pitches) {
+      //|| p.district == "Ataşehir" || p.district == "Arnavutköy"  || p.district == "Bağcılar" ||  p.district == "Bakirköy" || p.district == "Beşiktaş")
+        if (p.district == "Beylikduzu") {
+        //var dist2: number = getDistanceByCity(p.district);
+          console.log("in Beylikduzu");
+          let dist2  = 100;
+          if (dist2 < distance) {
+            console.log("ALOHA! city by distance is: ", p); 
+          }else{
+            console.log("NEIN"); 
+          }
+        }
+      }
+      // filter the pitches equal to the distance whose distance is loweerr than 500
+      return pitches;
+      } catch (error) {
+
+      console.log("Error retrieving distance", error);
+      }
+
+  }
+
+
+
   if (!isLoadingComplete) {
     return null;
   } else {
@@ -205,6 +244,32 @@ export const readPitchDistrictQuery = async (district: string) => {
   }
 };
 
+
+export const readPitchDistanceQuery = async (distance: string) => {
+  try {
+    const pitches = await readPitches();
+    for (var p of pitches) {
+      if (p.district == "Beylikduzu" || p.district == "Ataşehir" || p.district == "Arnavutköy"  || p.district == "Bağcılar" ||  p.district == "Bakirköy" || p.district == "Beşiktaş"){
+        var dist2: number = getDistanceByCity(p.district);
+        console.log("District: ", p.district);
+        console.log("Dist2: ", dist2);
+        // let dist2  = 100;
+        if (dist2 < distance) {
+          console.log("ALOHA! city by distance is: ", p.pitch_name); 
+        }else{
+          console.log("NEIN"); 
+        }
+      }
+    }
+    // filter the pitches equal to the distance whose distance is loweerr than 500
+    return pitches;
+  } catch (error) {
+    
+    console.log("Error retrieving distance", error);
+  }
+};
+
+
 export const readUsernameQuery = async (
   username: string
 ): Promise<Player[] | undefined> => {
@@ -234,18 +299,6 @@ const readPlayerSkillQuery = async (pred: any, skillno: number) => {
   }
 };
 
-const readDataPlayer = async () => {
-  try {
-    const posts = await DataStore.query(Player);
-    // console.log(
-    //   "Player retrieved successfully!",
-    //   JSON.stringify(posts, null, 2)
-    // );
-    console.log("Type of player data:", typeof(posts))
-  } catch (error) {
-    console.log("Error retrieving players", error);
-  }
-};
 
 const saveReservation = async () => {
   try {
@@ -348,6 +401,15 @@ const deletePlayers = async (player_name: string) => {
   }
 };
 
+const readDataPlayer = async () => {
+  try {
+    const posts = await DataStore.query(Player);
+    return posts;
+  } catch (error) {
+    console.log("Error retrieving players", error);
+  }
+};
+
 const savePitchAdmin = async (
   pitch_name: string,
   pitchowner_name: string,
@@ -384,14 +446,15 @@ const savePitchAdmin = async (
 
 function getDistanceByCity(city:string): number  {
   var dist_list = new Map<string, number>();
-  dist_list.set("Sariyer", 0);
+
   dist_list.set("Beylikduzu", 450);
-  dist_list.set("Kadikoy", 300);
+  dist_list.set("Beşiktaş", 600);
+  dist_list.set("Ataşehir", 200);
+  dist_list.set("Bakırköy", 100);
+  dist_list.set("Arnavutköy", 50);
+  dist_list.set("Bağcılar", 600);
   return dist_list.get(city);
 };
-
-
-
 
 
 export default App;

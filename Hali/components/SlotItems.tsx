@@ -7,12 +7,18 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface SlotItemsProps {
-  setTime: any;
+  setString: any;
   item: any;
   onPress: () => void;
+  icon_name: any;
 }
 
-export default function SlotItems({ item, setTime, onPress }: SlotItemsProps) {
+export default function SlotItems({
+  item,
+  setString,
+  onPress,
+  icon_name,
+}: SlotItemsProps) {
   return (
     <View
       style={{
@@ -53,12 +59,12 @@ export default function SlotItems({ item, setTime, onPress }: SlotItemsProps) {
         <TouchableOpacity
           onPress={() => {
             onPress();
-            setTime(item);
+            setString(item);
           }}
         >
           <MaterialCommunityIcons
             style={{ justifyContent: "center", alignItems: "center" }}
-            name="plus-circle"
+            name={icon_name}
             size={32}
             color="rgba(135, 211, 124, 1)"
           />

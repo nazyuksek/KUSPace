@@ -19,6 +19,27 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   const [isModalVisible, setModal] = React.useState(false);
   const [isModalVisible2, setModal2] = React.useState(false);
 
+  const cancelReservation = async () => {
+    await DataStore.delete(Reservation, (p) =>
+      p.reserver_username("eq", reserver_username)
+    );
+  };
+
+  //ADDS THE CANCELLED SLOT FROM TO PITCH TABLE BACK
+  const addCancelledReservation = async (reservation_date: string) => {
+    const pitch = await DataStore.query(Pitch2, (cond) =>
+      cond.username("eq", pitch_username)
+    );
+    let updated_slots = pitch[0].available_slots!;
+    let tmp = [...updated_slots];
+    tmp.push(reservation_date);
+    await DataStore.save(
+      Pitch2.copyOf(pitch[0], (updated) => {
+        updated.available_slots = tmp;
+      })
+    );
+  };
+
   //TIME SLOT EXTRACTION
   const extractTimeSlot = async () => {
     const pitch = await DataStore.query(Pitch2, (cond) =>
@@ -165,7 +186,8 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
           onPress={() => {
             handleReservePress();
           }}
-          setTime={setTime}
+          setString={setTime}
+          icon_name={"plus-circle"}
         ></FieldBar>
         <Modal
           style={{}}

@@ -33,6 +33,7 @@ import PlayerSearch from "./screens/SearchScreens/PlayerSearch";
 import AdminSignupScreen2 from "./screens/AdminSignupScreen2";
 import SignupScreen from "./screens/SignupScreen";
 import ReservationScreen from "./screens/ReservationScreen";
+import ReservationsScreen from "./screens/BottomBarScreens/ReservationsScreen";
 
 Auth.configure(config);
 Amplify.configure(config);
@@ -126,6 +127,10 @@ const App = () => {
           <Stack.Screen
             name="SignUpChoices"
             component={SignUpChoices}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Reservations"
+            component={ReservationsScreen}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

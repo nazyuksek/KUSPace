@@ -7,6 +7,7 @@ import PlayerSearch from "../screens/SearchScreens/PlayerSearch";
 import PitchSearch from "../screens/SearchScreens/PitchSearch";
 import EventsScreen from "../screens/EventsScreen";
 import ProfileContainer from "../screens/ProfileScreenContainers/ProfileContainer";
+import ReservationsScreen from "../screens/BottomBarScreens/ReservationsScreen";
 
 export interface BottomBarProps {
   route: any;
@@ -88,6 +89,25 @@ const BottomBar = ({ route }: BottomBarProps) => {
             return (
               <Ionicons
                 name="md-person"
+                size={24}
+                color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Reservations"
+        component={ReservationsScreen}
+        initialParams={{ username: route?.params?.username }}
+        options={{
+          tabBarLabelStyle: {
+            color: "rgba(135, 211, 124, 1)",
+          },
+          tabBarIcon: (Info) => {
+            return (
+              <Ionicons
+                name="md-calendar-sharp"
                 size={24}
                 color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
               />

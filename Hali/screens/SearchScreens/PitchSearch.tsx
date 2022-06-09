@@ -27,8 +27,6 @@ const PitchSearch = ({ navigation, route }: PitchSearchProps) => {
     setSearchQuery(search);
   };
 
-  
-
   const handleDistrictClick = async () => {
     let result = await readPitchDistrictQuery(searchQuery);
     setPitches(result);
@@ -36,7 +34,7 @@ const PitchSearch = ({ navigation, route }: PitchSearchProps) => {
   };
 
   const handleDistanceClick = async () => {
-    let result = await readPitchDistanceQuery(searchQuery);
+    let result = await readPitchDistanceQuery(parseInt(searchQuery));
     setPitches(result);
     console.log(result);
   };
@@ -70,14 +68,23 @@ const PitchSearch = ({ navigation, route }: PitchSearchProps) => {
         ></Button>
       </View>
 
-        <View style={styles.buttons}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 10,
+          alignSelf: "center",
+        }}
+      >
         <Button
           buttonText="Search by Distance"
           onPress={handleDistanceClick}
           style={styles.buttonleft}
         ></Button>
       </View>
-      
+
       <View style={styles.pitches}>
         {pitches?.map((el, i) => (
           <Text

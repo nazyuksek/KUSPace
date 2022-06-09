@@ -94,8 +94,7 @@ const AdminSignupScreen2 = ({ navigation, route }: AdminSignUp2Props) => {
         source={require("../assets/images/football.jpeg")}
       />
       <View style={styles.itemscontainer}>
-        <Text style={styles.text}>HALI</Text>
-        <Text style={styles.subtext}>Manager Sign Up</Text>
+        <Text style={styles.subtext}>MANAGER SIGN UP CONTINUED</Text>
         <TextField
           text={"Price"}
           style={{ marginTop: 15 }}

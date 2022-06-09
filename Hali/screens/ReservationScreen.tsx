@@ -17,6 +17,7 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   const reserver_username = route?.params?.username;
   const pitch_username = route?.params?.pitch_username;
   const [isModalVisible, setModal] = React.useState(false);
+  const [isModalVisible2, setModal2] = React.useState(false);
 
   //TIME SLOT EXTRACTION
   const extractTimeSlot = async () => {
@@ -53,12 +54,33 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   React.useEffect(() => {}, [dataState]);
   let reservation_text =
     "You are reserving a pitch on " + marked + " at " + time;
+  let pitch_name = "";
 
+  async function findPitchName(pitch_id: string) {
+    try {
+      const response = await DataStore.query(Pitch2, (p) =>
+        p.username("eq", pitch_id)
+      );
+      pitch_name = response[0].pitch_name;
+    } catch (error) {
+      console.log("Error finding pitch name!", error);
+    }
+  }
   async function handleConfirm() {
     setModal(false);
     reservation_date = marked.concat("|").concat(time);
     saveReservation(pitch_username, reserver_username, reservation_date);
     const b = await deleteAvailable(reservation_date);
+    setModal2(true);
+    navigation.navigate("Find Player");
+  }
+  function handleConfirm2() {
+    setModal2(false);
+    let pitch_name = findPitchName(pitch_username);
+    navigation.navigate("Event Creation", { reservation_date, pitch_name });
+  }
+  function handleCancel2() {
+    setModal2(false);
     navigation.navigate("Find Player");
   }
 
@@ -159,6 +181,22 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
             handleConfirm={handleConfirm}
             Headertext={"Schedule Confirmation"}
             text={reservation_text}
+          ></SimpleModal>
+        </Modal>
+        <Modal
+          style={{}}
+          visible={isModalVisible2}
+          animationType={"fade"}
+          transparent={true}
+          onRequestClose={() => {
+            setModal(false);
+          }}
+        >
+          <SimpleModal
+            handleCancel={handleCancel2}
+            handleConfirm={handleConfirm2}
+            Headertext={"Event Creation"}
+            text={"Do you want to create an event to your reservation?"}
           ></SimpleModal>
         </Modal>
       </View>

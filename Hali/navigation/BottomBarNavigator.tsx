@@ -3,9 +3,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
-import FindPlayerScreen from "../screens/BottomBarScreens/FindPlayerScreen";
-import FindFieldScreen from "../screens/BottomBarScreens/FindFieldScreen";
 import PlayerSearch from "../screens/SearchScreens/PlayerSearch";
 import PitchSearch from "../screens/SearchScreens/PitchSearch";
 import EventsScreen from "../screens/EventsScreen";
@@ -91,25 +88,6 @@ const BottomBar = ({ route }: BottomBarProps) => {
             return (
               <Ionicons
                 name="md-person"
-                size={24}
-                color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
-              />
-            );
-          },
-        }}
-      />
-
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          tabBarLabelStyle: {
-            color: "rgba(135, 211, 124, 1)",
-          },
-          tabBarIcon: (Info) => {
-            return (
-              <Ionicons
-                name="settings-sharp"
                 size={24}
                 color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
               />

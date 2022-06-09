@@ -29,7 +29,7 @@ export interface ScheduleScreenProps {
   route: any;
 }
 const width = Dimensions.get("screen").width;
-const height = Dimensions.get("window").height;
+const height = Dimensions.get("screen").height;
 
 const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   const username = route?.params.username;
@@ -53,9 +53,10 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
     const pitch = await DataStore.query(Pitch2, (cond) =>
       cond.username("eq", username)
     );
+    
     if (pitch[0].available_slots === undefined) {
       return;
-    }
+    } 
     let slots = pitch[0].available_slots!;
     slots.forEach((element) => {
       addToMap(element!.split("|")[0], element!.split("|")[1]);
@@ -230,96 +231,79 @@ const ScheduleScreen = ({ route, navigation }: ScheduleScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.itemscontainer}>
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            height: 300,
+        <ScheduleCalendar
+          onDayPress={(date) => {
+            handleDayPress(date.dateString);
+          }}
+          markedDates={{
+            [selected]: {
+              marked: true,
+              selected: true,
+              selectedColor: "rgba(135, 211, 124, 1)",
+              selectedTextColor: "white",
+            },
+          }}
+        ></ScheduleCalendar>
+
+        <View style={styles.timeField}>
+          <Text style={styles.subtext}>Please enter start time:</Text>
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TimeField
+              style={{}}
+              onTimeValueReady={handleTimeValueReady}
+              givenTime={time}
+            ></TimeField>
+            {isErrorTextVisible && (
+              <Text style={styles.errorText}>
+                {validTime ? "" : componentErrorText}
+              </Text>
+            )}
+          </View>
+        </View>
+        <View style={styles.timeField}>
+          <Text style={styles.subtext}>Please enter finish time:</Text>
+          <View style={styles.errorText}>
+            <TimeField
+              style={{}}
+              onTimeValueReady={handleTimeValueReady2}
+              givenTime={time2}
+            ></TimeField>
+            {isErrorTextVisible && (
+              <Text style={styles.errorText}>
+                {validTime2 ? "" : componentErrorText}
+              </Text>
+            )}
+          </View>
+        </View>
+        <Button
+          onPress={handleCreatePressed}
+          buttonText={"+"}
+          textStyle={{ fontSize: 48, color: "white" }}
+          style={styles.button}
+        ></Button>
+
+        <Modal
+          style={{}}
+          visible={isModalVisible}
+          animationType={"fade"}
+          transparent={true}
+          onRequestClose={() => {
+            setModal(false);
           }}
         >
-          <Text
-            style={{
-              marginTop: 10,
-              fontSize: 18,
-              color: "rgba(135, 211, 124, 1)",
-              fontWeight: "700",
-            }}
-          >
-            Select Start Date and Time
-          </Text>
-          <ScheduleCalendar
-            onDayPress={(date) => {
-              handleDayPress(date.dateString);
-            }}
-            markedDates={{
-              [selected]: {
-                marked: true,
-                selected: true,
-                selectedColor: "rgba(135, 211, 124, 1)",
-                selectedTextColor: "white",
-              },
-            }}
-          ></ScheduleCalendar>
-          <View style={styles.timeField}>
-            <Text style={styles.subtext}>Please enter start time:</Text>
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <TimeField
-                style={{}}
-                onTimeValueReady={handleTimeValueReady}
-                givenTime={time}
-              ></TimeField>
-              {isErrorTextVisible && (
-                <Text style={styles.errorText}>
-                  {validTime ? "" : componentErrorText}
-                </Text>
-              )}
-            </View>
-          </View>
-          <View style={styles.timeField}>
-            <Text style={styles.subtext}>Please enter finish time:</Text>
-            <View style={styles.errorText}>
-              <TimeField
-                style={{}}
-                onTimeValueReady={handleTimeValueReady2}
-                givenTime={time2}
-              ></TimeField>
-              {isErrorTextVisible && (
-                <Text style={styles.errorText}>
-                  {validTime2 ? "" : componentErrorText}
-                </Text>
-              )}
-            </View>
-          </View>
-          <Button
-            onPress={handleCreatePressed}
-            buttonText={"+"}
-            textStyle={{ fontSize: 48, color: "white" }}
-            style={styles.button}
-          ></Button>
-
-          <Modal
-            style={{}}
-            visible={isModalVisible}
-            animationType={"fade"}
-            transparent={true}
-            onRequestClose={() => {
-              setModal(false);
-            }}
-          >
-            <SimpleModal
-              handleCancel={handleCancel}
-              handleConfirm={handleConfirm}
-              Headertext={"Schedule Confirmation"}
-              text={schedule}
-            ></SimpleModal>
-          </Modal>
-        </View>
+          <SimpleModal
+            handleCancel={handleCancel}
+            handleConfirm={handleConfirm}
+            Headertext={"Schedule Confirmation"}
+            text={schedule}
+          ></SimpleModal>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -330,6 +314,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
     width: "100%",
+
     backgroundColor: "white",
   },
   itemscontainer: {
@@ -359,7 +344,7 @@ const styles = StyleSheet.create({
   },
   subtext: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "500",
     color: "darkslateblue",
     shadowOffset: {
@@ -373,15 +358,15 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: "rgba(135, 211, 124, 1)",
-    width: 80,
-    height: 80,
+    width: height * 0.1,
+    height: height * 0.1,
     alignItems: "center",
-    marginRight: 10,
+    marginRight: "1%",
     alignSelf: "flex-end",
-    marginTop: height * 0.14,
+    marginTop: height * 0.03,
     justifyContent: "center",
-    borderRadius: 50,
-    padding: 10,
+    borderRadius: (height * 0.1) / 2,
+    padding: 2,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -389,8 +374,8 @@ const styles = StyleSheet.create({
     },
   },
   timeField: {
-    marginTop: 15,
-    marginLeft: 30,
+    marginTop: height * 0.01,
+    marginLeft: "2%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",

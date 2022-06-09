@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextInput, TextStyle, StyleSheet } from "react-native";
+import { TextInput, TextStyle, StyleSheet, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import useDebounce from "../hooks/useDebounce";
 
@@ -8,6 +8,8 @@ export interface TimeFieldProps {
   onTimeValueReady: Function;
   givenTime: string;
 }
+const width = Dimensions.get("screen").width;
+const height = Dimensions.get("screen").height;
 
 const TimeField = ({ givenTime, onTimeValueReady, style }: TimeFieldProps) => {
   const [time, setTime] = useState<string>("");
@@ -57,16 +59,16 @@ const TimeField = ({ givenTime, onTimeValueReady, style }: TimeFieldProps) => {
 const styles = StyleSheet.create({
   input: {
     alignSelf: "center",
-    marginLeft: 10,
-    width: 100,
-    height: 50,
-    borderRadius: 15,
-    borderWidth: 3,
+    marginLeft: 8,
+    width: width * 0.15,
+    height: height * 0.05,
+    borderRadius: 6,
+    borderWidth: 2,
     backgroundColor: "rgba(135, 211, 124, 1)",
     borderColor: "rgba(135, 211, 124, 1)",
     alignItems: "center",
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 16,
     color: "white",
     shadowOffset: {
       width: 0,

@@ -3,8 +3,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SettingsScreen from "../screens/BottomBarScreens/SettingsScreen";
-import DisplayScheduleScreen from "../screens/AdminBottomBarScreens/DisplayScheduleScreen";
 import ScheduleScreen from "../screens/AdminBottomBarScreens/ScheduleScreen";
 import AdminProfileContainer from "../screens/ProfileScreenContainers/AdminProfileContainer";
 
@@ -21,25 +19,6 @@ const AdminBottomBar = ({ route }: AdminBottomBarProps) => {
         tabBarActiveBackgroundColor: "white",
       }}
     >
-      <Tab.Screen
-        name="Display Schedule"
-        component={DisplayScheduleScreen}
-        initialParams={{ username: route?.params?.username }}
-        options={{
-          tabBarLabelStyle: {
-            color: "rgba(135, 211, 124, 1)",
-          },
-          tabBarIcon: (Info) => {
-            return (
-              <SimpleLineIcons
-                name="screen-desktop"
-                size={24}
-                color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
-              />
-            );
-          },
-        }}
-      />
       <Tab.Screen
         name="Schedule"
         component={ScheduleScreen}
@@ -71,26 +50,6 @@ const AdminBottomBar = ({ route }: AdminBottomBarProps) => {
             return (
               <MaterialCommunityIcons
                 name="soccer-field"
-                size={24}
-                color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
-              />
-            );
-          },
-        }}
-      />
-
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        initialParams={{ username: route?.params?.username }}
-        options={{
-          tabBarLabelStyle: {
-            color: "rgba(135, 211, 124, 1)",
-          },
-          tabBarIcon: (Info) => {
-            return (
-              <Ionicons
-                name="settings-sharp"
                 size={24}
                 color={Info.focused ? "rgba(135, 211, 124, 1)" : "green"}
               />

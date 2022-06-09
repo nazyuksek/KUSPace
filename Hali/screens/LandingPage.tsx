@@ -43,8 +43,6 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
     const response = await DataStore.query(Pitch2, (cond) =>
       cond.username("eq", username)
     );
-    //   const response = await DataStore.query(Pitch2);
-    console.log(JSON.stringify(response, null, 2));
     if (response[0] === undefined) {
       return false;
     }

@@ -104,7 +104,7 @@ const ConfirmEmailScreen = ({ route, navigation }: ConfirmEmailScreenProps) => {
         navigation.navigate("PlayerHome", { username });
       }
     } catch (e: any) {
-      Alert.alert("", e.message);
+      Alert.alert("Error: ", e.message);
     }
   };
   return (

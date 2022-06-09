@@ -19,27 +19,6 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   const [isModalVisible, setModal] = React.useState(false);
   const [isModalVisible2, setModal2] = React.useState(false);
 
-  const cancelReservation = async () => {
-    await DataStore.delete(Reservation, (p) =>
-      p.reserver_username("eq", reserver_username)
-    );
-  };
-
-  //ADDS THE CANCELLED SLOT FROM TO PITCH TABLE BACK
-  const addCancelledReservation = async (reservation_date: string) => {
-    const pitch = await DataStore.query(Pitch2, (cond) =>
-      cond.username("eq", pitch_username)
-    );
-    let updated_slots = pitch[0].available_slots!;
-    let tmp = [...updated_slots];
-    tmp.push(reservation_date);
-    await DataStore.save(
-      Pitch2.copyOf(pitch[0], (updated) => {
-        updated.available_slots = tmp;
-      })
-    );
-  };
-
   //TIME SLOT EXTRACTION
   const extractTimeSlot = async () => {
     const pitch = await DataStore.query(Pitch2, (cond) =>
@@ -52,6 +31,7 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
     slots.forEach((element) => {
       addToMap(element!.split("|")[0], element!.split("|")[1]);
     });
+    setMap(map);
   };
 
   //ADD TO MAP
@@ -64,12 +44,13 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   };
 
   extractTimeSlot();
-  let map = new Map();
+  let emptyMap = new Map();
   const [time, setTime] = React.useState("");
   const emptyData: string[] = [];
   const [marked, setMarked] = React.useState("");
   const [date, setDate] = React.useState("");
   let reservation_date = "";
+  const [map, setMap] = React.useState(emptyMap);
   const [dataState, setDataState] = React.useState(emptyData);
   React.useEffect(() => {}, [time]);
   React.useEffect(() => {}, [dataState]);
@@ -93,7 +74,6 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
     saveReservation(pitch_username, reserver_username, reservation_date);
     const b = await deleteAvailable(reservation_date);
     setModal2(true);
-    navigation.navigate("Find Player");
   }
   function handleConfirm2() {
     setModal2(false);
@@ -102,6 +82,7 @@ const ReservationScreen = ({ navigation, route }: ReservationScreenProps) => {
   }
   function handleCancel2() {
     setModal2(false);
+    extractTimeSlot();
     navigation.navigate("Find Player");
   }
 

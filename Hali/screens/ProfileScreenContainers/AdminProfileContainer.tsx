@@ -19,7 +19,6 @@ const AdminProfileContainer = ({ route }: AdminProfileContainerProps) => {
   const [hourly_price, setPrice] = React.useState(0);
   const [working_hours, setHours] = React.useState("");
   const [address, setAdd] = React.useState("");
-
   async function gatherProfileInfo(username: string) {
     const pitch = await DataStore.query(Pitch2, (cond) =>
       cond.username("eq", username)

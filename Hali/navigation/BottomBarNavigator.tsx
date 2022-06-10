@@ -62,6 +62,7 @@ const BottomBar = ({ route }: BottomBarProps) => {
       <Tab.Screen
         name="Events"
         component={EventsScreen}
+        initialParams={{ username: route?.params?.username }}
         options={{
           tabBarLabelStyle: {
             color: "rgba(135, 211, 124, 1)",

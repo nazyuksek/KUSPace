@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SearchBar } from 'react-native-elements';
 import { Text } from '../../components/Themed';
 import Button from '../../components/Button';
-import { readDistrictQuery, readUsernameQuery } from '../../App';
+import { readDistrictQuery, readUsernameQuery } from '../../store';
 import { Player } from '../../src/models';
 
 

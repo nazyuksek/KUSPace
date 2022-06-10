@@ -10,7 +10,7 @@ import {
   readPitchDistrictQuery,
   readPitchDistanceQuery,
   readUsernameQuery,
-} from "../../App";
+} from "../../store";
 import { Pitch2 } from "../../src/models";
 
 export interface PitchSearchProps {
